@@ -3,7 +3,7 @@ name: fe-ci
 on:
   pull_request:
     branches:
-      - "main"
+      - 'main'
 
 jobs:
   compile-test-lint:
