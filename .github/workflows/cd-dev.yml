@@ -1,11 +1,10 @@
 name: Development Tag Deployment
 env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.DEV_VERCEL_PROJECT_ID }}
+  NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
 on:
   push:
     tags:
-      - "dev-v*"
+      - 'dev-v*'
 
 jobs:
   deploy-development:
@@ -19,10 +18,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+      - name: Install dependencies
+        run: npm install
 
-      - name: Deploy Project Artifacts to Vercel
-        run: |
-          cd frontend
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: npm run build
+
+      - name: Deploy Project Artifacts to Netlify
+        run: npx netlify deploy --prod --site=${{ secrets.DEV_NETLIFY_SITE_ID }} --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --dir=dist
