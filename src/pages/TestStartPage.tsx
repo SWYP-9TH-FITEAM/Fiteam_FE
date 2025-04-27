@@ -12,12 +12,8 @@ const TestStartPage = () => {
     navigate('/login');
   };
 
-  const handleClickBack = () => {
-    navigate(-1);
-  };
-
   return (
-    <LayoutMo hasHeader={true} onClickBack={handleClickBack}>
+    <LayoutMo hasHeader={true}>
       <div className="flex flex-col justify-between h-full ">
         <div className="text-center mt-5 pb-0 px-[84px]  h-16">
           <p className="text-2xl font-semibold whitespace-pre-line">

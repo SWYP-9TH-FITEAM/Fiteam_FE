@@ -1,11 +1,19 @@
 import {ReactNode} from 'react';
+import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import {useNavigate} from 'react-router-dom';
 
 interface LayoutMoProps {
   hasHeader: boolean;
   children: ReactNode;
 }
 
-const LayoutMo = ({hasHeader, children}: LayoutMoProps) => {
+const LayoutMo = ({hasHeader = false, children}: LayoutMoProps) => {
+  const navigate = useNavigate();
+
+  const navigateToBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="flex flex-col h-[812px] bg-neutral-50">
       {hasHeader && (
@@ -13,9 +21,10 @@ const LayoutMo = ({hasHeader, children}: LayoutMoProps) => {
           {/* 왼쪽 */}
           <button
             className="w-6 h-6 flex justify-center items-center cursor-pointer"
+            onClick={navigateToBack}
             aria-label="뒤로가기"
           >
-            <img src="src/assets/arrowLeft.svg" alt="뒤로가기" />
+            <img src={arrowLeftIcon} alt="뒤로가기" />
           </button>
           {/* 가운데 */}
           <div className=" bg-pink-200"></div>
