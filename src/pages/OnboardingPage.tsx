@@ -36,7 +36,7 @@ const OnboardingPage = () => {
   };
 
   const routeToTest = () => {
-    navigate('/test');
+    navigate('/test/start');
   };
 
   return (
