@@ -14,7 +14,7 @@ const TestStartPage = () => {
 
   return (
     <LayoutMo hasHeader={true}>
-      <div className="flex flex-col justify-between h-full ">
+      <div className="flex flex-col justify-between h-full min-h-[764px] ">
         <div className="text-center mt-5 pb-0 px-[84px]  h-16">
           <p className="text-2xl font-semibold whitespace-pre-line">
             {`나만의 팀을 찾기 위한\n 성향테스트`}

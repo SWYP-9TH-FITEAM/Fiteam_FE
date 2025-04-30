@@ -96,6 +96,7 @@ button:focus-visible {
   text-align: center;
   background-color: #fafafa;
   height: 812px;
+  overflow-y: scroll;
 }
 
 @media (max-width: 500px) {

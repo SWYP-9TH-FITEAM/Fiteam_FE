@@ -52,7 +52,7 @@ function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
   }, [apiPromise, onDone]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-7">
+    <div className="flex flex-col items-center justify-center h-full min-h-[812px] gap-7">
       <div className="text-center">
         <p className="text-lg font-medium">결과를 취합중입니다</p>
         <p className="text-2xl font-bold mt-1">잠시만 기다려주세요 !</p>
