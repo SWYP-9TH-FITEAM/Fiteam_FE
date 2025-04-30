@@ -22,7 +22,10 @@ const LayoutMo = ({
   };
 
   return (
-    <div className={`flex flex-col  h-full min-h-[812px] bg-[${bgColor}]`}>
+    <div
+      className="flex flex-col h-full min-h-[812px]"
+      style={{backgroundColor: bgColor}}
+    >
       {hasHeader && (
         <div className="flex justify-between h-12 items-center shrink-0 px-3 bg-white">
           {/* 왼쪽 */}
