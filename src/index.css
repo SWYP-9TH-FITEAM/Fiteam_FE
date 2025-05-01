@@ -1,6 +1,6 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -65,7 +65,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  font-family: "Pretendard", system-ui, sans-serif;
+  font-family: 'Pretendard', system-ui, sans-serif;
 }
 
 h1 {
@@ -94,8 +94,9 @@ button:focus-visible {
   width: 500px;
   margin: 0 auto;
   text-align: center;
-  background-color: pink;
+  background-color: #fafafa;
   height: 812px;
+  overflow-y: scroll;
 }
 
 @media (max-width: 500px) {

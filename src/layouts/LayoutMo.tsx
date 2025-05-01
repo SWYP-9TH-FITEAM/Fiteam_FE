@@ -1,29 +1,52 @@
 import {ReactNode} from 'react';
+import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import {useNavigate} from 'react-router-dom';
 
 interface LayoutMoProps {
-  hasHeader: boolean;
+  hasHeader?: boolean;
   children: ReactNode;
+  bgColor?: string;
+  text?: string;
 }
 
-const LayoutMo = ({hasHeader, children}: LayoutMoProps) => {
+const LayoutMo = ({
+  hasHeader = false,
+  children,
+  bgColor = '#fafafa',
+  text,
+}: LayoutMoProps) => {
+  const navigate = useNavigate();
+
+  const navigateToBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="flex flex-col h-[812px] bg-neutral-50">
+    <div
+      className="flex flex-col h-full min-h-[812px]"
+      style={{backgroundColor: bgColor}}
+    >
       {hasHeader && (
         <div className="flex justify-between h-12 items-center shrink-0 px-3 bg-white">
           {/* 왼쪽 */}
-          <button
-            className="w-6 h-6 flex justify-center items-center cursor-pointer"
-            aria-label="뒤로가기"
-          >
-            <img src="src/assets/arrowLeft.svg" alt="뒤로가기" />
-          </button>
+          <div className="flex gap-2.5">
+            <button
+              className="w-6 h-6 flex justify-center items-center cursor-pointer"
+              onClick={navigateToBack}
+              aria-label="뒤로가기"
+            >
+              <img src={arrowLeftIcon} alt="뒤로가기" />
+            </button>
+            <span>{text}</span>
+          </div>
+
           {/* 가운데 */}
           <div className=" bg-pink-200"></div>
           {/* 오른쪽 */}
           <div className=" bg-pink-200"></div>
         </div>
       )}
-      <div className="flex-1 px-5">{children}</div>
+      <div className="flex-1 mx-5">{children}</div>
     </div>
   );
 };
