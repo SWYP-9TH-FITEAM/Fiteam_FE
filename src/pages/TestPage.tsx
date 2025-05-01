@@ -95,7 +95,8 @@ const TestPage = () => {
   const fetchResultApi = (answers: number[]) => {
     return new Promise<{result: string; answers: number[]}>(resolve => {
       setTimeout(() => {
-        resolve({result: 'mock-result', answers});
+        const randomResultId = Math.floor(Math.random() * 16) + 1;
+        resolve({result: String(randomResultId), answers});
       }, DOT_INTERVAL * 5);
     });
   };
@@ -112,7 +113,7 @@ const TestPage = () => {
   };
 
   const handleLoadingDone = (result: {result: string; answers: number[]}) => {
-    navigate('/result', {state: {result}});
+    navigate(`/result/${result.result}`);
   };
 
   const progressPercent = ((currentIndex + 1) / TOTAL_QUESTIONS) * 100;
