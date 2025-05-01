@@ -46,7 +46,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center p-5">
       <img src={logo} alt="Fiteam logo" className="h-[35px] my-14" />
 
       <form
