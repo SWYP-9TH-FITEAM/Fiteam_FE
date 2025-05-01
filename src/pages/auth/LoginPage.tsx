@@ -44,6 +44,8 @@ export const LoginPage: React.FC = () => {
           email: data.email,
           password: data.password,
         });
+
+        navigate('/');
       }),
     );
   };
