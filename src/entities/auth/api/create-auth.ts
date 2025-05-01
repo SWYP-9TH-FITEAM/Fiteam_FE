@@ -18,7 +18,7 @@ export const postAuthLogin = async (payload: PostAuthLoginRequestDto) => {
 
   const json = postAuthLoginRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json});
+  const response = await api.post(ENDPOINT, {json}).json();
 
   return validateSchema({
     dto: response,
@@ -32,7 +32,7 @@ export const postAuthSignUp = async (payload: PostAuthSignUpRequestDto) => {
 
   const json = postAuthSignUpRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json});
+  const response = await api.post(ENDPOINT, {json}).json();
 
   return validateSchema({
     dto: response,
@@ -48,7 +48,7 @@ export const postAuthSendVerificationCode = async (
 
   const json = postAuthSendVerificationCodeRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json});
+  const response = await api.post(ENDPOINT, {json}).json();
 
   return validateSchema({
     dto: response,
@@ -64,7 +64,7 @@ export const postAuthVerifyCode = async (
 
   const json = postAuthVerifyCodeRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json});
+  const response = await api.post(ENDPOINT, {json}).json();
 
   return validateSchema({
     dto: response,
