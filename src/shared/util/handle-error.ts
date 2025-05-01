@@ -25,6 +25,11 @@ const handleError = (
   if (error instanceof Error) {
     errorHandler(error);
     if (showToast) toast.error(error.message);
+  } else {
+    const errorMessage =
+      typeof error === 'string' ? error : 'An unknown error occurred';
+    errorHandler(new Error(errorMessage));
+    if (showToast) toast.error(errorMessage);
   }
 };
 
