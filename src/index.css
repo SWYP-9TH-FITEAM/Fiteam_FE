@@ -69,8 +69,6 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
 }
 
 button {
@@ -96,7 +94,7 @@ button:focus-visible {
   text-align: center;
   background-color: #fafafa;
   height: 812px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 @media (max-width: 500px) {

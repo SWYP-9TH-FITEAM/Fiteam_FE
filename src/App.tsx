@@ -4,6 +4,7 @@ import OnboardingPage from './pages/OnboardingPage';
 import TestStartPage from './pages/TestStartPage';
 import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
+import ProfileCreatePage from './pages/ProfileCreatePage';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
           <Route path="/test/start" element={<TestStartPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/result/:id" element={<ResultPage />} />
+          <Route path="/profile" element={<TestPage />} />
+          <Route path="/profile/create" element={<ProfileCreatePage />} />
         </Routes>
       </div>
     </Router>

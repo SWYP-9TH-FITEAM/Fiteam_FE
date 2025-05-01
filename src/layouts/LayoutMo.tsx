@@ -7,6 +7,7 @@ interface LayoutMoProps {
   children: ReactNode;
   bgColor?: string;
   text?: string;
+  rightChildren?: ReactNode;
 }
 
 const LayoutMo = ({
@@ -14,6 +15,7 @@ const LayoutMo = ({
   children,
   bgColor = '#fafafa',
   text,
+  rightChildren,
 }: LayoutMoProps) => {
   const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ const LayoutMo = ({
           {/* 가운데 */}
           <div className=" bg-pink-200"></div>
           {/* 오른쪽 */}
-          <div className=" bg-pink-200"></div>
+          <div>{rightChildren && rightChildren}</div>
         </div>
       )}
       <div className="flex-1 mx-5">{children}</div>
