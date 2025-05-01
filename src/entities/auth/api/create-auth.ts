@@ -3,18 +3,72 @@ import {
   postAuthLoginRequestDto,
   PostAuthLoginRequestDto,
   postAuthLoginResponseDto,
+  PostAuthSendVerificationCodeRequestDto,
+  postAuthSendVerificationCodeRequestDto,
+  postAuthSignUpRequestDto,
+  PostAuthSignUpRequestDto,
+  PostAuthVerifyCodeRequestDto,
+  postAuthVerifyCodeRequestDto,
 } from './dto';
 import {validateSchema} from '@/shared/api/validate';
+import {z} from 'zod';
 
-const POST_AUTH_LOGIN_ENDPOINT = 'v1/auth/login';
 export const postAuthLogin = async (payload: PostAuthLoginRequestDto) => {
+  const ENDPOINT = 'v1/auth/login';
+
   const json = postAuthLoginRequestDto.parse(payload);
 
-  const response = await api.post(POST_AUTH_LOGIN_ENDPOINT, {json});
+  const response = await api.post(ENDPOINT, {json});
 
   return validateSchema({
     dto: response,
     schema: postAuthLoginResponseDto,
-    schemaName: POST_AUTH_LOGIN_ENDPOINT,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const postAuthSignUp = async (payload: PostAuthSignUpRequestDto) => {
+  const ENDPOINT = 'v1/auth/register';
+
+  const json = postAuthSignUpRequestDto.parse(payload);
+
+  const response = await api.post(ENDPOINT, {json});
+
+  return validateSchema({
+    dto: response,
+    schema: z.string(),
+    schemaName: ENDPOINT,
+  });
+};
+
+export const postAuthSendVerificationCode = async (
+  payload: PostAuthSendVerificationCodeRequestDto,
+) => {
+  const ENDPOINT = 'v1/auth/send-verification-code';
+
+  const json = postAuthSendVerificationCodeRequestDto.parse(payload);
+
+  const response = await api.post(ENDPOINT, {json});
+
+  return validateSchema({
+    dto: response,
+    schema: z.string(),
+    schemaName: ENDPOINT,
+  });
+};
+
+export const postAuthVerifyCode = async (
+  payload: PostAuthVerifyCodeRequestDto,
+) => {
+  const ENDPOINT = 'v1/auth/verify-code';
+
+  const json = postAuthVerifyCodeRequestDto.parse(payload);
+
+  const response = await api.post(ENDPOINT, {json});
+
+  return validateSchema({
+    dto: response,
+    schema: z.string(),
+    schemaName: ENDPOINT,
   });
 };
