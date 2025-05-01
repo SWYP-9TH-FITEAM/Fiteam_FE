@@ -15,7 +15,7 @@ export const signUpFormSchema = z
     password: z
       .string()
       .min(8, {message: '비밀번호는 8자 이상이어야 합니다.'})
-      .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/, {
         message: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
       }),
     passwordConfirm: z
