@@ -40,6 +40,14 @@ export const SignUpPage: React.FC = () => {
     typeof setTimeout
   > | null>(null);
 
+  React.useEffect(() => {
+    return () => {
+      if (verifyButtonDisableTimerRef.current) {
+        clearTimeout(verifyButtonDisableTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleBack = () => {
     navigate(-1);
   };
