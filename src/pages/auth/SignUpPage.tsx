@@ -12,6 +12,8 @@ import {
   postAuthSignUp,
   postAuthVerifyCode,
 } from '@/entities/auth/api';
+import {withHandleError} from '@/shared/util/handle-error';
+import {toast} from 'sonner';
 
 export const SignUpPage: React.FC = () => {
   const form = useForm<SignUpFormSchema>({
@@ -21,6 +23,7 @@ export const SignUpPage: React.FC = () => {
       email: '',
       password: '',
       passwordConfirm: '',
+      verificationCode: '',
     },
     mode: 'onChange',
   });
@@ -44,18 +47,20 @@ export const SignUpPage: React.FC = () => {
   const handleSubmit = (data: SignUpFormSchema) => {
     if (isPending) return;
 
-    startTransition(async () => {
-      await postAuthVerifyCode({
-        email: data.email,
-        code: data.verificationCode,
-      });
+    startTransition(
+      withHandleError(async () => {
+        await postAuthVerifyCode({
+          email: data.email,
+          code: data.verificationCode,
+        });
 
-      await postAuthSignUp({
-        email: data.email,
-        password: data.password,
-        username: data.name,
-      });
-    });
+        await postAuthSignUp({
+          email: data.email,
+          password: data.password,
+          username: data.name,
+        });
+      }),
+    );
   };
 
   const handleVerifyEmail = () => {
@@ -65,13 +70,17 @@ export const SignUpPage: React.FC = () => {
 
     setIsVerifyButtonDisabled(true);
 
-    startTransition(async () => {
-      await postAuthSendVerificationCode({email});
+    startTransition(
+      withHandleError(async () => {
+        await postAuthSendVerificationCode({email});
 
-      verifyButtonDisableTimerRef.current = setTimeout(() => {
-        setIsVerifyButtonDisabled(false);
-      }, 60 * 1000);
-    });
+        verifyButtonDisableTimerRef.current = setTimeout(() => {
+          setIsVerifyButtonDisabled(false);
+        }, 60 * 1000);
+
+        toast.success('인증번호가 발송되었습니다.');
+      }),
+    );
   };
 
   const passwordVisibilityToggleButton = (

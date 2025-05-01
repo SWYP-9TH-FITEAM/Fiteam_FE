@@ -8,6 +8,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {loginFormSchema, LoginFormSchema} from '@/entities/auth/model/form';
 import {postAuthLogin} from '@/entities/auth/api';
+import {withHandleError} from '@/shared/util/handle-error';
 
 export const LoginPage: React.FC = () => {
   const form = useForm<LoginFormSchema>({
@@ -37,12 +38,14 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = (data: LoginFormSchema) => {
     if (isPending) return;
 
-    startTransition(async () => {
-      await postAuthLogin({
-        email: data.email,
-        password: data.password,
-      });
-    });
+    startTransition(
+      withHandleError(async () => {
+        await postAuthLogin({
+          email: data.email,
+          password: data.password,
+        });
+      }),
+    );
   };
 
   return (
