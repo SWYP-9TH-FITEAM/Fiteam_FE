@@ -11,15 +11,8 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 type LayoutBottomBarProps = {
   children: ReactNode;
+  header?: ReactNode;
   bgColor?: string;
-};
-
-const Header = () => {
-  return (
-    <header className="sticky top-0 z-10 h-12 px-4 py-3 text-center font-semibold text-lg">
-      헤더
-    </header>
-  );
 };
 
 const BottomBar = () => {
@@ -118,6 +111,7 @@ const BottomBar = () => {
 
 export const LayoutBottomBar = ({
   children,
+  header,
   bgColor = '#fafafa',
 }: LayoutBottomBarProps) => {
   return (
@@ -126,7 +120,7 @@ export const LayoutBottomBar = ({
       style={{backgroundColor: bgColor}}
     >
       <div className="relative w-full max-w-[500px] h-full flex flex-col">
-        <Header />
+        {header}
 
         {/* 스크롤 가능한 영역 */}
         <div className="flex-1 overflow-y-auto px-4 py-6">{children}</div>
