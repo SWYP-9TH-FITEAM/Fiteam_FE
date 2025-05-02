@@ -6,6 +6,10 @@ import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
 import ProfileEditPage from './pages/ProfileEditPage';
 import ProfilePage from './pages/ProfilePage';
+import {LoginPage} from './pages/auth/LoginPage';
+import {FindEmailPage} from './pages/auth/FindEmailPage';
+import {FindPasswordPage} from './pages/auth/FindPasswordPage';
+import {SignUpPage} from './pages/auth/SignUpPage';
 
 function App() {
   return (
@@ -19,6 +23,11 @@ function App() {
           <Route path="/result/:id" element={<ResultPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
+          <Route path="/result" element={<ResultPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/find-email" element={<FindEmailPage />} />
+          <Route path="/find-password" element={<FindPasswordPage />} />
         </Routes>
       </div>
     </Router>
