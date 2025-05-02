@@ -4,7 +4,8 @@ import OnboardingPage from './pages/OnboardingPage';
 import TestStartPage from './pages/TestStartPage';
 import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
-import ProfileCreatePage from './pages/ProfileCreatePage';
+import ProfileEditPage from './pages/ProfileEditPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -16,8 +17,8 @@ function App() {
           <Route path="/test/start" element={<TestStartPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/result/:id" element={<ResultPage />} />
-          <Route path="/profile" element={<TestPage />} />
-          <Route path="/profile/create" element={<ProfileCreatePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
         </Routes>
       </div>
     </Router>

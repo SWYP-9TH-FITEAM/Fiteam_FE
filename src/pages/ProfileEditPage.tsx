@@ -1,12 +1,28 @@
+import ProfileLoadingScreen from '@/features/profile/ProfileLoadingScreen';
+import ProfileSkipDialog from '@/features/profile/ProfileSkipDialog';
 import LayoutMo from '@/layouts/LayoutMo';
 import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
-const ProfileCreatePage = () => {
+const ProfileEditPage = () => {
+  const navigate = useNavigate();
+
   const [selectedJob, setSelectedJob] = useState<
     'PM' | '디자이너' | '프론트엔드' | '백엔드' | null
   >('PM');
   // 경력 년수
   const [career, setCareer] = useState<number>(10);
+  const [isSkipDialogOpen, setIsSkipDialogOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleComplete = () => {
+    setIsLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
+    // 로딩이 완료되면 다음 페이지로 이동
+    navigate('/profile');
+  };
 
   // 슬라이더 툴팁 위치 계산 함수 (가장자리에서 잘리지 않도록)
   const getTooltipPosition = () => {
@@ -23,10 +39,21 @@ const ProfileCreatePage = () => {
     return `${percentage}%`;
   };
 
+  if (isLoading) {
+    return <ProfileLoadingScreen onComplete={handleLoadingComplete} />;
+  }
+
   return (
     <LayoutMo
       hasHeader={true}
-      rightChildren={<button className="text-gray-600">건너뛰기</button>}
+      rightChildren={
+        <button
+          className="text-gray-600"
+          onClick={() => setIsSkipDialogOpen(true)}
+        >
+          건너뛰기
+        </button>
+      }
     >
       <div className="flex flex-col items-center pb-12">
         <p className="text-[#111] text-center text-2xl not-italic font-semibold leading-8 tracking-[-0.6px] mt-4 mb-6">
@@ -177,12 +204,20 @@ const ProfileCreatePage = () => {
         </div>
 
         {/* 완료 버튼 */}
-        <button className="w-full h-[54px] bg-[#5F4AFF] text-white rounded-lg text-lg font-medium">
+        <button
+          className="w-full h-[54px] bg-[#5F4AFF] text-white rounded-lg text-lg font-medium"
+          onClick={handleComplete}
+        >
           완료하기
         </button>
       </div>
+
+      <ProfileSkipDialog
+        open={isSkipDialogOpen}
+        onOpenChange={setIsSkipDialogOpen}
+      />
     </LayoutMo>
   );
 };
 
-export default ProfileCreatePage;
+export default ProfileEditPage;
