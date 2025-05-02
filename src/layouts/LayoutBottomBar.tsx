@@ -31,7 +31,7 @@ const BottomBar = () => {
   };
 
   return (
-    <nav className="sticky bottom-0 z-10 bg-white border-t px-4 py-2">
+    <nav className="sticky bottom-0 z-10 bg-white shadow-[0px_-1px_4px_0px_rgba(89,89,89,0.25)] px-4 py-2">
       <div className="flex justify-around">
         <button
           className="flex flex-col items-center text-sm"
