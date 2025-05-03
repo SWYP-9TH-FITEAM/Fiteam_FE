@@ -21,9 +21,10 @@ function App() {
           <Route path="/test/start" element={<TestStartPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/result/:id" element={<ResultPage />} />
+          <Route path="/result" element={<ResultPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
-          <Route path="/result" element={<ResultPage />} />
+          <Route path="/profile/create" element={<ProfileEditPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/find-email" element={<FindEmailPage />} />

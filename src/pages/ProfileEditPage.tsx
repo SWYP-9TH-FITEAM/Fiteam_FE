@@ -17,6 +17,10 @@ const ProfileEditPage = () => {
 
   const handleComplete = () => {
     setIsLoading(true);
+    // 10초 후 로딩 완료 및 프로필 페이지로 이동
+    setTimeout(() => {
+      navigate('/profile');
+    }, 10000);
   };
 
   const handleLoadingComplete = () => {
@@ -74,13 +78,13 @@ const ProfileEditPage = () => {
           <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
           <div className="flex gap-2 w-full">
             <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === 'PM' ? 'border border-solid border-[#5F4AFF] bg-[#EEECFF] text-[#5F4AFF]' : 'bg-[#F1F2F4]'}`}
+              className={`flex-1  h-[38px] rounded-lg ${selectedJob === 'PM' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
               onClick={() => setSelectedJob('PM')}
             >
               PM
             </button>
             <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '디자이너' ? 'border border-solid border-[#5F4AFF] bg-[#EEECFF] text-[#5F4AFF]' : 'bg-[#F1F2F4]'}`}
+              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '디자이너' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
               onClick={() => setSelectedJob('디자이너')}
             >
               디자이너
@@ -88,13 +92,13 @@ const ProfileEditPage = () => {
           </div>
           <div className="flex gap-2 w-full mt-2">
             <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '프론트엔드' ? 'border border-solid border-[#5F4AFF] bg-[#EEECFF] text-[#5F4AFF]' : 'bg-[#F1F2F4]'}`}
+              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '프론트엔드' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
               onClick={() => setSelectedJob('프론트엔드')}
             >
               프론트엔드
             </button>
             <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '백엔드' ? 'border border-solid border-[#5F4AFF] bg-[#EEECFF] text-[#5F4AFF]' : 'bg-[#F1F2F4]'}`}
+              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '백엔드' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
               onClick={() => setSelectedJob('백엔드')}
             >
               백엔드
@@ -205,7 +209,7 @@ const ProfileEditPage = () => {
 
         {/* 완료 버튼 */}
         <button
-          className="w-full h-[54px] bg-[#5F4AFF] text-white rounded-lg text-lg font-medium"
+          className="w-full h-[54px] bg-primary text-white rounded-lg text-lg font-medium"
           onClick={handleComplete}
         >
           완료하기
