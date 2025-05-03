@@ -5,7 +5,7 @@ import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 
 const HomePage = () => {
-  const isLogin = false; //TODO: 로그인 . props를 넘길지, 전역관리할지
+  const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
 
   return (
     <LayoutBottomBar bgColor="#F1F2F4">

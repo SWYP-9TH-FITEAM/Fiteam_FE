@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import ContentsCard from './components/ContentsCard';
 
 interface HomeResultCardProps {
-  isLogin: boolean;
+  isLogin?: boolean;
 }
 
 export const HomeResultCard = ({isLogin = false}: HomeResultCardProps) => {
