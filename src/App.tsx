@@ -4,6 +4,8 @@ import OnboardingPage from './pages/OnboardingPage';
 import TestStartPage from './pages/TestStartPage';
 import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
+import ProfileEditPage from './pages/ProfileEditPage';
+import ProfilePage from './pages/ProfilePage';
 import {LoginPage} from './pages/auth/LoginPage';
 import {FindEmailPage} from './pages/auth/FindEmailPage';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
@@ -18,7 +20,11 @@ function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/test/start" element={<TestStartPage />} />
           <Route path="/test" element={<TestPage />} />
+          <Route path="/result/:id" element={<ResultPage />} />
           <Route path="/result" element={<ResultPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
+          <Route path="/profile/create" element={<ProfileEditPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/find-email" element={<FindEmailPage />} />
