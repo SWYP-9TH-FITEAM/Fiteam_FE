@@ -1,9 +1,28 @@
 import {Link} from 'react-router-dom';
 import ContentsCard from './components/ContentsCard';
 
-export const HomeResultCard = () => {
+interface HomeResultCardProps {
+  isLogin: boolean;
+}
+
+export const HomeResultCard = ({isLogin = false}: HomeResultCardProps) => {
+  if (!isLogin) {
+    return (
+      <ContentsCard title="나의 테스트 결과 보러가기">
+        <div className="flex flex-col justify-center gap-4 mt-4 mb-3 h-[120px] text-center">
+          <div className="text-[#111] text-lg font-bold leading-6">
+            아직 테스트를 하지 않으셨네요
+          </div>
+          <button className="flex h-12 justify-center items-center bg-[#5F4AFF] rounded-[10px] text-white font-medium leading-6">
+            테스트하고 내 성향 파악하기
+          </button>
+        </div>
+      </ContentsCard>
+    );
+  }
+
   return (
-    <ContentsCard title="아이디어 조율러" arrowLink="/test">
+    <ContentsCard title="나의 테스트 결과 보러가기" arrowLink="/test">
       <div className="flex mt-4 mb-3 h-[120px]">
         <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
         <div className="flex-1">

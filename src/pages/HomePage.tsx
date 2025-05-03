@@ -5,17 +5,15 @@ import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 
 const HomePage = () => {
-  const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
-  if (!isLogin) {
-    return;
-  }
+  const isLogin = false; //TODO: 로그인 . props를 넘길지, 전역관리할지
+
   return (
     <LayoutBottomBar bgColor="#F1F2F4">
-      <HomeHeader />
+      <HomeHeader isLogin={isLogin} />
       <div className="flex flex-col gap-4 pb-4">
-        <HomeResultCard />
-        <HomeProfile />
-        <HomeProjectList />
+        <HomeResultCard isLogin={isLogin} />
+        <HomeProfile isLogin={isLogin} />
+        <HomeProjectList isLogin={isLogin} />
       </div>
     </LayoutBottomBar>
   );

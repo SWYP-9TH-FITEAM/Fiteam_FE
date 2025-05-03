@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 interface ContentsCardProps {
   title: string;
-  arrowLink: string;
+  arrowLink?: string;
   children: ReactNode;
 }
 const ContentsCard = ({title, arrowLink, children}: ContentsCardProps) => {
@@ -14,9 +14,11 @@ const ContentsCard = ({title, arrowLink, children}: ContentsCardProps) => {
         <h3 className="text-black text-base font-medium leading-6 tracking-[-0.4px]">
           {title}
         </h3>
-        <Link to={arrowLink}>
-          <ChevronRightIcon className="w-6 h-6" />
-        </Link>
+        {arrowLink && (
+          <Link to={arrowLink}>
+            <ChevronRightIcon className="w-6 h-6" />
+          </Link>
+        )}
       </div>
 
       {children}

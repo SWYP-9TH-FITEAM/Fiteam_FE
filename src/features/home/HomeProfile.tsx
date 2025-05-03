@@ -1,6 +1,25 @@
 import ContentsCard from './components/ContentsCard';
 
-const HomeProfile = () => {
+interface HomeProfileProps {
+  isLogin: boolean;
+}
+
+const HomeProfile = ({isLogin}: HomeProfileProps) => {
+  if (!isLogin) {
+    return (
+      <ContentsCard title="내 프로필">
+        <div className="flex flex-col mt-5 mb-[25px]">
+          <div className="text-[#767676] text-justify text-base font-medium leading-6">
+            내 프로필이 없으시네요
+          </div>
+          <div className="text-[#111] text-justify text-lg font-bold leading-6">
+            내 프로필을 작성하고 팀빌딩을 해보세요
+          </div>
+        </div>
+      </ContentsCard>
+    );
+  }
+
   return (
     <ContentsCard title="내 프로필" arrowLink="/profile">
       <div className="bg-white p-4 mt-2 rounded-md border-[1.5px] border-solid border-[#5F4AFF]">
