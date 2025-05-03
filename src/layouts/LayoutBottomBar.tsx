@@ -9,6 +9,10 @@ import teamBuildingIcon from '@/assets/bottomIcon/teambuilding.svg';
 import {ReactNode} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
+// 일단 채팅 아이콘이 없어 임시로 teambuilding 아이콘을 사용
+const chatSelectedIcon = teamBuildingSelectedIcon;
+const chatIcon = teamBuildingIcon;
+
 type LayoutBottomBarProps = {
   children: ReactNode;
   header?: ReactNode;
@@ -20,11 +24,38 @@ const BottomBar = () => {
   const navigate = useNavigate();
   const currentPath = location.pathname;
 
-  const isHome = currentPath === '/home';
-  const isProfile = currentPath === '/profile';
-  const isTeambuilding = currentPath === '/teambuilding';
-  const isChat = currentPath === '/chat';
-  const isMyPage = currentPath === '/mypage';
+  const menuItems = [
+    {
+      path: '/home',
+      icon: homeIcon,
+      selectedIcon: homeSelectedIcon,
+      label: '홈',
+    },
+    {
+      path: '/profile',
+      icon: profileIcon,
+      selectedIcon: profileSelectedIcon,
+      label: '나의 프로필',
+    },
+    {
+      path: '/teambuilding',
+      icon: teamBuildingIcon,
+      selectedIcon: teamBuildingSelectedIcon,
+      label: '팀빌딩',
+    },
+    {
+      path: '/chat',
+      icon: chatIcon,
+      selectedIcon: chatSelectedIcon,
+      label: '1:1 채팅',
+    },
+    {
+      path: '/mypage',
+      icon: myPageIcon,
+      selectedIcon: myPageSelectedIcon,
+      label: '마이페이지',
+    },
+  ];
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -33,77 +64,27 @@ const BottomBar = () => {
   return (
     <nav className="sticky bottom-0 z-10 bg-white shadow-[0px_-1px_4px_0px_rgba(89,89,89,0.25)] px-4 py-2">
       <div className="flex justify-around">
-        <button
-          className="flex flex-col items-center text-sm"
-          onClick={() => handleNavigate('/home')}
-        >
-          <div className="w-6 h-6 flex items-center justify-center">
-            <img
-              src={isHome ? homeSelectedIcon : homeIcon}
-              alt="홈"
-              className="w-6 h-6"
-              style={{objectFit: 'contain'}}
-            />
-          </div>
-          홈
-        </button>
-        <button
-          className="flex flex-col items-center text-sm"
-          onClick={() => handleNavigate('/profile')}
-        >
-          <div className="w-6 h-6 flex items-center justify-center">
-            <img
-              src={isProfile ? profileSelectedIcon : profileIcon}
-              alt="나의 프로필"
-              className="w-6 h-6"
-              style={{objectFit: 'contain'}}
-            />
-          </div>
-          나의 프로필
-        </button>
-        <button
-          className="flex flex-col items-center text-sm"
-          onClick={() => handleNavigate('/teambuilding')}
-        >
-          <div className="w-6 h-6 flex items-center justify-center">
-            <img
-              src={isTeambuilding ? teamBuildingSelectedIcon : teamBuildingIcon}
-              alt="팀빌딩"
-              className="w-6 h-6"
-              style={{objectFit: 'contain'}}
-            />
-          </div>
-          팀빌딩
-        </button>
-        <button
-          className="flex flex-col items-center text-sm"
-          onClick={() => handleNavigate('/chat')}
-        >
-          <div className="w-6 h-6 flex items-center justify-center">
-            {/* 아이콘 변경 */}
-            <img
-              src={isChat ? teamBuildingSelectedIcon : teamBuildingIcon}
-              alt="1:1 채팅"
-              className="w-6 h-6"
-              style={{objectFit: 'contain'}}
-            />
-          </div>
-          1:1 채팅
-        </button>
-        <button
-          className="flex flex-col items-center text-sm"
-          onClick={() => handleNavigate('/mypage')}
-        >
-          <div className="w-6 h-6 flex items-center justify-center">
-            <img
-              src={isMyPage ? myPageSelectedIcon : myPageIcon}
-              alt="마이페이지"
-              className="w-6 h-6"
-              style={{objectFit: 'contain'}}
-            />
-          </div>
-          마이페이지
-        </button>
+        {menuItems.map(menuItem => (
+          <button
+            key={menuItem.path}
+            className="flex flex-col items-center text-sm"
+            onClick={() => handleNavigate(menuItem.path)}
+          >
+            <div className="w-6 h-6 flex items-center justify-center">
+              <img
+                src={
+                  currentPath === menuItem.path
+                    ? menuItem.selectedIcon
+                    : menuItem.icon
+                }
+                alt={menuItem.label}
+                className="w-6 h-6"
+                style={{objectFit: 'contain'}}
+              />
+            </div>
+            {menuItem.label}
+          </button>
+        ))}
       </div>
     </nav>
   );
@@ -123,7 +104,7 @@ export const LayoutBottomBar = ({
         {header}
 
         {/* 스크롤 가능한 영역 */}
-        <div className="flex-1 overflow-y-auto px-4 py-6">{children}</div>
+        <div className="flex-1 overflow-y-auto px-5">{children}</div>
 
         <BottomBar />
       </div>
