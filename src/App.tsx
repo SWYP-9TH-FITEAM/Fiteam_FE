@@ -10,6 +10,7 @@ import {LoginPage} from './pages/auth/LoginPage';
 import {FindEmailPage} from './pages/auth/FindEmailPage';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {SignUpPage} from './pages/auth/SignUpPage';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/find-email" element={<FindEmailPage />} />
           <Route path="/find-password" element={<FindPasswordPage />} />
+          <Route path="/home" element={<HomePage />} />
         </Routes>
       </div>
     </Router>
