@@ -65,14 +65,12 @@ const ProfileEditPage = () => {
           <br />
           프로필 생성을 도와드릴게요
         </p>
-
         <div className="w-32 h-32 flex items-center justify-center mb-[47px]">
           <div className="w-28 h-28 bg-gray-200 rounded-full flex items-center justify-center">
             {/* 로봇 이미지 - 임시로 텍스트로 대체 */}
             <span className="text-4xl">🤖</span>
           </div>
         </div>
-
         {/* 직무 선택 */}
         <div className="w-full mb-6">
           <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
@@ -105,7 +103,6 @@ const ProfileEditPage = () => {
             </button>
           </div>
         </div>
-
         {/* 경력 선택 */}
         <div className="w-full mb-10">
           <p className="text-base mb-2 text-left">경력이 있으신가요?</p>
@@ -159,7 +156,6 @@ const ProfileEditPage = () => {
             </div>
           </div>
         </div>
-
         {/* 활동내역 */}
         <div className="w-full mb-4">
           <p className="text-base mb-2 text-left">활동내역을 적어주세요</p>
@@ -168,7 +164,6 @@ const ProfileEditPage = () => {
             placeholder="활동내역을 입력하세요"
           />
         </div>
-
         {/* 목표 */}
         <div className="w-full mb-4">
           <p className="text-base mb-2 text-left">목표를 입력해주세요.</p>
@@ -177,7 +172,6 @@ const ProfileEditPage = () => {
             placeholder="목표를 입력하세요"
           />
         </div>
-
         {/* 목적 */}
         <div className="w-full mb-4">
           <p className="text-base mb-2 text-left">목적을 입력해주세요.</p>
@@ -186,7 +180,6 @@ const ProfileEditPage = () => {
             placeholder="목적을 입력하세요"
           />
         </div>
-
         {/* 포트폴리오 */}
         <div className="w-full mb-4">
           <p className="text-base mb-2 text-left">포트폴리오를 올려주세요</p>
@@ -195,7 +188,6 @@ const ProfileEditPage = () => {
             placeholder="포트폴리오 URL을 입력하세요"
           />
         </div>
-
         {/* 하고 싶은 소개 */}
         <div className="w-full mb-8">
           <p className="text-base mb-2 text-left">
@@ -206,8 +198,8 @@ const ProfileEditPage = () => {
             placeholder="자기소개를 입력하세요"
           />
         </div>
-
         {/* 완료 버튼 */}
+        {/* // TODO:: validation */}
         <button
           className="w-full h-[54px] bg-primary text-white rounded-lg text-lg font-medium"
           onClick={handleComplete}

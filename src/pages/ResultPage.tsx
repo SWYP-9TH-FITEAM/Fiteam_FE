@@ -59,7 +59,7 @@ const ResultPage = () => {
               ))}
             </div>
             <a
-              href="naver.com"
+              href="/"
               className="text-primary hover:underline"
               aria-label="홈으로 이동"
             >

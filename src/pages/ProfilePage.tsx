@@ -1,6 +1,7 @@
 import {CharacterCard, SectionProps} from '@/features/profile/CharacterCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {ReactNode, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 // MBTI 데이터 인터페이스
 interface MbtiData {
@@ -59,6 +60,7 @@ const ProfileHeader = () => {
 // 성향카드 컴포넌트
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const [mbtiData, setMbtiData] = useState<MbtiData | null>(null);
 
   // 실제 API 연동 시 여기에서 데이터를 가져옵니다
@@ -87,8 +89,7 @@ const ProfilePage = () => {
   if (!mbtiData) return <div>로딩 중...</div>;
 
   const handleRetakeTest = () => {
-    // 테스트 다시하기 로직
-    console.log('테스트 다시하기 클릭');
+    navigate('/test');
   };
 
   return (
@@ -124,7 +125,10 @@ const ProfilePage = () => {
 
         {/* 수정하기 버튼 */}
         <div className="mt-6 mb-8">
-          <button className="w-full py-3 bg-gray-400 text-white rounded-lg font-medium">
+          <button
+            className="w-full py-3 bg-gray-400 text-white rounded-lg font-medium"
+            onClick={() => navigate('/profile/edit')}
+          >
             수정하기
           </button>
         </div>
