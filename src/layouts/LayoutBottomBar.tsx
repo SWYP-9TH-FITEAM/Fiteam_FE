@@ -1,6 +1,6 @@
 import homeSelectedIcon from '@/assets/bottomIcon/home-selected.svg';
 import homeIcon from '@/assets/bottomIcon/home.svg';
-import myPageSelectedIcon from '@/assets/bottomIcon/myPage-selected.svg';
+import myPageSelectedIcon from '@/assets/bottomIcon/mypage-selected.svg';
 import myPageIcon from '@/assets/bottomIcon/myPage.svg';
 import profileSelectedIcon from '@/assets/bottomIcon/profile-selected.svg';
 import profileIcon from '@/assets/bottomIcon/profile.svg';
