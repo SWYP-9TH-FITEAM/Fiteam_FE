@@ -29,12 +29,12 @@
   --primary-foreground: oklch(0.985 0 0);
   --primary-light: #eeecff;
   --gray-dark: #111;
-  --gray-5: #585858;
-  --gray-7: #767676;
-  --gray-9: #979797;
-  --light-gray-3: #d9d9d9;
-  --light-gray-2: #eeeeee;
-  --light-gray-1: #f1f2f4;
+  --gray-6: #585858;
+  --gray-6: #767676;
+  --gray-4: #979797;
+  --gray-3: #d9d9d9;
+  --gray-2: #eeeeee;
+  --gray-1: #f1f2f4;
 
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -96,12 +96,12 @@ h1 {
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-light: var(--primary-light);
   --color-gray-dark: var(--gray-dark);
-  --color-gray-5: var(--gray-5);
-  --color-gray-7: var(--gray-7);
-  --color-gray-9: var(--gray-9);
-  --color-light-gray-3: var(--light-gray-3);
-  --color-light-gray-2: var(--light-gray-2);
-  --color-light-gray-1: var(--light-gray-1);
+  --color-gray-6: var(--gray-6);
+  --color-gray-6: var(--gray-6);
+  --color-gray-4: var(--gray-4);
+  --color-gray-3: var(--gray-3);
+  --color-gray-2: var(--gray-2);
+  --color-gray-1: var(--gray-1);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
