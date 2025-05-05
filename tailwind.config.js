@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Pretendard', 'system-ui', 'sans-serif'],
+        paperlogy: ['Paperlogy', 'cursive'],
       },
     },
   },
