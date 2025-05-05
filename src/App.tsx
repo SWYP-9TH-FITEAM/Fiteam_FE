@@ -11,6 +11,7 @@ import {FindEmailPage} from './pages/auth/FindEmailPage';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {SignUpPage} from './pages/auth/SignUpPage';
 import HomePage from './pages/HomePage';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/find-email" element={<FindEmailPage />} />
           <Route path="/find-password" element={<FindPasswordPage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
       </div>
     </Router>
