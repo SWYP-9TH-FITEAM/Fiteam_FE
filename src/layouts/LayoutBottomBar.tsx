@@ -1,17 +1,7 @@
-import homeSelectedIcon from '@/assets/bottomIcon/home-selected.svg';
-import homeIcon from '@/assets/bottomIcon/home.svg';
-import myPageSelectedIcon from '@/assets/bottomIcon/mypage-selected.svg';
-import myPageIcon from '@/assets/bottomIcon/mypage.svg';
-import profileSelectedIcon from '@/assets/bottomIcon/profile-selected.svg';
-import profileIcon from '@/assets/bottomIcon/profile.svg';
-import teamBuildingSelectedIcon from '@/assets/bottomIcon/teambuilding-selected.svg';
-import teamBuildingIcon from '@/assets/bottomIcon/teambuilding.svg';
 import {ReactNode} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
-// 일단 채팅 아이콘이 없어 임시로 teambuilding 아이콘을 사용
-const chatSelectedIcon = teamBuildingSelectedIcon;
-const chatIcon = teamBuildingIcon;
+import * as icons from '@/assets/bottomIcon';
 
 type LayoutBottomBarProps = {
   children: ReactNode;
@@ -27,32 +17,32 @@ const BottomBar = () => {
   const menuItems = [
     {
       path: '/home',
-      icon: homeIcon,
-      selectedIcon: homeSelectedIcon,
+      icon: icons.home,
+      selectedIcon: icons.homeSelected,
       label: '홈',
     },
     {
       path: '/profile',
-      icon: profileIcon,
-      selectedIcon: profileSelectedIcon,
+      icon: icons.profile,
+      selectedIcon: icons.profileSelected,
       label: '나의 프로필',
     },
     {
       path: '/teambuilding',
-      icon: teamBuildingIcon,
-      selectedIcon: teamBuildingSelectedIcon,
+      icon: icons.teamBuilding,
+      selectedIcon: icons.teamBuildingSelected,
       label: '팀빌딩',
     },
     {
       path: '/chat',
-      icon: chatIcon,
-      selectedIcon: chatSelectedIcon,
+      icon: icons.chat,
+      selectedIcon: icons.chatSelected,
       label: '1:1 채팅',
     },
     {
       path: '/mypage',
-      icon: myPageIcon,
-      selectedIcon: myPageSelectedIcon,
+      icon: icons.myPage,
+      selectedIcon: icons.myPageSelected,
       label: '마이페이지',
     },
   ];
