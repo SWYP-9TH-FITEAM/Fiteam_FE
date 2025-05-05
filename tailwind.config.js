@@ -6,9 +6,6 @@ export default {
       fontFamily: {
         sans: ['Pretendard', 'system-ui', 'sans-serif'],
       },
-      colors: {
-        primary: '#5F4AFF',
-      },
     },
   },
   plugins: [],
