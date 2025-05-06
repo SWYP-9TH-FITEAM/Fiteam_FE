@@ -61,9 +61,9 @@ const ResultPage = () => {
             <a
               href="/"
               className="text-primary hover:underline"
-              aria-label="홈으로 이동"
+              aria-label="재검사하기"
             >
-              홈으로
+              재검사하기
             </a>
           </div>
           <div className="w-full flex flex-col gap-2">
