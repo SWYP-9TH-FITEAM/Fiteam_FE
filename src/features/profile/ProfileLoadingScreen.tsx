@@ -89,7 +89,7 @@ const ProfileLoadingScreen = ({onComplete}: ProfileLoadingScreenProps) => {
             <span className="text-primary items-center text-center text-[40px] font-bold leading-[48px]">
               {progress}
             </span>
-            <span className="text-gray-6 text-center text-base font-medium leading-6">
+            <span className="text-gray-5 text-center text-base font-medium leading-6">
               %
             </span>
           </div>

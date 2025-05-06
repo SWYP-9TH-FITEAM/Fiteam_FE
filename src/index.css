@@ -31,7 +31,7 @@
   --primary-light: #eeecff;
   --gray-dark: #111;
   --gray-6: #585858;
-  --gray-6: #767676;
+  --gray-5: #767676;
   --gray-4: #979797;
   --gray-3: #d9d9d9;
   --gray-2: #eeeeee;
@@ -90,7 +90,7 @@ body {
   --color-primary-light: var(--primary-light);
   --color-gray-dark: var(--gray-dark);
   --color-gray-6: var(--gray-6);
-  --color-gray-6: var(--gray-6);
+  --color-gray-5: var(--gray-5);
   --color-gray-4: var(--gray-4);
   --color-gray-3: var(--gray-3);
   --color-gray-2: var(--gray-2);
