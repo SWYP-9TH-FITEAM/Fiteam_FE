@@ -29,6 +29,14 @@ const ChatRoomPage = () => {
     );
     setMessages(filteredMessages);
     console.log(filteredMessages);
+
+    // 채팅방 진입 시 스크롤을 하단으로 이동
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop =
+          chatContainerRef.current.scrollHeight;
+      }
+    }, 100); // 약간의 지연을 두어 DOM이 렌더링된 후 스크롤이 이동하도록 함
   }, [roomId]);
 
   // 메시지 그룹화 함수 - 같은 발신자가 동일 분에 보낸 메시지는 프로필 한번만 표시하고, 시간은 그룹의 마지막 메시지에만 표시
@@ -110,11 +118,9 @@ const ChatRoomPage = () => {
         <ChatRoomHeader otherName="김미미" />
 
         {/* 스크롤 가능한 영역 */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto" ref={chatContainerRef}>
           <div className="flex flex-col h-full mx-3">
-            <div ref={chatContainerRef} className="flex-1 text-left ">
-              {getGroupedMessages()}
-            </div>
+            <div className="flex-1 text-left ">{getGroupedMessages()}</div>
           </div>
         </div>
         <ChatInput onSendMessage={handleSendMessage} />

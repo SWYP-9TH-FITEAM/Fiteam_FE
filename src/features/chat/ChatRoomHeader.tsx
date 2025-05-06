@@ -1,5 +1,8 @@
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import infoIcon from '@/assets/icons/info.svg';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import ChatTeamInfoDialog from './ChatTeamInfoDialog';
 
 interface ChatRoomHeaderProps {
   otherName: string;
@@ -7,6 +10,11 @@ interface ChatRoomHeaderProps {
 
 export const ChatRoomHeader = ({otherName}: ChatRoomHeaderProps) => {
   const navigate = useNavigate();
+  const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
+
+  const handleInfoDialogOpen = () => {
+    setIsInfoDialogOpen(true);
+  };
 
   const handleBack = () => {
     navigate('/chat');
@@ -27,12 +35,24 @@ export const ChatRoomHeader = ({otherName}: ChatRoomHeaderProps) => {
         </i>
         <span className="text-xl font-medium leading-7">{otherName}님</span>
       </div>
-      <button
-        onClick={handleSuggest}
-        className="h-[26px] flex justify-center items-center gap-2.5 bg-[linear-gradient(96deg,#934AFF_1.73%,#4C82EE_98.27%)] px-2.5 py-[5px] rounded-[20px] text-white text-[13px] font-medium leading-4"
-      >
-        제안하기
-      </button>
+      <div className="text-center flex gap-[5px]">
+        <img
+          src={infoIcon}
+          alt="제안하기"
+          onClick={handleInfoDialogOpen}
+          className="cursor-pointer"
+        />
+        <button
+          onClick={handleSuggest}
+          className="h-[26px] flex justify-center items-center gap-2.5 bg-[linear-gradient(96deg,#934AFF_1.73%,#4C82EE_98.27%)] px-2.5 py-[5px] rounded-[20px] text-white text-[13px] font-medium leading-4"
+        >
+          제안하기
+        </button>
+      </div>
+      <ChatTeamInfoDialog
+        open={isInfoDialogOpen}
+        onOpenChange={setIsInfoDialogOpen}
+      />
     </header>
   );
 };
