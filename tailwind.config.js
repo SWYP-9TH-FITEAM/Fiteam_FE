@@ -5,9 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Pretendard', 'system-ui', 'sans-serif'],
-      },
-      colors: {
-        primary: '#5F4AFF',
+        paperlogy: ['Paperlogy', 'cursive'],
       },
     },
   },

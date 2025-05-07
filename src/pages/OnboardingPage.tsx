@@ -40,13 +40,11 @@ const OnboardingPage = () => {
   };
 
   return (
-    <LayoutMo hasHeader={true}>
-      <div className="flex flex-col justify-between h-full min-h-[764px]">
-        <div className="text-center mt-5 pb-0 px-[84px]  h-16">
-          <p className="text-2xl font-semibold whitespace-pre-line">
-            {texts[currentIndex]}
-          </p>
-        </div>
+    <LayoutMo>
+      <div className="flex flex-col justify-between h-full min-h-[764px] text-black py-[60px]">
+        <p className="text-2xl font-semibold whitespace-pre-line h-[64px]">
+          {texts[currentIndex]}
+        </p>
         <div className="flex-1 flex flex-col items-center justify-center px-[75px]">
           <div className="relative w-full ">
             {/* 이전/다음 버튼 */}
@@ -91,14 +89,16 @@ const OnboardingPage = () => {
                 onClick={() => goToSlide(index)}
                 className={cn(
                   'h-2 w-2 rounded-full transition-all',
-                  currentIndex === index ? 'w-6 bg-gray-400' : 'bg-gray-300',
+                  currentIndex === index
+                    ? 'w-6 bg-primary'
+                    : 'bg-primary-light',
                 )}
               />
             ))}
           </div>
         </div>
         <Button
-          className="w-full flex h-[54px] mb-[114px] justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-[#E9E9E9] text-black text-xl font-medium hover:bg-[#c9c9c9]"
+          className="w-full flex h-[54px] justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-primary text-white text-xl font-medium "
           onClick={routeToTest}
         >
           시작하기
