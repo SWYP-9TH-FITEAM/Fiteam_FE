@@ -2,17 +2,11 @@ import LayoutMo from '@/layouts/LayoutMo';
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import robot from '@/assets/images/robot.png';
+import {getAllQuestions} from '@/entities/question/api/create-question';
+import {GetQuestionsResponseDto} from '@/entities/question/api/dto';
 
 const OPTIONS = ['매우 그렇다', '그렇다', '중간이다', '아니다', '매우 아니다'];
 
-const QUESTIONS_COUNT = 3; // 추후 변경 50
-
-const MOCK_QUESTIONS = Array.from(
-  {length: QUESTIONS_COUNT},
-  (_, i) => `Q${i + 1}. 장기 계획을 세우는 걸 좋아하시나요?`,
-);
-
-const TOTAL_QUESTIONS = QUESTIONS_COUNT;
 const LOADING_DURATION = 2000; // 2초 동안 로딩 애니메이션 진행
 
 interface TestResultLoadingProps {
@@ -134,12 +128,28 @@ const TestPage = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]); // 추후 결과 페이지에서 사용 예정
-  const [questions] = useState(MOCK_QUESTIONS);
+  const [questions, setQuestions] = useState<GetQuestionsResponseDto>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiPromise, setApiPromise] = useState<Promise<{
     result: string;
     answers: number[];
   }> | null>(null);
+  const [isQuestionsLoading, setIsQuestionsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const data = await getAllQuestions();
+        setQuestions(data);
+      } catch (error) {
+        console.error('문제 목록을 불러오는데 실패했습니다.', error);
+      } finally {
+        setIsQuestionsLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
 
   // 추후 api 함수 모킹
   const fetchResultApi = (answers: number[]) => {
@@ -153,7 +163,7 @@ const TestPage = () => {
 
   const handleSelectOption = async (optionIdx: number) => {
     setAnswers(prev => [...prev, optionIdx]);
-    if (currentIndex < TOTAL_QUESTIONS - 1) {
+    if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
       setIsLoading(true);
@@ -167,7 +177,18 @@ const TestPage = () => {
     navigate(`/result/${result.result}`);
   };
 
-  const progressPercent = (currentIndex / TOTAL_QUESTIONS) * 100;
+  const progressPercent =
+    questions.length > 0 ? (currentIndex / questions.length) * 100 : 0;
+
+  if (isQuestionsLoading) {
+    return (
+      <LayoutMo hasHeader={true}>
+        <div className="flex flex-col h-full items-center justify-center">
+          <p>문제를 불러오는 중입니다...</p>
+        </div>
+      </LayoutMo>
+    );
+  }
 
   if (isLoading && apiPromise) {
     return (
@@ -177,9 +198,19 @@ const TestPage = () => {
     );
   }
 
+  if (questions.length === 0) {
+    return (
+      <LayoutMo hasHeader={true}>
+        <div className="flex flex-col h-full items-center justify-center">
+          <p>문제를 불러오지 못했습니다. 다시 시도해주세요.</p>
+        </div>
+      </LayoutMo>
+    );
+  }
+
   return (
     <LayoutMo hasHeader={true}>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full ">
         <div className="flex items-center ">
           <div className="flex-1">
             <div className="w-full h-2 bg-gray-3 rounded">
@@ -190,15 +221,13 @@ const TestPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center my-7">
-          <p className="w-[300px] text-[28px] font-semibold whitespace-pre-line break-keep">
-            {questions[currentIndex]}
-          </p>
-        </div>
-        <div className="flex justify-center mb-8">
-          <div className="w-[158px] h-[158px] bg-gray-200 rounded-full flex items-center justify-center">
-            {/* <img /> */}
+        <div className="flex flex-col items-center gap-5 justify-center mt-14 mb-24">
+          <div className="w-[26px] h-[26px] rounded-[13px] bg-gray-1 text-base font-medium">
+            {currentIndex + 1}
           </div>
+          <p className="w-full h-[126px] text-[28px] font-semibold whitespace-pre-line break-keep">
+            {questions[currentIndex]?.question}
+          </p>
         </div>
         <div className="flex flex-col gap-4 mb-8">
           {OPTIONS.map((option, idx) => (
