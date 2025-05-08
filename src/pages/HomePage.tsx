@@ -8,7 +8,7 @@ const HomePage = () => {
   const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
 
   return (
-    <LayoutBottomBar bgColor="#F1F2F4">
+    <LayoutBottomBar classNames={{wrapper: 'bg-[#f1f2f4]'}}>
       <HomeHeader isLogin={isLogin} />
       <div className="flex flex-col gap-4 pb-4">
         <HomeResultCard isLogin={isLogin} />
