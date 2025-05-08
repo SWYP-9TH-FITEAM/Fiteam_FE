@@ -44,7 +44,7 @@ const BottomBar = () => {
       label: '1:1 채팅',
     },
     {
-      path: '/mypage',
+      path: '/my-page',
       icon: icons.myPage,
       selectedIcon: icons.myPageSelected,
       label: '마이페이지',
