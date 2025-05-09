@@ -4,6 +4,8 @@ import {useNavigate} from 'react-router-dom';
 import robot from '@/assets/images/robot.png';
 import {getAllQuestions} from '@/entities/question/api/create-question';
 import {GetQuestionsResponseDto} from '@/entities/question/api/dto';
+import TestPageHeader from '@/features/test/TestPageHeader';
+import {LayoutMobile} from '@/layouts/LayoutMobile';
 
 const OPTIONS = ['매우 그렇다', '그렇다', '중간이다', '아니다', '매우 아니다'];
 
@@ -209,9 +211,9 @@ const TestPage = () => {
   }
 
   return (
-    <LayoutMo hasHeader={true}>
+    <LayoutMobile header={<TestPageHeader />}>
       <div className="flex flex-col h-full ">
-        <div className="flex items-center ">
+        <div className="flex items-center pt-2">
           <div className="flex-1">
             <div className="w-full h-2 bg-gray-3 rounded">
               <div
@@ -241,7 +243,7 @@ const TestPage = () => {
           ))}
         </div>
       </div>
-    </LayoutMo>
+    </LayoutMobile>
   );
 };
 
