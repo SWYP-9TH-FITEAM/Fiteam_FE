@@ -7,13 +7,24 @@ import {GetQuestionsResponseDto} from '@/entities/question/api/dto';
 import TestPageHeader from '@/features/test/TestPageHeader';
 import {LayoutMobile} from '@/layouts/LayoutMobile';
 
-const OPTIONS = ['매우 그렇다', '그렇다', '중간이다', '아니다', '매우 아니다'];
+const OPTIONS = [
+  {label: '매우 그렇다', score: 5},
+  {label: '그렇다', score: 4},
+  {label: '중간이다', score: 3},
+  {label: '아니다', score: 2},
+  {label: '매우 아니다', score: 1},
+];
 
 const LOADING_DURATION = 2000; // 2초 동안 로딩 애니메이션 진행
 
 interface TestResultLoadingProps {
-  apiPromise: Promise<{result: string; answers: number[]}>;
-  onDone: (result: {result: string; answers: number[]}) => void;
+  apiPromise: Promise<{result: string; scores: QuestionScore[]}>;
+  onDone: (result: {result: string; scores: QuestionScore[]}) => void;
+}
+
+// 문항별 점수를 저장할 인터페이스
+interface QuestionScore {
+  [key: string]: number; // 예: { "E": 5, "I": 0 }
 }
 
 function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
@@ -126,15 +137,14 @@ function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
 }
 
 const TestPage = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]); // 추후 결과 페이지에서 사용 예정
+  const [testScore, setTestScore] = useState<QuestionScore[]>([]); // 각 문항별 MBTI 점수를 저장
   const [questions, setQuestions] = useState<GetQuestionsResponseDto>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiPromise, setApiPromise] = useState<Promise<{
     result: string;
-    answers: number[];
+    scores: QuestionScore[];
   }> | null>(null);
   const [isQuestionsLoading, setIsQuestionsLoading] = useState(true);
 
@@ -154,28 +164,67 @@ const TestPage = () => {
   }, []);
 
   // 추후 api 함수 모킹
-  const fetchResultApi = (answers: number[]) => {
-    return new Promise<{result: string; answers: number[]}>(resolve => {
+  const fetchResultApi = (scores: QuestionScore[]) => {
+    return new Promise<{result: string; scores: QuestionScore[]}>(resolve => {
       setTimeout(() => {
+        // 실제로는 scores를 사용하여 결과를 분석하는 로직이 들어갈 수 있습니다
+        console.log('문항별 MBTI 점수:', scores);
+
         const randomResultId = Math.floor(Math.random() * 16) + 1;
-        resolve({result: String(randomResultId), answers});
+        resolve({result: String(randomResultId), scores});
       }, LOADING_DURATION * 1.2); // API 응답은 애니메이션보다 약간 더 길게
     });
   };
 
   const handleSelectOption = async (optionIdx: number) => {
-    setAnswers(prev => [...prev, optionIdx]);
+    // 선택한 옵션에 해당하는 점수
+    const selectedScore = OPTIONS[optionIdx].score;
+
+    // 현재 질문의 typeA와 typeB 가져오기
+    const currentQuestion = questions[currentIndex];
+    const {typeA, typeB} = currentQuestion;
+
+    // typeA와 typeB에 대한 점수 계산
+    // typeA는 선택한 점수만큼, typeB는 (5 - typeA의 점수)만큼 부여 (합쳐서 0이 되도록 (5→0, 4→1, 3→2, 2→3, 1→4))
+    const typeAScore = selectedScore;
+    const typeBScore = 5 - typeAScore;
+
+    // 새로운 점수 객체 생성
+    const newScore: QuestionScore = {
+      [typeA]: typeAScore,
+      [typeB]: typeBScore,
+    };
+
+    // testScore 업데이트
+    setTestScore(prev => [...prev, newScore]);
+
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
       setIsLoading(true);
-      const promise = fetchResultApi([...answers, optionIdx]);
+      // 모든 문항이 완료된 경우, 최종 점수와 함께 API 호출
+      const updatedScores = [...testScore, newScore];
+      const promise = fetchResultApi(updatedScores);
       setApiPromise(promise);
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleLoadingDone = (result: {result: string; answers: number[]}) => {
+  const handleClickBack = () => {
+    if (currentIndex > 0) {
+      // 마지막 점수 항목 제거
+      setTestScore(prev => prev.slice(0, -1));
+      // 이전 질문으로 이동
+      setCurrentIndex(prev => prev - 1);
+    } else {
+      // 첫 번째 질문에서는 일반적인 뒤로가기 동작 수행
+      navigate(-1);
+    }
+  };
+
+  const handleLoadingDone = (result: {
+    result: string;
+    scores: QuestionScore[];
+  }) => {
     navigate(`/result/${result.result}`);
   };
 
@@ -209,9 +258,10 @@ const TestPage = () => {
       </LayoutMo>
     );
   }
+  console.log(testScore);
 
   return (
-    <LayoutMobile header={<TestPageHeader />}>
+    <LayoutMobile header={<TestPageHeader onClickBack={handleClickBack} />}>
       <div className="flex flex-col h-full ">
         <div className="flex items-center pt-2">
           <div className="flex-1">
@@ -234,11 +284,11 @@ const TestPage = () => {
         <div className="flex flex-col gap-4 mb-8">
           {OPTIONS.map((option, idx) => (
             <button
-              key={option}
+              key={option.label}
               className="w-full py-[15px] bg-gray-100 rounded-xl text-lg leading-6 font-medium focus:outline-none active:bg-gray-200 hover:bg-primary-light hover:border hover:border-primary hover:border-solid box-border"
               onClick={() => handleSelectOption(idx)}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>

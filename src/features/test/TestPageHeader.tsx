@@ -3,11 +3,19 @@ import homeDarkIcon from '@/assets/icons/home-dark.svg';
 import {useNavigate} from 'react-router-dom';
 import logo from '@/assets/images/logo.png';
 
-const TestPageHeader = () => {
+interface TestPageHeaderProps {
+  onClickBack?: () => void;
+}
+
+const TestPageHeader = ({onClickBack}: TestPageHeaderProps) => {
   const navigate = useNavigate();
 
   const navigateToBack = () => {
-    navigate(-1);
+    if (onClickBack) {
+      onClickBack();
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
