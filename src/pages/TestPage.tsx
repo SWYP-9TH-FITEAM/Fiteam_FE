@@ -2,10 +2,19 @@ import LayoutMo from '@/layouts/LayoutMo';
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import robot from '@/assets/images/robot.png';
-import {getAllQuestions} from '@/entities/question/api/create-question';
-import {GetQuestionsResponseDto} from '@/entities/question/api/dto';
+import {
+  getAllQuestions,
+  postTestResult,
+  TestResultResponse,
+} from '@/entities/question/api/create-question';
+import {
+  GetQuestionsResponseDto,
+  QuestionScore,
+} from '@/entities/question/api/dto';
 import TestPageHeader from '@/features/test/TestPageHeader';
 import {LayoutMobile} from '@/layouts/LayoutMobile';
+import {useSetAtom} from 'jotai';
+import {testResultAtom} from '@/shared/model/test-result';
 
 const OPTIONS = [
   {label: '매우 그렇다', score: 5},
@@ -18,13 +27,8 @@ const OPTIONS = [
 const LOADING_DURATION = 2000; // 2초 동안 로딩 애니메이션 진행
 
 interface TestResultLoadingProps {
-  apiPromise: Promise<{result: string; scores: QuestionScore[]}>;
-  onDone: (result: {result: string; scores: QuestionScore[]}) => void;
-}
-
-// 문항별 점수를 저장할 인터페이스
-interface QuestionScore {
-  [key: string]: number; // 예: { "E": 5, "I": 0 }
+  apiPromise: Promise<TestResultResponse | null>;
+  onDone: (result: TestResultResponse | null) => void;
 }
 
 function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
@@ -138,14 +142,13 @@ function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
 
 const TestPage = () => {
   const navigate = useNavigate();
+  const setTestResult = useSetAtom(testResultAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [testScore, setTestScore] = useState<QuestionScore[]>([]); // 각 문항별 MBTI 점수를 저장
   const [questions, setQuestions] = useState<GetQuestionsResponseDto>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [apiPromise, setApiPromise] = useState<Promise<{
-    result: string;
-    scores: QuestionScore[];
-  }> | null>(null);
+  const [apiPromise, setApiPromise] =
+    useState<Promise<TestResultResponse | null> | null>(null);
   const [isQuestionsLoading, setIsQuestionsLoading] = useState(true);
 
   useEffect(() => {
@@ -163,17 +166,53 @@ const TestPage = () => {
     fetchQuestions();
   }, []);
 
-  // 추후 api 함수 모킹
-  const fetchResultApi = (scores: QuestionScore[]) => {
-    return new Promise<{result: string; scores: QuestionScore[]}>(resolve => {
-      setTimeout(() => {
-        // 실제로는 scores를 사용하여 결과를 분석하는 로직이 들어갈 수 있습니다
-        console.log('문항별 MBTI 점수:', scores);
+  // 실제 API를 호출하는 함수
+  const fetchResultApi = async (scores: QuestionScore[]) => {
+    try {
+      console.log('API 호출 전 scores:', scores);
 
-        const randomResultId = Math.floor(Math.random() * 16) + 1;
-        resolve({result: String(randomResultId), scores});
-      }, LOADING_DURATION * 1.2); // API 응답은 애니메이션보다 약간 더 길게
-    });
+      // 서버 응답 시간을 고려하여 최소 로딩 시간 보장
+      const startTime = Date.now();
+      const result = await postTestResult({scores});
+
+      // 최소 로딩 시간이 LOADING_DURATION보다 짧으면 추가 대기
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < LOADING_DURATION) {
+        await new Promise(resolve =>
+          setTimeout(resolve, LOADING_DURATION - elapsedTime),
+        );
+      }
+
+      console.log('API 응답 결과:', result);
+      return result;
+    } catch (error) {
+      console.error('테스트 결과 제출에 실패했습니다:', error);
+
+      // 에러 세부 정보 로깅
+      if (error instanceof Error) {
+        console.error('에러 메시지:', error.message);
+        console.error('에러 스택:', error.stack);
+      } else {
+        console.error('알 수 없는 에러 형식:', error);
+      }
+
+      // 에러 응답 분석 시도
+      try {
+        const errorObj = error as {response?: Response};
+        if (errorObj.response) {
+          console.error('에러 응답:', await errorObj.response.json());
+        }
+      } catch (parseError) {
+        console.error('에러 응답 파싱 실패:', parseError);
+      }
+
+      // 실패해도 로딩은 완료되도록 대기
+      await new Promise(resolve => setTimeout(resolve, LOADING_DURATION));
+
+      // TODO: 응답 에러인 경우 처리 수정필요
+      // 에러 상황에서는 폴백 응답 대신 null을 반환하여 에러 처리 로직이 실행되도록 함
+      return null;
+    }
   };
 
   const handleSelectOption = async (optionIdx: number) => {
@@ -221,11 +260,23 @@ const TestPage = () => {
     }
   };
 
-  const handleLoadingDone = (result: {
-    result: string;
-    scores: QuestionScore[];
-  }) => {
-    navigate(`/result/${result.result}`);
+  const handleLoadingDone = (result: TestResultResponse | null) => {
+    // 서버에서 받은 cardId를 사용하여 결과 페이지로 이동
+    console.log('최종 테스트 결과:', result);
+
+    // TODO: 응답 에러인 경우 처리 수정필요
+    if (result === null) {
+      // API 응답 실패 시 /test로 리다이렉트
+      alert('테스트 결과 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+      navigate('/test');
+      return;
+    }
+
+    // 테스트 결과를 atom에 저장
+    setTestResult(result);
+
+    // 결과 페이지로 이동
+    navigate(`/result/${result.cardId}`);
   };
 
   const progressPercent =
