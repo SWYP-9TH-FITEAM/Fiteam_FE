@@ -8,6 +8,7 @@ import {ChevronLeft, Eye, EyeOff} from 'lucide-react';
 import * as React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
+import {toast} from 'sonner';
 import {z} from 'zod';
 
 const changePasswordFormSchema = z
@@ -65,6 +66,14 @@ export const ChangePassword: React.FC = () => {
     startTransition(
       withHandleError(async () => {
         console.log(data);
+        // Mock successful submission
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Reset form after successful submission
+        form.reset();
+        // Show success message or navigate back
+
+        toast.success('비밀번호가 성공적으로 변경되었습니다.');
+        navigate(-1);
       }),
     );
   };
