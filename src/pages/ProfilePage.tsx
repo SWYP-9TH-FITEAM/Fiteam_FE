@@ -1,4 +1,4 @@
-import {CharacterCard, SectionProps} from '@/features/profile/CharacterCard';
+import {CharacterCard} from '@/features/profile/CharacterCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {ReactNode, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
@@ -26,6 +26,12 @@ const SectionInfo = ({children}: {children: ReactNode}) => {
     <div className="bg-white rounded-[20px] px-[18px] py-3">{children}</div>
   );
 };
+
+export interface SectionProps {
+  title?: string;
+  children?: ReactNode;
+  rightContent?: ReactNode;
+}
 
 const Section2 = ({title, children}: Partial<SectionProps>) => {
   return (
@@ -88,26 +94,23 @@ const ProfilePage = () => {
 
   if (!mbtiData) return <div>로딩 중...</div>;
 
-  const handleRetakeTest = () => {
-    navigate('/test');
-  };
-
   return (
     <LayoutBottomBar bgColor="#F6F6F6" header={<ProfileHeader />}>
       <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
         {/* 성향 카드 */}
         <CharacterCard
           name={mbtiData.name}
-          ei={mbtiData.ei}
-          pd={mbtiData.pd}
-          cl={mbtiData.cl}
-          va={mbtiData.va}
+          score={{
+            ei: mbtiData.ei,
+            pd: mbtiData.pd,
+            cl: mbtiData.cl,
+            va: mbtiData.va,
+          }}
           tags={{
             topLeft: '검소한',
             topRight: '배려만땅',
             bottomLeft: '친절한',
           }}
-          onRetakeTest={handleRetakeTest}
         />
 
         <SectionInfo>

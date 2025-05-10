@@ -1,5 +1,3 @@
-import {ReactNode} from 'react';
-
 interface ChartBarProps {
   label: string;
   value: number; // 0-10 사이 값
@@ -7,8 +5,7 @@ interface ChartBarProps {
 }
 
 const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
-  const percentage = (value / 10) * 100;
-
+  const percentage = (value / 75) * 100;
   const isLessThanHalf = percentage <= 50;
   const activeStyle =
     'text-[#111] text-[13px] not-italic font-medium leading-4 tracking-[-0.325px]';
@@ -23,7 +20,7 @@ const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center">
-        <div className={isLessThanHalf ? activeStyle : inactiveStyle}>
+        <div className={isLessThanHalf ? inactiveStyle : activeStyle}>
           {label}
         </div>
         <div className="flex-1 mx-3">
@@ -37,7 +34,7 @@ const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
             ></div>
           </div>
         </div>
-        <div className={isLessThanHalf ? inactiveStyle : activeStyle}>
+        <div className={isLessThanHalf ? activeStyle : inactiveStyle}>
           {rightLabel}
         </div>
       </div>
@@ -46,36 +43,20 @@ const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
 };
 
 // 섹션 컴포넌트
-export interface SectionProps {
-  title?: string;
-  children?: ReactNode;
-  rightContent?: ReactNode;
-}
-
-const Section = ({title, children, rightContent}: SectionProps) => {
-  return (
-    <div className="bg-white rounded-[20px] border-2 border-solid border-[#5F4AFF] p-[13px]">
-      <div className="flex justify-between items-center">
-        <h3 className="text-xl font-medium text-black">{title}</h3>
-        {rightContent}
-      </div>
-      {children}
-    </div>
-  );
-};
 
 interface CharacterCardProps {
   name: string;
-  ei: number;
-  pd: number;
-  cl: number;
-  va: number;
+  score?: {
+    ei: number;
+    pd: number;
+    cl: number;
+    va: number;
+  };
   tags: {
     topLeft: string;
     topRight: string;
     bottomLeft: string;
   };
-  onRetakeTest?: () => void;
 }
 
 const PersonalityTag = ({
@@ -109,28 +90,19 @@ const PersonalityTag = ({
   );
 };
 
-export const CharacterCard = ({
-  name,
-  ei,
-  pd,
-  cl,
-  va,
-  tags,
-  onRetakeTest,
-}: CharacterCardProps) => {
+export const CharacterCard = ({name, score, tags}: CharacterCardProps) => {
+  const {ei = 0, pd = 0, cl = 0, va = 0} = score ?? {};
+
   return (
     <>
-      <Section
-        title="나의 성향은?"
-        rightContent={
-          <button
-            className="text-[#585858] text-center text-[13px] not-italic font-medium leading-4 tracking-[-0.325px]"
-            onClick={onRetakeTest}
-          >
-            테스트 다시하기 <span className="ml-1">›</span>
-          </button>
-        }
+      <div
+        className="w-full bg-primary-light rounded-[20px] border-2 border-solid border-[#5F4AFF] p-[13px]
+bg-[linear-gradient(0deg,#F1F2FB_0%,#F1F2FB_100%),linear-gradient(187deg,#FFF_0.79%,rgba(255,255,255,0.00)_69.96%)]
+        "
       >
+        <h3 className="text-left text-xl font-medium text-black">
+          나의 성향은
+        </h3>
         <div className="flex flex-col items-center justify-center mb-[42px]">
           <div className="relative w-48 h-48 mx-auto mb-6">
             <img
@@ -149,13 +121,16 @@ export const CharacterCard = ({
           </h3>
         </div>
 
-        <div className="h-[142px] bg-gray-50 p-4 rounded-xl flex flex-col justify-between">
-          <ChartBar label="외향형" value={ei} rightLabel="내향형" />
-          <ChartBar label="계획형" value={pd} rightLabel="실행형" />
-          <ChartBar label="창의형" value={cl} rightLabel="분석형" />
-          <ChartBar label="조율형" value={va} rightLabel="주도형" />
-        </div>
-      </Section>
+        {score && (
+          <div className="h-[142px] bg-gray-50 p-4 rounded-xl flex flex-col justify-between">
+            <ChartBar label="외향형" value={ei} rightLabel="내향형" />
+            <ChartBar label="계획형" value={pd} rightLabel="실행형" />
+            <ChartBar label="창의형" value={cl} rightLabel="분석형" />
+            <ChartBar label="조율형" value={va} rightLabel="주도형" />
+          </div>
+        )}
+        {/* </Section> */}
+      </div>
     </>
   );
 };

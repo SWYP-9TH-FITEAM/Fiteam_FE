@@ -7,6 +7,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {useAtomValue} from 'jotai';
 import {testResultAtom} from '@/shared/model/test-result';
 import {getCardById, GetCardResponseDto} from '@/entities/card';
+import {CharacterCard} from '@/features/profile/CharacterCard';
 
 const ResultPage = () => {
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
@@ -20,7 +21,6 @@ const ResultPage = () => {
 
   // 저장된 테스트 결과 가져오기
   const testResult = useAtomValue(testResultAtom);
-
   // URL의 id와 저장된 결과의 cardId가 일치하는지 확인
   useEffect(() => {
     if (!isResultAll && id) {
@@ -114,19 +114,38 @@ const ResultPage = () => {
               <img src={xIcon} alt="홈으로" />
             </button>
           </div>
-          <div className="w-full h-[487px] bg-gray-300">유형 {id}</div>
-          <p className="ml-[26px] mr-3 text-[#111]">
-            이미지를 꾹 누르면 저장이 돼요
-          </p>
+          <CharacterCard
+            name={cardData.name}
+            score={
+              testResult
+                ? {
+                    ei: testResult.numEI,
+                    pd: testResult.numPD,
+                    cl: testResult.numCL,
+                    va: testResult.numVA,
+                  }
+                : undefined
+            }
+            tags={{
+              topLeft: '검소한',
+              topRight: '배려만땅',
+              bottomLeft: '친절한',
+            }}
+          />
+          {testResult && (
+            <p className="ml-[26px] mr-3 text-[#111]">
+              이미지를 꾹 누르면 저장이 돼요
+            </p>
+          )}
           <div className="w-[335px] h-[310px] shrink-0 bg-white mt-3.5 rounded-lg shadow-sm">
-            성향카드
+            {cardData.summary}
           </div>
           <div className="w-full flex gap-[15px] mt-3.5">
             <div className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm">
-              잘
+              잘맞아요 {cardData.bestMatchCode1}
             </div>
             <div className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm">
-              않
+              안맞아요 {cardData.worstMatchCode1}
             </div>
           </div>
           <div className="mt-[35px] mb-[31px]">

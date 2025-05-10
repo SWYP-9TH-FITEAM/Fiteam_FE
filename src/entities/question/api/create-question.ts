@@ -21,10 +21,10 @@ export const getAllQuestions = async () => {
 // 서버 응답에 대한 실제 인터페이스 정의 (서버 응답 로그 기반)
 export interface TestResultResponse {
   cardId: number;
-  numEI?: number;
-  numPD?: number;
-  numVA?: number;
-  numCL?: number;
+  numEI: number;
+  numPD: number;
+  numVA: number;
+  numCL: number;
   [key: string]: unknown;
 }
 
