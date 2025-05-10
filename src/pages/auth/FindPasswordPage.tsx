@@ -100,15 +100,26 @@ export const FindPasswordPage: React.FC = () => {
     setIsVerifyButtonDisabled(true);
 
     startTransition(
-      withHandleError(async () => {
-        await postAuthSendVerificationCode({email});
+      withHandleError(
+        async () => {
+          await postAuthSendVerificationCode({email});
 
-        verifyButtonDisableTimerRef.current = setTimeout(() => {
-          setIsVerifyButtonDisabled(false);
-        }, 60 * 1000);
+          verifyButtonDisableTimerRef.current = setTimeout(() => {
+            setIsVerifyButtonDisabled(false);
+          }, 60 * 1000);
 
-        toast.success('인증번호가 발송되었습니다.');
-      }),
+          toast.success('인증번호가 발송되었습니다.');
+        },
+        {
+          errorHandler: () => {
+            toast.error('인증번호 발송에 실패했습니다.');
+            setIsVerifyButtonDisabled(false);
+            if (verifyButtonDisableTimerRef.current) {
+              clearTimeout(verifyButtonDisableTimerRef.current);
+            }
+          },
+        },
+      ),
     );
   };
 
