@@ -1,23 +1,21 @@
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
 import infoIcon from '@/assets/icons/info.svg';
 import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import ChatTeamInfoDialog from './ChatTeamInfoDialog';
 
 interface ChatRoomHeaderProps {
   otherName: string;
+  handleBack: () => void;
 }
 
-export const ChatRoomHeader = ({otherName}: ChatRoomHeaderProps) => {
-  const navigate = useNavigate();
+export const ChatRoomHeader = ({
+  otherName,
+  handleBack,
+}: ChatRoomHeaderProps) => {
   const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
 
   const handleInfoDialogOpen = () => {
     setIsInfoDialogOpen(true);
-  };
-
-  const handleBack = () => {
-    navigate('/chat');
   };
 
   const handleSuggest = () => {
