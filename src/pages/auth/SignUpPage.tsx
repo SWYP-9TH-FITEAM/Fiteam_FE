@@ -56,18 +56,30 @@ export const SignUpPage: React.FC = () => {
     if (isPending) return;
 
     startTransition(
-      withHandleError(async () => {
-        await postAuthVerifyCode({
-          email: data.email,
-          code: data.verificationCode,
-        });
+      withHandleError(
+        async () => {
+          await postAuthVerifyCode({
+            email: data.email,
+            code: data.verificationCode,
+          });
 
-        await postAuthSignUp({
-          email: data.email,
-          password: data.password,
-          username: data.name,
-        });
-      }),
+          await postAuthSignUp({
+            email: data.email,
+            password: data.password,
+            username: data.name,
+          });
+
+          toast.success('회원가입이 완료되었습니다. 로그인을 진행해주세요.');
+
+          navigate('/login');
+        },
+        {
+          errorHandler: () => {
+            toast.error('회원가입에 실패했습니다.');
+          },
+          showToast: false,
+        },
+      ),
     );
   };
 

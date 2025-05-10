@@ -9,6 +9,8 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {loginFormSchema, LoginFormSchema} from '@/entities/auth/model/form';
 import {postAuthLogin} from '@/entities/auth/api';
 import {withHandleError} from '@/shared/util/handle-error';
+import {useSetToken} from '@/shared/model/auth';
+import {useSetUserInfo} from '@/shared/model/user';
 
 export const LoginPage: React.FC = () => {
   const form = useForm<LoginFormSchema>({
@@ -19,6 +21,9 @@ export const LoginPage: React.FC = () => {
     },
   });
 
+  const setToken = useSetToken();
+  const setUserInfo = useSetUserInfo();
+
   const [isPending, startTransition] = React.useTransition();
 
   const navigate = useNavigate();
@@ -27,12 +32,8 @@ export const LoginPage: React.FC = () => {
     navigate('/sign-up');
   };
 
-  const handleFindEmailClick = () => {
-    navigate('/find-email');
-  };
-
   const handleFindPasswordClick = () => {
-    navigate('/find-password');
+    navigate('/change-password');
   };
 
   const handleSubmit = (data: LoginFormSchema) => {
@@ -40,10 +41,13 @@ export const LoginPage: React.FC = () => {
 
     startTransition(
       withHandleError(async () => {
-        await postAuthLogin({
+        const {token, type} = await postAuthLogin({
           email: data.email,
           password: data.password,
         });
+
+        setToken(token);
+        setUserInfo({email: data.email, type});
 
         navigate('/');
       }),
@@ -92,19 +96,10 @@ export const LoginPage: React.FC = () => {
           <button
             type="button"
             className="hover:underline"
-            onClick={handleFindEmailClick}
-            disabled={isPending}
-          >
-            이메일 찾기
-          </button>
-          <div className="h-1 w-1 bg-[#E9E9E9] rounded-full self-center"></div>
-          <button
-            type="button"
-            className="hover:underline"
             onClick={handleFindPasswordClick}
             disabled={isPending}
           >
-            비밀번호 찾기
+            비밀번호 변경
           </button>
         </div>
 
