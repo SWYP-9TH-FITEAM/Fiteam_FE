@@ -11,6 +11,7 @@ type LayoutBottomBarProps = {
     wrapper?: string;
     scrollableArea?: string;
   };
+  hideBottomBar?: boolean;
 };
 
 const BottomBar = () => {
@@ -44,7 +45,7 @@ const BottomBar = () => {
       label: '1:1 채팅',
     },
     {
-      path: '/mypage',
+      path: '/my-page',
       icon: icons.myPage,
       selectedIcon: icons.myPageSelected,
       label: '마이페이지',
@@ -88,6 +89,7 @@ export const LayoutBottomBar = ({
   children,
   header,
   classNames,
+  hideBottomBar = false,
 }: LayoutBottomBarProps) => {
   return (
     <div
@@ -108,7 +110,7 @@ export const LayoutBottomBar = ({
         {children}
       </div>
 
-      <BottomBar />
+      {!hideBottomBar && <BottomBar />}
     </div>
   );
 };

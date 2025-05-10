@@ -14,6 +14,10 @@ import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
 import ChatRoomPage from './pages/ChatRoomPage';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
+import {MyPage} from './pages/my-page/ui/MyPage';
+import {Settings} from './pages/my-page/ui/Settings';
+import {ChangePassword} from './pages/auth/ChangePassword';
+import {Announcements} from './pages/my-page/ui/Announcements';
 
 function App() {
   return (
@@ -36,6 +40,10 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatRoomPage />} />
         <Route path="/team-building" element={<TeamBuildingPage />} />
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/announcements" element={<Announcements />} />
       </Routes>
     </Router>
   );
