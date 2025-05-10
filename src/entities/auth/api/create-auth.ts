@@ -3,6 +3,8 @@ import {
   postAuthLoginRequestDto,
   PostAuthLoginRequestDto,
   postAuthLoginResponseDto,
+  PostAuthResetPasswordRequestDto,
+  postAuthResetPasswordRequestDto,
   PostAuthSendVerificationCodeRequestDto,
   postAuthSendVerificationCodeRequestDto,
   postAuthSignUpRequestDto,
@@ -32,7 +34,7 @@ export const postAuthSignUp = async (payload: PostAuthSignUpRequestDto) => {
 
   const json = postAuthSignUpRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json}).json();
+  const response = await api.post(ENDPOINT, {json}).text();
 
   return validateSchema({
     dto: response,
@@ -48,7 +50,7 @@ export const postAuthSendVerificationCode = async (
 
   const json = postAuthSendVerificationCodeRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json}).json();
+  const response = await api.post(ENDPOINT, {json}).text();
 
   return validateSchema({
     dto: response,
@@ -64,7 +66,23 @@ export const postAuthVerifyCode = async (
 
   const json = postAuthVerifyCodeRequestDto.parse(payload);
 
-  const response = await api.post(ENDPOINT, {json}).json();
+  const response = await api.post(ENDPOINT, {json}).text();
+
+  return validateSchema({
+    dto: response,
+    schema: z.string(),
+    schemaName: ENDPOINT,
+  });
+};
+
+export const postAuthResetPassword = async (
+  payload: PostAuthResetPasswordRequestDto,
+) => {
+  const ENDPOINT = 'v1/auth/reset-password';
+
+  const json = postAuthResetPasswordRequestDto.parse(payload);
+
+  const response = await api.post(ENDPOINT, {json}).text();
 
   return validateSchema({
     dto: response,
