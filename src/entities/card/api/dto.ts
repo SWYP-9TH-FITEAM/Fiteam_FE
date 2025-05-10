@@ -20,3 +20,7 @@ export const getCardResponseDto = z.object({
 });
 
 export type GetCardResponseDto = z.infer<typeof getCardResponseDto>;
+
+// 카드 전체 목록 응답 DTO (배열 형태)
+export const getAllCardsResponseDto = z.array(getCardResponseDto);
+export type GetAllCardsResponseDto = z.infer<typeof getAllCardsResponseDto>;

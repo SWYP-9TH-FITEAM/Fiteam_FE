@@ -1,13 +1,28 @@
 import LayoutMo from '@/layouts/LayoutMo';
 import TypeDialog from './TypeDialog';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {getAllCards} from '@/entities/card';
+import type {GetAllCardsResponseDto} from '@/entities/card';
 
 const ResultAllType = () => {
   const [isTypeDialogOpen, setIsTypeDialogOpen] = useState(false);
-  const [selectedTypeIndex, setSelectedTypeIndex] = useState<number>(0);
+  const [selectedTypeId, setSelectedTypeId] = useState<number>(0);
+  const [allCards, setAllCards] = useState<GetAllCardsResponseDto>([]);
 
-  const handleTypeClick = (index: number) => {
-    setSelectedTypeIndex(index);
+  useEffect(() => {
+    // /v1/card/all API 호출
+    getAllCards()
+      .then(setAllCards)
+      .catch(error => {
+        // TODO: 에러 핸들링 필요시 추가
+        console.error('카드 전체 목록 불러오기 실패:', error);
+      });
+  }, []);
+
+  const selectedCard = allCards.find(card => card.id === selectedTypeId);
+
+  const handleTypeClick = (id: number) => {
+    setSelectedTypeId(id);
     setIsTypeDialogOpen(true);
   };
 
@@ -15,17 +30,14 @@ const ResultAllType = () => {
     <LayoutMo hasHeader={true} text="모든 결과 유형">
       <div className="flex flex-col items-center mt-1 mb-[67px]">
         <div className="flex flex-col gap-3 w-full">
-          {Array.from({length: 16}).map((_, index) => (
-            // TODO: GET16개 데이터에서 오는 index (1~16)
+          {allCards.map(card => (
             <div
-              key={index}
-              className="bg-white rounded-lg p-4 h-[206px] shadow-sm flex flex-col items-center justify-center cursor-pointer"
-              onClick={() => handleTypeClick(index)}
+              key={card.id}
+              className="bg-gray-1 rounded-lg p-4 h-[206px] shadow-sm flex flex-col items-center justify-center cursor-pointer"
+              onClick={() => handleTypeClick(card.id)}
             >
-              <div className="w-16 h-16 rounded-full bg-gray-200 mb-2"></div>
-              <div className="text-lg font-medium">
-                목표를 향해 돌진하는 로봇 {index + 1}
-              </div>
+              <div className="w-[140px] h-[140px] bg-gray-200 mb-[10px]"></div>
+              <div className="text-lg font-medium">{card.name}</div>
             </div>
           ))}
         </div>
@@ -34,7 +46,7 @@ const ResultAllType = () => {
       <TypeDialog
         open={isTypeDialogOpen}
         onOpenChange={setIsTypeDialogOpen}
-        selectedTypeIndex={selectedTypeIndex}
+        card={selectedCard}
       />
     </LayoutMo>
   );

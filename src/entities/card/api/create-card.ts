@@ -1,6 +1,11 @@
 import {api} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
-import {GetCardResponseDto, getCardResponseDto} from './dto';
+import {
+  GetCardResponseDto,
+  getCardResponseDto,
+  GetAllCardsResponseDto,
+  getAllCardsResponseDto,
+} from './dto';
 
 /**
  * 카드 아이디로 카드 정보를 조회하는 API
@@ -22,6 +27,26 @@ export const getCardById = async (
     });
   } catch (error) {
     console.error('카드 정보 조회 오류:', error);
+    throw error;
+  }
+};
+
+/**
+ * 모든 카드 정보를 조회하는 API
+ * @returns 카드 전체 목록
+ */
+export const getAllCards = async (): Promise<GetAllCardsResponseDto> => {
+  const ENDPOINT = 'v1/card/all';
+
+  try {
+    const response = await api.get(ENDPOINT).json();
+    return validateSchema({
+      dto: response,
+      schema: getAllCardsResponseDto,
+      schemaName: ENDPOINT,
+    });
+  } catch (error) {
+    console.error('카드 전체 목록 조회 오류:', error);
     throw error;
   }
 };
