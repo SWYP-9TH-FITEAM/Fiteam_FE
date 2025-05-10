@@ -9,6 +9,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import {useSetToken} from '@/shared/model/auth';
+import {useSetUserInfo} from '@/shared/model/user';
 import {ChevronRight} from 'lucide-react';
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
@@ -16,10 +17,12 @@ import {useNavigate} from 'react-router-dom';
 export const LogoutButton: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const setToken = useSetToken();
+  const setUserInfo = useSetUserInfo();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setToken(null);
+    setUserInfo(null);
     navigate('/');
     setOpen(false);
   };
