@@ -55,7 +55,12 @@ const ResultPage = () => {
   };
 
   const onProfileCardClick = () => {
-    setProfileDialogOpen(true);
+    const userInfo = localStorage.getItem('user-info');
+    if (userInfo) {
+      navigate('/profile/create');
+    } else {
+      setProfileDialogOpen(true);
+    }
   };
 
   if (isResultAll) {
