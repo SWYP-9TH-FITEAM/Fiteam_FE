@@ -8,12 +8,17 @@ import {useAtomValue} from 'jotai';
 import {testResultAtom} from '@/shared/model/test-result';
 import {getCardById, GetCardResponseDto} from '@/entities/card';
 import {CharacterCard} from '@/features/profile/CharacterCard';
+import TypeDialog from '@/features/result/TypeDialog';
 
 const ResultPage = () => {
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [cardData, setCardData] = useState<GetCardResponseDto | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isTypeDialogOpen, setIsTypeDialogOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<GetCardResponseDto | null>(
+    null,
+  );
 
   const navigate = useNavigate();
   const {id} = useParams();
@@ -146,10 +151,22 @@ const ResultPage = () => {
             {cardData.summary}
           </div>
           <div className="w-full flex gap-[15px] mt-3.5">
-            <div className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm">
+            <div
+              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              onClick={() => {
+                setIsTypeDialogOpen(true);
+                setSelectedCard(cardData);
+              }}
+            >
               잘맞아요 {cardData.bestMatchCode1}
             </div>
-            <div className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm">
+            <div
+              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              onClick={() => {
+                setIsTypeDialogOpen(true);
+                setSelectedCard(cardData);
+              }}
+            >
               안맞아요 {cardData.worstMatchCode1}
             </div>
           </div>
@@ -192,6 +209,12 @@ const ResultPage = () => {
           </div>
         </div>
       </LayoutMo>
+
+      <TypeDialog
+        open={isTypeDialogOpen}
+        onOpenChange={setIsTypeDialogOpen}
+        card={selectedCard ?? undefined}
+      />
 
       {/* 프로필카드 회원가입 모달 */}
       <LoginDialog
