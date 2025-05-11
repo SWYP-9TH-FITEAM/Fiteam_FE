@@ -8,16 +8,15 @@ import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
 import ProfileEditPage from './pages/ProfileEditPage';
 import ProfilePage from './pages/ProfilePage';
-import {LoginPage} from './pages/auth/LoginPage';
-import {FindPasswordPage} from './pages/auth/FindPasswordPage';
-import {SignUpPage} from './pages/auth/SignUpPage';
+import {Announcements} from './pages/my-page/ui/Announcements';
 import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
-import ChatRoomPage from './pages/ChatRoomPage';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
 import {MyPage} from './pages/my-page/ui/MyPage';
 import {Settings} from './pages/my-page/ui/Settings';
-import {Announcements} from './pages/my-page/ui/Announcements';
+import {FindPasswordPage} from './pages/auth/FindPasswordPage';
+import {SignUpPage} from './pages/auth/SignUpPage';
+import {LoginPage} from './pages/auth/LoginPage';
 
 function App() {
   return (
@@ -44,7 +43,6 @@ function App() {
           <Route path="/profile/create" element={<ProfileEditPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/chat/:roomId" element={<ChatRoomPage />} />
           <Route path="/team-building" element={<TeamBuildingPage />} />
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/settings" element={<Settings />} />
