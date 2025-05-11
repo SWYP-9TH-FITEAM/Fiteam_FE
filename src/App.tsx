@@ -8,15 +8,15 @@ import TestPage from './pages/TestPage';
 import ResultPage from './pages/ResultPage';
 import ProfileEditPage from './pages/ProfileEditPage';
 import ProfilePage from './pages/ProfilePage';
-import {LoginPage} from './pages/auth/LoginPage';
 import {Announcements} from './pages/my-page/ui/Announcements';
 import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
 import {MyPage} from './pages/my-page/ui/MyPage';
-import {Settings} from 'lucide-react';
+import {Settings} from './pages/my-page/ui/Settings';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {SignUpPage} from './pages/auth/SignUpPage';
+import {LoginPage} from './pages/auth/LoginPage';
 
 function App() {
   return (
