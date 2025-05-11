@@ -4,6 +4,7 @@ import {Toaster} from 'sonner';
 import App from './App.tsx';
 import './index.css';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {JotaiDevTools} from './components/JotaiDevTools.tsx';
 
 const queryClient = new QueryClient();
 
@@ -15,5 +16,6 @@ createRoot(document.getElementById('root')!).render(
       </HeroUIProvider>
     </QueryClientProvider>
     <Toaster richColors position="top-center" closeButton />
+    <JotaiDevTools />
   </>,
 );

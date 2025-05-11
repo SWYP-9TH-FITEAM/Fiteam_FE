@@ -1,22 +1,22 @@
-import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
-import {ChangePassword} from './pages/auth/ChangePassword';
-import {FindEmailPage} from './pages/auth/FindEmailPage';
-import {FindPasswordPage} from './pages/auth/FindPasswordPage';
-import {LoginPage} from './pages/auth/LoginPage';
-import {SignUpPage} from './pages/auth/SignUpPage';
-import ChatPage from './pages/ChatPage';
-import HomePage from './pages/HomePage';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import AuthGuard from './components/guards/AuthGuard';
+import PublicOnlyGuard from './components/guards/PublicOnlyGuard';
 import MainPage from './pages/MainPage';
-import {Announcements} from './pages/my-page/ui/Announcements';
-import {MyPage} from './pages/my-page/ui/MyPage';
-import {Settings} from './pages/my-page/ui/Settings';
 import OnboardingPage from './pages/OnboardingPage';
+import TestStartPage from './pages/TestStartPage';
+import TestPage from './pages/TestPage';
+import ResultPage from './pages/ResultPage';
 import ProfileEditPage from './pages/ProfileEditPage';
 import ProfilePage from './pages/ProfilePage';
-import ResultPage from './pages/ResultPage';
+import {LoginPage} from './pages/auth/LoginPage';
+import {Announcements} from './pages/my-page/ui/Announcements';
+import HomePage from './pages/HomePage';
+import ChatPage from './pages/ChatPage';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
-import TestPage from './pages/TestPage';
-import TestStartPage from './pages/TestStartPage';
+import {MyPage} from './pages/my-page/ui/MyPage';
+import {Settings} from 'lucide-react';
+import {FindPasswordPage} from './pages/auth/FindPasswordPage';
+import {SignUpPage} from './pages/auth/SignUpPage';
 
 function App() {
   return (
@@ -28,20 +28,26 @@ function App() {
         <Route path="/test" element={<TestPage />} />
         <Route path="/result/:id" element={<ResultPage />} />
         <Route path="/result" element={<ResultPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/profile/edit" element={<ProfileEditPage />} />
-        <Route path="/profile/create" element={<ProfileEditPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/find-email" element={<FindEmailPage />} />
-        <Route path="/find-password" element={<FindPasswordPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/team-building" element={<TeamBuildingPage />} />
-        <Route path="/my-page" element={<MyPage />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/announcements" element={<Announcements />} />
+        <Route path="/change-password" element={<FindPasswordPage />} />
+
+        {/* Public Only Routes: Accessible only when not authenticated */}
+        <Route element={<PublicOnlyGuard />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+        </Route>
+
+        {/* Protected Routes: Accessible only when authenticated */}
+        <Route element={<AuthGuard />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
+          <Route path="/profile/create" element={<ProfileEditPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/team-building" element={<TeamBuildingPage />} />
+          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/announcements" element={<Announcements />} />
+        </Route>
       </Routes>
     </Router>
   );

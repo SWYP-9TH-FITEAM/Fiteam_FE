@@ -17,7 +17,7 @@ export const atomWithLocalStorage = <Schema extends z.ZodTypeAny>(
 
   const baseAtom = atom(getInitialValue());
 
-  const derivedAtom = atom(
+  const derivedAtom = atom<z.infer<Schema>, [z.infer<Schema>], void>(
     get => get(baseAtom),
     (get, set, update) => {
       const nextValue =
