@@ -3,21 +3,10 @@ import {validateSchema} from '@/shared/api/validate';
 import {
   getUserCardResponseDto,
   getUserGroupsAcceptedResponseDto,
+  getUserGroupsPendingResponseDto,
   getUserNameImgJobResponseDto,
   getUserSettingsResponseDto,
 } from './dto';
-
-export const getUserAcceptedGroups = async () => {
-  const ENDPOINT = 'v1/user/groups/accepted';
-
-  const response = await apiWithAuth.get(ENDPOINT).json();
-
-  return validateSchema({
-    dto: response,
-    schema: getUserGroupsAcceptedResponseDto,
-    schemaName: ENDPOINT,
-  });
-};
 
 export const getUserCard = async () => {
   const ENDPOINT = 'v1/user/card';
@@ -51,6 +40,30 @@ export const getUserSettings = async () => {
   return validateSchema({
     dto: response,
     schema: getUserSettingsResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getUserGroupsAccepted = async () => {
+  const ENDPOINT = 'v1/user/groups/accepted';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserGroupsAcceptedResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getUserGroupsPending = async () => {
+  const ENDPOINT = 'v1/user/groups/pending';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserGroupsPendingResponseDto,
     schemaName: ENDPOINT,
   });
 };
