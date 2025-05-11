@@ -9,3 +9,5 @@ export const tokenAtom = atomWithLocalStorage('token', null, tokenSchema);
 export const useToken = () => useAtomValue(tokenAtom);
 
 export const useSetToken = () => useSetAtom(tokenAtom);
+
+tokenAtom.debugLabel = 'tokenAtom';

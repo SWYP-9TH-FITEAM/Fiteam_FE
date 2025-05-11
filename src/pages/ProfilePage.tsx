@@ -95,7 +95,10 @@ const ProfilePage = () => {
   if (!mbtiData) return <div>로딩 중...</div>;
 
   return (
-    <LayoutBottomBar bgColor="#F6F6F6" header={<ProfileHeader />}>
+    <LayoutBottomBar
+      classNames={{wrapper: 'bg-[#f6f6f6]'}}
+      header={<ProfileHeader />}
+    >
       <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
         {/* 성향 카드 */}
         <CharacterCard

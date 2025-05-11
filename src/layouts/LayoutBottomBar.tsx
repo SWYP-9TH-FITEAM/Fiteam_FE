@@ -2,11 +2,16 @@ import {ReactNode} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import * as icons from '@/assets/bottomIcon';
+import {cn} from '@/lib/utils';
 
 type LayoutBottomBarProps = {
   children: ReactNode;
   header?: ReactNode;
-  bgColor?: string;
+  classNames?: {
+    wrapper?: string;
+    scrollableArea?: string;
+  };
+  hideBottomBar?: boolean;
 };
 
 const BottomBar = () => {
@@ -28,7 +33,7 @@ const BottomBar = () => {
       label: '나의 프로필',
     },
     {
-      path: '/teambuilding',
+      path: '/team-building',
       icon: icons.teamBuilding,
       selectedIcon: icons.teamBuildingSelected,
       label: '팀빌딩',
@@ -40,7 +45,7 @@ const BottomBar = () => {
       label: '1:1 채팅',
     },
     {
-      path: '/mypage',
+      path: '/my-page',
       icon: icons.myPage,
       selectedIcon: icons.myPageSelected,
       label: '마이페이지',
@@ -83,21 +88,29 @@ const BottomBar = () => {
 export const LayoutBottomBar = ({
   children,
   header,
-  bgColor = '#fafafa',
+  classNames,
+  hideBottomBar = false,
 }: LayoutBottomBarProps) => {
   return (
     <div
-      className="flex flex-col items-center h-screen"
-      style={{backgroundColor: bgColor}}
+      className={cn(
+        'flex flex-col h-[100dvh] bg-[#fafafa] relative w-full max-w-[500px]',
+        classNames?.wrapper,
+      )}
     >
-      <div className="relative w-full max-w-[500px] h-full flex flex-col">
-        {header}
+      {header}
 
-        {/* 스크롤 가능한 영역 */}
-        <div className="flex-1 overflow-y-auto px-5">{children}</div>
-
-        <BottomBar />
+      {/* 스크롤 가능한 영역 */}
+      <div
+        className={cn(
+          'flex-1 overflow-y-auto px-5',
+          classNames?.scrollableArea,
+        )}
+      >
+        {children}
       </div>
+
+      {!hideBottomBar && <BottomBar />}
     </div>
   );
 };

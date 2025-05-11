@@ -3,7 +3,6 @@ import {ChatMessage} from '@/features/chat/ChatMessage';
 import {ChatRoomHeader} from '@/features/chat/ChatRoomHeader';
 import {dummyChatMessages} from '@/features/chat/dummy';
 import {useEffect, useRef, useState} from 'react';
-import {useParams} from 'react-router-dom';
 
 type Message = {
   id: number;
@@ -13,10 +12,19 @@ type Message = {
   content: string;
   isRead: boolean;
   sentAt: string;
+  messageType: string;
 };
 
-const ChatRoomPage = () => {
-  const {roomId} = useParams();
+type ChatRoomProps = {
+  roomInfo: {
+    roomId: number;
+    otherUserName: string;
+  };
+  onBack: () => void;
+};
+
+const ChatRoom = ({roomInfo, onBack}: ChatRoomProps) => {
+  const {roomId, otherUserName} = roomInfo;
   const userId = 1; // 본인 아이디
   const [messages, setMessages] = useState<Message[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -24,9 +32,12 @@ const ChatRoomPage = () => {
 
   useEffect(() => {
     // 채팅방 ID에 해당하는 메시지만 필터링
-    const filteredMessages = dummyChatMessages.filter(
-      msg => msg.chatRoomId === Number(roomId),
-    );
+    const filteredMessages = dummyChatMessages
+      .filter(msg => msg.chatRoomId === Number(roomId))
+      .map(msg => ({
+        ...msg,
+        senderName: msg.senderId === userId ? '나' : '상대방', // 혹은 적절한 이름 매핑
+      }));
     setMessages(filteredMessages);
     console.log(filteredMessages);
 
@@ -84,6 +95,7 @@ const ChatRoomPage = () => {
           userName={message.senderName}
           showTime={showTime}
           isNewSender={isNewSender}
+          messageType={message.messageType}
         />
       );
     });
@@ -107,6 +119,7 @@ const ChatRoomPage = () => {
       content,
       isRead: false,
       sentAt: new Date().toISOString(),
+      messageType: '',
     };
 
     setMessages(prev => [...prev, newMessage]);
@@ -115,7 +128,7 @@ const ChatRoomPage = () => {
   return (
     <div className="flex flex-col items-center h-screen bg-[#EEECFF]">
       <div className="relative w-full max-w-[500px] h-full flex flex-col">
-        <ChatRoomHeader otherName="김미미" />
+        <ChatRoomHeader otherName={otherUserName} handleBack={onBack} />
 
         {/* 스크롤 가능한 영역 */}
         <div className="flex-1 overflow-y-auto" ref={chatContainerRef}>
@@ -129,4 +142,4 @@ const ChatRoomPage = () => {
   );
 };
 
-export default ChatRoomPage;
+export default ChatRoom;

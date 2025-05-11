@@ -8,7 +8,7 @@ export const postAuthLoginRequestDto = z.object({
 export type PostAuthLoginRequestDto = z.infer<typeof postAuthLoginRequestDto>;
 
 export const postAuthLoginResponseDto = z.object({
-  type: z.string(),
+  type: z.enum(['user', 'manager']),
   token: z.string(),
 });
 
@@ -37,4 +37,14 @@ export const postAuthVerifyCodeRequestDto = z.object({
 
 export type PostAuthVerifyCodeRequestDto = z.infer<
   typeof postAuthVerifyCodeRequestDto
+>;
+
+export const postAuthResetPasswordRequestDto = z.object({
+  email: z.string(),
+  newPassword: z.string(),
+  code: z.string(),
+});
+
+export type PostAuthResetPasswordRequestDto = z.infer<
+  typeof postAuthResetPasswordRequestDto
 >;
