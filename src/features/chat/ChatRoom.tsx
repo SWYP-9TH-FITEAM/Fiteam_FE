@@ -12,6 +12,7 @@ type Message = {
   content: string;
   isRead: boolean;
   sentAt: string;
+  messageType: string;
 };
 
 type ChatRoomProps = {
@@ -24,7 +25,6 @@ type ChatRoomProps = {
 
 const ChatRoom = ({roomInfo, onBack}: ChatRoomProps) => {
   const {roomId, otherUserName} = roomInfo;
-  // const {roomId} = useParams();
   const userId = 1; // 본인 아이디
   const [messages, setMessages] = useState<Message[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -95,6 +95,7 @@ const ChatRoom = ({roomInfo, onBack}: ChatRoomProps) => {
           userName={message.senderName}
           showTime={showTime}
           isNewSender={isNewSender}
+          messageType={message.messageType}
         />
       );
     });
@@ -118,6 +119,7 @@ const ChatRoom = ({roomInfo, onBack}: ChatRoomProps) => {
       content,
       isRead: false,
       sentAt: new Date().toISOString(),
+      messageType: '',
     };
 
     setMessages(prev => [...prev, newMessage]);
