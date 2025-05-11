@@ -15,6 +15,7 @@ import TestPageHeader from '@/features/test/TestPageHeader';
 import {LayoutMobile} from '@/layouts/LayoutMobile';
 import {useSetAtom} from 'jotai';
 import {testResultAtom} from '@/shared/model/test-result';
+import {postSaveCard} from '@/entities/user/api/savecard';
 
 const OPTIONS = [
   {label: '매우 그렇다', score: 5},
@@ -174,6 +175,9 @@ const TestPage = () => {
       // 서버 응답 시간을 고려하여 최소 로딩 시간 보장
       const startTime = Date.now();
       const result = await postTestResult({scores});
+      if (localStorage.getItem('user-info')) {
+        await postSaveCard({scores});
+      }
 
       // 최소 로딩 시간이 LOADING_DURATION보다 짧으면 추가 대기
       const elapsedTime = Date.now() - startTime;
