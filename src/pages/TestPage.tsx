@@ -2,22 +2,34 @@ import LayoutMo from '@/layouts/LayoutMo';
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import robot from '@/assets/images/robot.png';
+import {
+  getAllQuestions,
+  postTestResult,
+  TestResultResponse,
+} from '@/entities/question/api/create-question';
+import {
+  GetQuestionsResponseDto,
+  QuestionScore,
+} from '@/entities/question/api/dto';
+import TestPageHeader from '@/features/test/TestPageHeader';
+import {LayoutMobile} from '@/layouts/LayoutMobile';
+import {useSetAtom} from 'jotai';
+import {testResultAtom} from '@/shared/model/test-result';
+import {postSaveCard} from '@/entities/user/api/savecard';
 
-const OPTIONS = ['매우 그렇다', '그렇다', '중간이다', '아니다', '매우 아니다'];
+const OPTIONS = [
+  {label: '매우 그렇다', score: 5},
+  {label: '그렇다', score: 4},
+  {label: '중간이다', score: 3},
+  {label: '아니다', score: 2},
+  {label: '매우 아니다', score: 1},
+];
 
-const QUESTIONS_COUNT = 3; // 추후 변경 50
-
-const MOCK_QUESTIONS = Array.from(
-  {length: QUESTIONS_COUNT},
-  (_, i) => `Q${i + 1}. 장기 계획을 세우는 걸 좋아하시나요?`,
-);
-
-const TOTAL_QUESTIONS = QUESTIONS_COUNT;
 const LOADING_DURATION = 2000; // 2초 동안 로딩 애니메이션 진행
 
 interface TestResultLoadingProps {
-  apiPromise: Promise<{result: string; answers: number[]}>;
-  onDone: (result: {result: string; answers: number[]}) => void;
+  apiPromise: Promise<TestResultResponse | null>;
+  onDone: (result: TestResultResponse | null) => void;
 }
 
 function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
@@ -130,44 +142,159 @@ function TestResultLoading({apiPromise, onDone}: TestResultLoadingProps) {
 }
 
 const TestPage = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate();
+  const setTestResult = useSetAtom(testResultAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]); // 추후 결과 페이지에서 사용 예정
-  const [questions] = useState(MOCK_QUESTIONS);
+  const [testScore, setTestScore] = useState<QuestionScore[]>([]); // 각 문항별 MBTI 점수를 저장
+  const [questions, setQuestions] = useState<GetQuestionsResponseDto>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [apiPromise, setApiPromise] = useState<Promise<{
-    result: string;
-    answers: number[];
-  }> | null>(null);
+  const [apiPromise, setApiPromise] =
+    useState<Promise<TestResultResponse | null> | null>(null);
+  const [isQuestionsLoading, setIsQuestionsLoading] = useState(true);
 
-  // 추후 api 함수 모킹
-  const fetchResultApi = (answers: number[]) => {
-    return new Promise<{result: string; answers: number[]}>(resolve => {
-      setTimeout(() => {
-        const randomResultId = Math.floor(Math.random() * 16) + 1;
-        resolve({result: String(randomResultId), answers});
-      }, LOADING_DURATION * 1.2); // API 응답은 애니메이션보다 약간 더 길게
-    });
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const data = await getAllQuestions();
+        setQuestions(data);
+      } catch (error) {
+        console.error('문제 목록을 불러오는데 실패했습니다.', error);
+      } finally {
+        setIsQuestionsLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  // 실제 API를 호출하는 함수
+  const fetchResultApi = async (scores: QuestionScore[]) => {
+    try {
+      console.log('API 호출 전 scores:', scores);
+
+      // 서버 응답 시간을 고려하여 최소 로딩 시간 보장
+      const startTime = Date.now();
+      const result = await postTestResult({scores});
+      if (localStorage.getItem('user-info')) {
+        await postSaveCard({scores});
+      }
+
+      // 최소 로딩 시간이 LOADING_DURATION보다 짧으면 추가 대기
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < LOADING_DURATION) {
+        await new Promise(resolve =>
+          setTimeout(resolve, LOADING_DURATION - elapsedTime),
+        );
+      }
+
+      console.log('API 응답 결과:', result);
+      return result;
+    } catch (error) {
+      console.error('테스트 결과 제출에 실패했습니다:', error);
+
+      // 에러 세부 정보 로깅
+      if (error instanceof Error) {
+        console.error('에러 메시지:', error.message);
+        console.error('에러 스택:', error.stack);
+      } else {
+        console.error('알 수 없는 에러 형식:', error);
+      }
+
+      // 에러 응답 분석 시도
+      try {
+        const errorObj = error as {response?: Response};
+        if (errorObj.response) {
+          console.error('에러 응답:', await errorObj.response.json());
+        }
+      } catch (parseError) {
+        console.error('에러 응답 파싱 실패:', parseError);
+      }
+
+      // 실패해도 로딩은 완료되도록 대기
+      await new Promise(resolve => setTimeout(resolve, LOADING_DURATION));
+
+      // TODO: 응답 에러인 경우 처리 수정필요
+      // 에러 상황에서는 폴백 응답 대신 null을 반환하여 에러 처리 로직이 실행되도록 함
+      return null;
+    }
   };
 
   const handleSelectOption = async (optionIdx: number) => {
-    setAnswers(prev => [...prev, optionIdx]);
-    if (currentIndex < TOTAL_QUESTIONS - 1) {
+    // 선택한 옵션에 해당하는 점수
+    const selectedScore = OPTIONS[optionIdx].score;
+
+    // 현재 질문의 typeA와 typeB 가져오기
+    const currentQuestion = questions[currentIndex];
+    const {typeA, typeB} = currentQuestion;
+
+    // typeA와 typeB에 대한 점수 계산
+    // typeA는 선택한 점수만큼, typeB는 (5 - typeA의 점수)만큼 부여 (합쳐서 0이 되도록 (5→0, 4→1, 3→2, 2→3, 1→4))
+    const typeAScore = selectedScore;
+    const typeBScore = 5 - typeAScore;
+
+    // 새로운 점수 객체 생성
+    const newScore: QuestionScore = {
+      [typeA]: typeAScore,
+      [typeB]: typeBScore,
+    };
+
+    // testScore 업데이트
+    setTestScore(prev => [...prev, newScore]);
+
+    if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
       setIsLoading(true);
-      const promise = fetchResultApi([...answers, optionIdx]);
+      // 모든 문항이 완료된 경우, 최종 점수와 함께 API 호출
+      const updatedScores = [...testScore, newScore];
+      const promise = fetchResultApi(updatedScores);
       setApiPromise(promise);
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleLoadingDone = (result: {result: string; answers: number[]}) => {
-    navigate(`/result/${result.result}`);
+  const handleClickBack = () => {
+    if (currentIndex > 0) {
+      // 마지막 점수 항목 제거
+      setTestScore(prev => prev.slice(0, -1));
+      // 이전 질문으로 이동
+      setCurrentIndex(prev => prev - 1);
+    } else {
+      // 첫 번째 질문에서는 일반적인 뒤로가기 동작 수행
+      navigate(-1);
+    }
   };
 
-  const progressPercent = (currentIndex / TOTAL_QUESTIONS) * 100;
+  const handleLoadingDone = (result: TestResultResponse | null) => {
+    // 서버에서 받은 cardId를 사용하여 결과 페이지로 이동
+    console.log('최종 테스트 결과:', result);
+
+    // TODO: 응답 에러인 경우 처리 수정필요
+    if (result === null) {
+      // API 응답 실패 시 /test로 리다이렉트
+      alert('테스트 결과 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+      navigate('/test');
+      return;
+    }
+
+    // 테스트 결과를 atom에 저장
+    setTestResult(result);
+
+    // 결과 페이지로 이동
+    navigate(`/result/${result.cardId}`);
+  };
+
+  const progressPercent =
+    questions.length > 0 ? (currentIndex / questions.length) * 100 : 0;
+
+  if (isQuestionsLoading) {
+    return (
+      <LayoutMo hasHeader={true}>
+        <div className="flex flex-col h-full items-center justify-center">
+          <p>문제를 불러오는 중입니다...</p>
+        </div>
+      </LayoutMo>
+    );
+  }
 
   if (isLoading && apiPromise) {
     return (
@@ -177,10 +304,21 @@ const TestPage = () => {
     );
   }
 
+  if (questions.length === 0) {
+    return (
+      <LayoutMo hasHeader={true}>
+        <div className="flex flex-col h-full items-center justify-center">
+          <p>문제를 불러오지 못했습니다. 다시 시도해주세요.</p>
+        </div>
+      </LayoutMo>
+    );
+  }
+  console.log(testScore);
+
   return (
-    <LayoutMo hasHeader={true}>
-      <div className="flex flex-col h-full">
-        <div className="flex items-center ">
+    <LayoutMobile header={<TestPageHeader onClickBack={handleClickBack} />}>
+      <div className="flex flex-col h-full ">
+        <div className="flex items-center pt-2">
           <div className="flex-1">
             <div className="w-full h-2 bg-gray-3 rounded">
               <div
@@ -190,29 +328,27 @@ const TestPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center my-7">
-          <p className="w-[300px] text-[28px] font-semibold whitespace-pre-line break-keep">
-            {questions[currentIndex]}
-          </p>
-        </div>
-        <div className="flex justify-center mb-8">
-          <div className="w-[158px] h-[158px] bg-gray-200 rounded-full flex items-center justify-center">
-            {/* <img /> */}
+        <div className="flex flex-col items-center gap-5 justify-center mt-14 mb-24">
+          <div className="w-[26px] h-[26px] rounded-[13px] bg-gray-1 text-base font-medium">
+            {currentIndex + 1}
           </div>
+          <p className="w-full h-[126px] text-[28px] font-semibold whitespace-pre-line break-keep">
+            {questions[currentIndex]?.question}
+          </p>
         </div>
         <div className="flex flex-col gap-4 mb-8">
           {OPTIONS.map((option, idx) => (
             <button
-              key={option}
+              key={option.label}
               className="w-full py-[15px] bg-gray-100 rounded-xl text-lg leading-6 font-medium focus:outline-none active:bg-gray-200 hover:bg-primary-light hover:border hover:border-primary hover:border-solid box-border"
               onClick={() => handleSelectOption(idx)}
             >
-              {option}
+              {option.label}
             </button>
           ))}
         </div>
       </div>
-    </LayoutMo>
+    </LayoutMobile>
   );
 };
 

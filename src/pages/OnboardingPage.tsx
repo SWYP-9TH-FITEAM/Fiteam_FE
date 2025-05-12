@@ -1,5 +1,9 @@
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
 import arrowRightIcon from '@/assets/arrowRight.svg';
+import onboarding1 from '@/assets/images/onboarding/onboarding1.png';
+import onboarding2 from '@/assets/images/onboarding/onboarding2.png';
+import onboarding3 from '@/assets/images/onboarding/onboarding3.png';
+import onboarding4 from '@/assets/images/onboarding/onboarding4.png';
 
 import {Button} from '@/components/ui/button';
 import LayoutMo from '@/layouts/LayoutMo';
@@ -11,7 +15,7 @@ const OnboardingPage = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const slides = Array.from({length: 4});
+  const slides = [onboarding1, onboarding2, onboarding3, onboarding4];
   const texts = [
     '테스트를 하고\n나의 성향을 파악해보세요 !',
     '나의 성향카드를 공유하고\n친구들에게 보낼 수 있어요 !',
@@ -69,12 +73,16 @@ const OnboardingPage = () => {
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{transform: `translateX(-${currentIndex * 100}%)`}}
               >
-                {slides.map((_, index) => (
+                {slides.map((slide, index) => (
                   <div
                     key={index}
-                    className="w-full h-[300px] flex-shrink-0 bg-gray-200 flex items-center justify-center text-2xl font-bold"
+                    className="w-full h-[300px] flex-shrink-0 flex items-center justify-center"
                   >
-                    {index}
+                    <img
+                      src={slide}
+                      alt={`온보딩 ${index + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                    />
                   </div>
                 ))}
               </div>
