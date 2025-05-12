@@ -13,8 +13,6 @@ export const postSaveCard = async (payload: PostTestResultRequestDto) => {
 
   try {
     const response = await apiWithAuth.post(ENDPOINT, {json: scores});
-    console.log('서버 응답 원본:', response);
-
     return response;
   } catch (error) {
     console.error('API 호출 오류:', error);

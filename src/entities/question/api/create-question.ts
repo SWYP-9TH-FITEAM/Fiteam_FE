@@ -9,13 +9,19 @@ import {validateSchema} from '@/shared/api/validate';
 export const getAllQuestions = async () => {
   const ENDPOINT = 'v1/question/all';
 
-  const response = await api.get(ENDPOINT).json();
+  try {
+    const response = await api.get(ENDPOINT).json();
 
-  return validateSchema({
-    dto: response,
-    schema: getQuestionsResponseDto,
-    schemaName: ENDPOINT,
-  });
+    return validateSchema({
+      dto: response,
+      schema: getQuestionsResponseDto,
+      schemaName: ENDPOINT,
+    });
+  } catch (error) {
+    console.error('API 호출 오류:', error);
+
+    throw error;
+  }
 };
 
 // 서버 응답에 대한 실제 인터페이스 정의 (서버 응답 로그 기반)
@@ -40,7 +46,6 @@ export const postTestResult = async (payload: PostTestResultRequestDto) => {
     const response = (await api
       .post(ENDPOINT, {json: scores})
       .json()) as TestResultResponse;
-    console.log('서버 응답 원본:', response);
 
     // 서버 응답을 그대로, 타입 보장과 함께 반환
     return response;

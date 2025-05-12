@@ -14,7 +14,9 @@ const TypeDialog = ({open, onOpenChange, card}: TypeDialogProps) => {
   const description = card?.summary ?? '';
 
   const handleClickMore = () => {
-    navigate(`/result/${card?.id}`);
+    if (card?.id) {
+      navigate(`/result/${card.id}`);
+    }
   };
 
   return (
