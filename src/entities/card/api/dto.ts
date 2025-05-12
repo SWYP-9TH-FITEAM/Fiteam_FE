@@ -18,10 +18,10 @@ export const getCardResponseDto = z.object({
   worstMatchCode2: z.string().optional(),
   worstMatchReason2: z.string().optional(),
   details: z.string().optional(),
-  ei: z.number(),
-  pd: z.number(),
-  cl: z.number(),
-  va: z.number(),
+  ei: z.number().optional(),
+  pd: z.number().optional(),
+  cl: z.number().optional(),
+  va: z.number().optional(),
 });
 
 export type GetCardResponseDto = z.infer<typeof getCardResponseDto>;
