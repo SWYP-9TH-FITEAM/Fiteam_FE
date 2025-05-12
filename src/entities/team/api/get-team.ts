@@ -10,7 +10,7 @@ import {
 } from './dto';
 
 export const getTeamContacts = async (teamId: number) => {
-  const ENDPOINT = `/v1/team/${teamId}/contacts`;
+  const ENDPOINT = `v1/team/${teamId}/contacts`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -25,7 +25,7 @@ export const getTeamBySenderIdGroupId = async (
   senderId: number,
   groupId: number,
 ) => {
-  const ENDPOINT = `/v1/team/${senderId}/${groupId}`;
+  const ENDPOINT = `v1/team/${senderId}/${groupId}`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -37,7 +37,7 @@ export const getTeamBySenderIdGroupId = async (
 };
 
 export const getTeamBuildingStatus = async () => {
-  const ENDPOINT = `/v1/team/teambuildingstatus`;
+  const ENDPOINT = `v1/team/teambuildingstatus`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -49,7 +49,7 @@ export const getTeamBuildingStatus = async () => {
 };
 
 export const getTeamRequestReceived = async () => {
-  const ENDPOINT = `/v1/team/request/received`;
+  const ENDPOINT = `v1/team/request/received`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -61,7 +61,7 @@ export const getTeamRequestReceived = async () => {
 };
 
 export const getTeamRequestFromUserId = async (userId: number) => {
-  const ENDPOINT = `/v1/team/request/from/${userId}`;
+  const ENDPOINT = `v1/team/request/from/${userId}`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -73,7 +73,7 @@ export const getTeamRequestFromUserId = async (userId: number) => {
 };
 
 export const getTeamMyTeam = async () => {
-  const ENDPOINT = `/v1/team/myteam`;
+  const ENDPOINT = `v1/team/myteam`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 

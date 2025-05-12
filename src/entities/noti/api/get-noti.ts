@@ -3,7 +3,7 @@ import {getNotiAllResponseDto, getNotiByIdResponseDto} from './dto';
 import {validateSchema} from '@/shared/api/validate';
 
 export const getNotiById = async (id: number) => {
-  const ENDPOINT = `/v1/noti/${id}`;
+  const ENDPOINT = `v1/noti/${id}`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -15,7 +15,7 @@ export const getNotiById = async (id: number) => {
 };
 
 export const getNotiAll = async () => {
-  const ENDPOINT = '/v1/noti/all';
+  const ENDPOINT = 'v1/noti/all';
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
