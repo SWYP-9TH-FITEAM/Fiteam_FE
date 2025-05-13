@@ -1,13 +1,47 @@
 import {queryOptions} from '@tanstack/react-query';
-import {getUserAcceptedGroups} from './get-user';
+import {
+  getUserCard,
+  getUserGroupsAccepted,
+  getUserGroupsPending,
+  getUserNameImgJob,
+  getUserSettings,
+} from './get-user';
 
 export const userQueries = {
   all: () => ['user'],
 
-  acceptedGroupsKey: () => [...userQueries.all(), 'acceptedGroups'],
-  acceptedGroups: () =>
+  cardKey: () => [...userQueries.all(), 'card'],
+  card: () =>
     queryOptions({
-      queryKey: [...userQueries.acceptedGroupsKey()],
-      queryFn: () => getUserAcceptedGroups(),
+      queryKey: [...userQueries.cardKey()],
+      queryFn: () => getUserCard(),
+    }),
+
+  nameImgJobKey: () => [...userQueries.all(), 'name-img-job'],
+  nameImgJob: () =>
+    queryOptions({
+      queryKey: [...userQueries.nameImgJobKey()],
+      queryFn: () => getUserNameImgJob(),
+    }),
+
+  settingsKey: () => [...userQueries.all(), 'settings'],
+  settings: () =>
+    queryOptions({
+      queryKey: [...userQueries.settingsKey()],
+      queryFn: () => getUserSettings(),
+    }),
+
+  groupsAcceptedKey: () => [...userQueries.all(), 'groups-accepted'],
+  groupsAccepted: () =>
+    queryOptions({
+      queryKey: [...userQueries.groupsAcceptedKey()],
+      queryFn: () => getUserGroupsAccepted(),
+    }),
+
+  groupsPendingKey: () => [...userQueries.all(), 'groups-pending'],
+  groupsPending: () =>
+    queryOptions({
+      queryKey: [...userQueries.groupsPendingKey()],
+      queryFn: () => getUserGroupsPending(),
     }),
 };

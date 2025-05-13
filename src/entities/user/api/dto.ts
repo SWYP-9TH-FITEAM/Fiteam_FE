@@ -26,7 +26,7 @@ export type GetUserCardResponseDto = z.infer<typeof getUserCardResponseDto>;
 
 export const getUserGroupsAcceptedResponseDto = z.array(
   z.object({
-    groupId: z.number(),
+    groupId: z.number().int(),
     groupName: z.string(),
     invitedAt: z.string().datetime(),
   }),
@@ -34,6 +34,18 @@ export const getUserGroupsAcceptedResponseDto = z.array(
 
 export type GetUserGroupsAcceptedResponseDto = z.infer<
   typeof getUserGroupsAcceptedResponseDto
+>;
+
+export const getUserGroupsPendingResponseDto = z.array(
+  z.object({
+    groupId: z.number().int(),
+    groupName: z.string(),
+    invitedAt: z.string().datetime(),
+  }),
+);
+
+export type GetUserGroupsPendingResponseDto = z.infer<
+  typeof getUserGroupsPendingResponseDto
 >;
 
 export const getUserNameImgJobResponseDto = z.object({
