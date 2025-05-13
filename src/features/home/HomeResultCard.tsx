@@ -1,26 +1,12 @@
 import {Link} from 'react-router-dom';
 import ContentsCard from './components/ContentsCard';
+import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
 
 interface HomeResultCardProps {
-  isLogin?: boolean;
+  data: GetUserMiniResultResponseDto | null;
 }
 
-export const HomeResultCard = ({isLogin = false}: HomeResultCardProps) => {
-  if (!isLogin) {
-    return (
-      <ContentsCard title="나의 테스트 결과 보러가기">
-        <div className="flex flex-col justify-center gap-4 mt-4 mb-3 h-[120px] text-center">
-          <div className="text-[#111] text-lg font-bold leading-6">
-            아직 테스트를 하지 않으셨네요
-          </div>
-          <button className="flex h-12 justify-center items-center bg-[#5F4AFF] rounded-[10px] text-white font-medium leading-6">
-            테스트하고 내 성향 파악하기
-          </button>
-        </div>
-      </ContentsCard>
-    );
-  }
-
+export const HomeResultCard = ({data}: HomeResultCardProps) => {
   return (
     <ContentsCard title="나의 테스트 결과 보러가기" arrowLink="/test">
       <div className="flex mt-4 mb-3 h-[120px]">

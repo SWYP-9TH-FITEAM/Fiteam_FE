@@ -80,3 +80,16 @@ export const getUserSettingsResponseDto = z.object({
 export type GetUserSettingsResponseDto = z.infer<
   typeof getUserSettingsResponseDto
 >;
+
+export const getUserMiniResultResponseDto = z.object({
+  code: z.string(),
+  name: z.string(),
+  numEI: z.number(),
+  numPD: z.number(),
+  numVA: z.number(),
+  numCL: z.number(),
+});
+
+export type GetUserMiniResultResponseDto = z.infer<
+  typeof getUserMiniResultResponseDto
+>;

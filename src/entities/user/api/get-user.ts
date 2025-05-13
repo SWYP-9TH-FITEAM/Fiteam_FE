@@ -4,6 +4,7 @@ import {
   getUserCardResponseDto,
   getUserGroupsAcceptedResponseDto,
   getUserGroupsPendingResponseDto,
+  getUserMiniResultResponseDto,
   getUserNameImgJobResponseDto,
   getUserSettingsResponseDto,
 } from './dto';
@@ -40,6 +41,18 @@ export const getUserSettings = async () => {
   return validateSchema({
     dto: response,
     schema: getUserSettingsResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getUserMiniResult = async () => {
+  const ENDPOINT = 'v1/user/mini-result';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserMiniResultResponseDto,
     schemaName: ENDPOINT,
   });
 };
