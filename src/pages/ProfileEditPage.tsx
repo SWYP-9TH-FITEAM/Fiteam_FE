@@ -1,16 +1,16 @@
+import {getPositions} from '@/entities/member/api/positions';
 import ProfileLoadingScreen from '@/features/profile/ProfileLoadingScreen';
 import ProfileSkipDialog from '@/features/profile/ProfileSkipDialog';
 import LayoutMo from '@/layouts/LayoutMo';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const ProfileEditPage = () => {
   const navigate = useNavigate();
 
-  const [selectedJob, setSelectedJob] = useState<
-    'PM' | '디자이너' | '프론트엔드' | '백엔드' | null
-  >('PM');
-  // 경력 년수
+  const [positions, setPositions] = useState<string[]>([]);
+  const [selectedJob, setSelectedJob] = useState<string>('');
+
   const [career, setCareer] = useState<number>(10);
   const [isSkipDialogOpen, setIsSkipDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,6 +43,13 @@ const ProfileEditPage = () => {
     return `${percentage}%`;
   };
 
+  useEffect(() => {
+    getPositions(2).then(data => {
+      console.log(data);
+      setPositions(data);
+    });
+  }, []);
+
   if (isLoading) {
     return <ProfileLoadingScreen onComplete={handleLoadingComplete} />;
   }
@@ -74,33 +81,20 @@ const ProfileEditPage = () => {
         {/* 직무 선택 */}
         <div className="w-full mb-6">
           <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
-          <div className="flex gap-2 w-full">
-            <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === 'PM' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
-              onClick={() => setSelectedJob('PM')}
-            >
-              PM
-            </button>
-            <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '디자이너' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
-              onClick={() => setSelectedJob('디자이너')}
-            >
-              디자이너
-            </button>
-          </div>
-          <div className="flex gap-2 w-full mt-2">
-            <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '프론트엔드' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
-              onClick={() => setSelectedJob('프론트엔드')}
-            >
-              프론트엔드
-            </button>
-            <button
-              className={`flex-1  h-[38px] rounded-lg ${selectedJob === '백엔드' ? 'border border-solid border-primary bg-[#EEECFF] text-primary' : 'bg-[#F1F2F4]'}`}
-              onClick={() => setSelectedJob('백엔드')}
-            >
-              백엔드
-            </button>
+          <div className="flex gap-2 w-full flex-wrap">
+            {positions.map(position => (
+              <button
+                key={position}
+                className={`flex-1 h-[38px] rounded-lg ${
+                  selectedJob === position
+                    ? 'border border-solid border-primary bg-[#EEECFF] text-primary'
+                    : 'bg-[#F1F2F4]'
+                }`}
+                onClick={() => setSelectedJob(position as typeof selectedJob)}
+              >
+                {position}
+              </button>
+            ))}
           </div>
         </div>
         {/* 경력 선택 */}
