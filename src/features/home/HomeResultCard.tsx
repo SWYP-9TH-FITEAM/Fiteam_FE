@@ -4,18 +4,13 @@ import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
 
 interface HomeResultCardProps {
   data: GetUserMiniResultResponseDto | null;
-  imgUrl: string | undefined;
 }
 
-export const HomeResultCard = ({data, imgUrl}: HomeResultCardProps) => {
+export const HomeResultCard = ({data}: HomeResultCardProps) => {
   return (
     <ContentsCard title="나의 테스트 결과 보러가기" arrowLink="/test">
       <div className="flex mt-4 mb-3 h-[120px]">
-        {imgUrl ? (
-          <img src={imgUrl} alt="프로필 이미지" />
-        ) : (
-          <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
-        )}
+        <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
         <div className="flex-1">
           <h4 className="text-[#111] text-lg font-bold leading-6 mb-3">
             아이디어 조율러

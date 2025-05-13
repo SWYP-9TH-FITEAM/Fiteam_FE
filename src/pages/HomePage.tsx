@@ -51,10 +51,7 @@ const HomePage = () => {
     <LayoutBottomBar classNames={{wrapper: 'bg-[#f1f2f4]'}}>
       <HomeHeader />
       <div className="flex flex-col gap-4 pb-4">
-        <HomeResultCard
-          data={miniResultData}
-          imgUrl={userNameImgJob?.profileImgUrl ?? undefined}
-        />
+        <HomeResultCard data={miniResultData} />
         <HomeProfile isLogin={isLogin} profileData={userNameImgJob} />
         <HomeProjectList isLogin={isLogin} />
       </div>
