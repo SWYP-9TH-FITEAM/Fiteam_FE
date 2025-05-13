@@ -6,6 +6,8 @@ import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {
   getUserMiniResult,
   GetUserMiniResultResponseDto,
+  getUserNameImgJob,
+  GetUserNameImgJobResponseDto,
 } from '@/entities/user/api';
 import {useEffect, useState} from 'react';
 import ContentsCard from '@/features/home/components/ContentsCard';
@@ -15,10 +17,15 @@ const HomePage = () => {
 
   const [miniResultData, setMiniResultData] =
     useState<GetUserMiniResultResponseDto | null>(null);
+  const [userNameImgJob, setUserNameImgJob] =
+    useState<GetUserNameImgJobResponseDto | null>(null);
 
   useEffect(() => {
     getUserMiniResult().then(data => {
       setMiniResultData(data);
+    });
+    getUserNameImgJob().then(data => {
+      setUserNameImgJob(data);
     });
   }, []);
 
@@ -44,8 +51,11 @@ const HomePage = () => {
     <LayoutBottomBar classNames={{wrapper: 'bg-[#f1f2f4]'}}>
       <HomeHeader />
       <div className="flex flex-col gap-4 pb-4">
-        <HomeResultCard data={miniResultData} />
-        <HomeProfile isLogin={isLogin} />
+        <HomeResultCard
+          data={miniResultData}
+          imgUrl={userNameImgJob?.profileImgUrl ?? undefined}
+        />
+        <HomeProfile isLogin={isLogin} profileData={userNameImgJob} />
         <HomeProjectList isLogin={isLogin} />
       </div>
     </LayoutBottomBar>

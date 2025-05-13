@@ -1,10 +1,12 @@
+import {GetUserNameImgJobResponseDto} from '@/entities/user/api/dto';
 import ContentsCard from './components/ContentsCard';
 
 interface HomeProfileProps {
   isLogin: boolean;
+  profileData: GetUserNameImgJobResponseDto | null;
 }
 
-const HomeProfile = ({isLogin}: HomeProfileProps) => {
+const HomeProfile = ({isLogin, profileData}: HomeProfileProps) => {
   if (!isLogin) {
     return (
       <ContentsCard title="내 프로필">
@@ -24,13 +26,15 @@ const HomeProfile = ({isLogin}: HomeProfileProps) => {
     <ContentsCard title="내 프로필" arrowLink="/profile">
       <div className="bg-white p-4 mt-2 rounded-md border-[1.5px] border-solid border-[#5F4AFF]">
         <h4 className="text-left text-[#111] text-2xl font-semibold leading-8">
-          김도은
+          {profileData?.userName}
         </h4>
-        <div className="flex items-center gap-1.5 text-[#111] text-sm font-medium leading-5">
-          <span>디자이너</span>
-          <div className="w-1 h-1 rounded-full bg-black"></div>
-          <span>취준생</span>
-        </div>
+        {profileData?.job && (
+          <div className="flex items-center gap-1.5 text-[#111] text-sm font-medium leading-5">
+            <span>{profileData.job}</span>
+            <div className="w-1 h-1 rounded-full bg-black"></div>
+            <span>{profileData.job}</span>
+          </div>
+        )}
       </div>
     </ContentsCard>
   );

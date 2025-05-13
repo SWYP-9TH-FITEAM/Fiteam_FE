@@ -50,8 +50,8 @@ export type GetUserGroupsPendingResponseDto = z.infer<
 
 export const getUserNameImgJobResponseDto = z.object({
   userName: z.string(),
-  profileImgUrl: z.string().url(),
-  job: z.string(),
+  profileImgUrl: z.string().url().nullable(),
+  job: z.string().nullable(),
 });
 
 export type GetUserNameImgJobResponseDto = z.infer<
