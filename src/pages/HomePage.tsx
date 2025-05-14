@@ -1,16 +1,16 @@
+import {
+  getUserCard,
+  GetUserMiniResultResponseDto,
+  getUserNameImgJob,
+  GetUserNameImgJobResponseDto,
+} from '@/entities/user/api';
+import ContentsCard from '@/features/home/components/ContentsCard';
 import {HomeHeader} from '@/features/home/HomeHeader';
 import HomeProfile from '@/features/home/HomeProfile';
 import HomeProjectList from '@/features/home/HomeProjectList';
 import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
-import {
-  getUserMiniResult,
-  GetUserMiniResultResponseDto,
-  getUserNameImgJob,
-  GetUserNameImgJobResponseDto,
-} from '@/entities/user/api';
 import {useEffect, useState} from 'react';
-import ContentsCard from '@/features/home/components/ContentsCard';
 
 const HomePage = () => {
   const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
@@ -21,8 +21,16 @@ const HomePage = () => {
     useState<GetUserNameImgJobResponseDto | null>(null);
 
   useEffect(() => {
-    getUserMiniResult().then(data => {
-      setMiniResultData(data);
+    getUserCard().then(data => {
+      const miniData = {
+        code: data.code,
+        name: data.name,
+        numEI: data.ei,
+        numPD: data.pd,
+        numVA: data.va,
+        numCL: data.cl,
+      };
+      setMiniResultData(miniData);
     });
     getUserNameImgJob().then(data => {
       setUserNameImgJob(data);
