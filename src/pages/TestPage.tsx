@@ -313,7 +313,6 @@ const TestPage = () => {
       </LayoutMo>
     );
   }
-  console.log(testScore);
 
   return (
     <LayoutMobile header={<TestPageHeader onClickBack={handleClickBack} />}>

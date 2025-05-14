@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom';
 import ContentsCard from './components/ContentsCard';
 import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
+import {useAtomValue} from 'jotai';
+import {testResultAtom} from '@/shared/model/test-result';
 
 interface HomeResultCardProps {
   data: GetUserMiniResultResponseDto;
@@ -14,8 +16,13 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
   const clType = data.numCL > THRESHOLD ? '창의형' : '분석형';
   const vaType = data.numVA > THRESHOLD ? '조율형' : '주도형';
 
+  const myCardId = useAtomValue(testResultAtom)?.cardId;
+
   return (
-    <ContentsCard title="나의 테스트 결과 보러가기" arrowLink="/test">
+    <ContentsCard
+      title="나의 테스트 결과 보러가기"
+      arrowLink={`/result/${myCardId}`}
+    >
       <div className="flex mt-4 mb-3 h-[120px]">
         <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
         <div className="flex-1">
@@ -27,28 +34,40 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
             <div className="flex items-center gap-2">
               <span className="text-xs w-12">{eiType}</span>
               <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
-                <div className="absolute left-0 top-0 h-full w-[70%] bg-[#5F4AFF] rounded-[10px]"></div>
+                <div
+                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  style={{width: `${(data.numEI / 75) * 100}%`}}
+                ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="text-xs w-12">{pdType}</span>
               <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
-                <div className="absolute left-0 top-0 h-full w-[65%] bg-[#5F4AFF] rounded-[10px]"></div>
+                <div
+                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  style={{width: `${(data.numPD / 75) * 100}%`}}
+                ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="text-xs w-12">{clType}</span>
               <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
-                <div className="absolute left-0 top-0 h-full w-[35%] bg-[#5F4AFF] rounded-[10px]"></div>
+                <div
+                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  style={{width: `${(data.numCL / 75) * 100}%`}}
+                ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="text-xs w-12">{vaType}</span>
               <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
-                <div className="absolute left-0 top-0 h-full w-[25%] bg-[#5F4AFF] rounded-[10px]"></div>
+                <div
+                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  style={{width: `${(data.numVA / 75) * 100}%`}}
+                ></div>
               </div>
             </div>
           </div>
