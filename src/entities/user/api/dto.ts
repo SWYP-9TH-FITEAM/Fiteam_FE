@@ -28,7 +28,7 @@ export const getUserGroupsAcceptedResponseDto = z.array(
   z.object({
     groupId: z.number().int(),
     groupName: z.string(),
-    invitedAt: z.string().datetime(),
+    invitedAt: z.string().datetime().nullable(),
   }),
 );
 
