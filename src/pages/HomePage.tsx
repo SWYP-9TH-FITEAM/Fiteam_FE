@@ -13,7 +13,7 @@ import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {useEffect, useState} from 'react';
 
 const HomePage = () => {
-  const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
+  // TODO: 로그인O+테스트O 시에 접근 가능
 
   const [miniResultData, setMiniResultData] =
     useState<GetUserMiniResultResponseDto | null>(null);
@@ -60,8 +60,8 @@ const HomePage = () => {
       <HomeHeader />
       <div className="flex flex-col gap-4 pb-4">
         <HomeResultCard data={miniResultData} />
-        <HomeProfile isLogin={isLogin} profileData={userNameImgJob} />
-        <HomeProjectList isLogin={isLogin} />
+        <HomeProfile profileData={userNameImgJob} />
+        <HomeProjectList />
       </div>
     </LayoutBottomBar>
   );
