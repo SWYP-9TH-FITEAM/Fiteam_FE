@@ -49,7 +49,7 @@ export const LoginPage: React.FC = () => {
         setToken(token);
         setUserInfo({email: data.email, type});
 
-        navigate('/');
+        navigate('/home');
       }),
     );
   };

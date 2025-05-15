@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import AuthGuard from './components/guards/AuthGuard';
+import AuthTestGuard from './components/guards/AuthTestGuard';
 import PublicOnlyGuard from './components/guards/PublicOnlyGuard';
 import MainPage from './pages/MainPage';
 import OnboardingPage from './pages/OnboardingPage';
@@ -37,7 +37,7 @@ function App() {
         </Route>
 
         {/* Protected Routes: Accessible only when authenticated */}
-        <Route element={<AuthGuard />}>
+        <Route element={<AuthTestGuard />}>
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/profile/create" element={<ProfileEditPage />} />
