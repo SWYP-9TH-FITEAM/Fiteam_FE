@@ -23,7 +23,9 @@ const AuthTestGuard = () => {
     ky.get('/v1/user/card', {
       headers: {Authorization: `Bearer ${token}`},
     })
-      .then(() => setStatus('success'))
+      .then(() => {
+        setStatus('success');
+      })
       .catch(error => {
         console.log(error);
         if (error instanceof HTTPError && error.response.status === 400) {
@@ -34,20 +36,20 @@ const AuthTestGuard = () => {
       });
   }, [token]);
 
-  if (token) {
-    if (status === 'success') {
-      return <Navigate to="/home" replace />;
-    } else {
-      return <Navigate to="/test/start" replace />;
-    }
-  }
   if (!token) {
     // User is not authenticated, redirect them to the login page
     // Pass the current location to redirect back after login
     return <Navigate to="/login" state={{from: location}} replace />;
   }
 
-  // User is authenticated, allow access to the child routes
+  // status가 'loading' 또는 'idle'이면 아무것도 렌더링하지 않음(=대기)
+  if (status === 'loading' || status === 'idle') {
+    return null;
+  }
+
+  if (status === 'error400') {
+    return <Navigate to="/test/start" replace />;
+  }
   return <Outlet />;
 };
 
