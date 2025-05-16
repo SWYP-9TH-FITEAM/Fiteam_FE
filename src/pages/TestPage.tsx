@@ -280,7 +280,7 @@ const TestPage = () => {
     setTestResult(result);
 
     // 결과 페이지로 이동
-    navigate(`/result/${result.cardId}`);
+    navigate('/result');
   };
 
   const progressPercent =

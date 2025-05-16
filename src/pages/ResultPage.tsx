@@ -3,14 +3,17 @@ import LoginDialog from '@/components/LoginDialog';
 import ResultAllType from '@/features/result/ResultAllType';
 import LayoutMo from '@/layouts/LayoutMo';
 import {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAtomValue} from 'jotai';
 import {testResultAtom} from '@/shared/model/test-result';
 import {getCardById, GetCardResponseDto} from '@/entities/card';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import TypeDialog from '@/features/result/TypeDialog';
+import {useToken} from '@/shared/model/auth';
+import ResultHistoryPage from './ResultHistoryPage';
 
 const ResultPage = () => {
+  const token = useToken();
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [cardData, setCardData] = useState<GetCardResponseDto | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,21 +22,23 @@ const ResultPage = () => {
   const [selectedCard, setSelectedCard] = useState<GetCardResponseDto | null>(
     null,
   );
+  const [testSubPage, setTestSubPage] = useState<'ALL_TYPE' | 'HISTORY' | ''>(
+    '',
+  );
 
   const navigate = useNavigate();
-  const {id} = useParams();
-  const isResultAll = id === 'all';
 
   // 저장된 테스트 결과 가져오기
   const testResult = useAtomValue(testResultAtom);
+  console.log('testResult', testResult);
   // URL의 id와 저장된 결과의 cardId가 일치하는지 확인
   useEffect(() => {
-    if (!isResultAll && id) {
+    if (testResult?.cardId) {
       setIsLoading(true);
       setError(null);
 
       // URL에서 가져온 ID 또는 테스트 결과의 cardId 사용
-      const cardId = parseInt(id, 10);
+      const cardId = testResult.cardId;
 
       if (isNaN(cardId)) {
         setError('유효하지 않은 카드 ID입니다.');
@@ -53,10 +58,10 @@ const ResultPage = () => {
           setIsLoading(false);
         });
     }
-  }, [testResult, id, isResultAll]);
+  }, [testResult]);
 
   const handleViewAllResults = () => {
-    navigate('/result/all');
+    setTestSubPage('ALL_TYPE');
   };
 
   const onProfileCardClick = () => {
@@ -68,8 +73,12 @@ const ResultPage = () => {
     }
   };
 
-  if (isResultAll) {
-    return <ResultAllType />;
+  if (testSubPage === 'ALL_TYPE') {
+    return <ResultAllType onClose={() => setTestSubPage('')} />;
+  }
+
+  if (testSubPage === 'HISTORY') {
+    return <ResultHistoryPage onClose={() => setTestSubPage('')} />;
   }
 
   if (isLoading) {
@@ -117,7 +126,7 @@ const ResultPage = () => {
   // 나머지 렌더링 코드
   return (
     <>
-      <LayoutMo bgColor="#F1F2F4" hasHeader={isResultAll}>
+      <LayoutMo bgColor="#F1F2F4">
         <div className="flex flex-col items-center mb-[45px]">
           <div className="h-12 flex ml-auto">
             <button aria-label="홈으로 이동">
@@ -194,9 +203,9 @@ const ResultPage = () => {
             </div>
           </div>
 
-          {/* TODO: 보류 */}
-          {/* <div className="mt-[35px] mb-[31px]">
-            <p className="text-[13px] font-medium leading-4">
+          <div className="mt-[35px] mb-[31px]">
+            {/* TODO: 보류 */}
+            {/* <p className="text-[13px] font-medium leading-4">
               친구에게 공유하기
             </p>
             <div className="flex gap-4 mt-4 mb-[30px]">
@@ -208,7 +217,7 @@ const ResultPage = () => {
                   tabIndex={0}
                 />
               ))}
-            </div>
+            </div> */}
             <div>
               <a
                 href="/test"
@@ -217,10 +226,19 @@ const ResultPage = () => {
               >
                 재검사하기
               </a>
+              {token && (
+                <button
+                  onClick={() => setTestSubPage('HISTORY')}
+                  className="text-[13px] font-medium leading-4 before:content-['•'] before:text-gray-3 before:mx-1 before:text-[13px]"
+                  aria-label="히스토리"
+                >
+                  히스토리
+                </button>
+              )}
             </div>
-          </div> */}
+          </div>
 
-          <div className="w-full flex flex-col gap-2 mt-[38px]">
+          <div className="w-full flex flex-col gap-2">
             <button
               className="flex h-[54px] justify-center items-center gap-2.5 bg-white self-stretch px-[93px] py-[13px] rounded-[10px] shadow-sm hover:bg-gray-50 transition-colors"
               aria-label="모든 결과 유형보기"

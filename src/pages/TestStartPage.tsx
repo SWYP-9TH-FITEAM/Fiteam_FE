@@ -15,7 +15,7 @@ const TestStartPage = () => {
     navigate('/login');
   };
   const navigateToBack = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   return (
