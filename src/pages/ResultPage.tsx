@@ -143,35 +143,62 @@ const ResultPage = () => {
             }}
           />
           {testResult && (
-            <p className="ml-[26px] mr-3 text-[#111]">
-              이미지를 꾹 누르면 저장이 돼요
+            <p className="mt-[11px] text-gray-4">
+              ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
             </p>
           )}
-          <div className="w-[335px] h-[310px] shrink-0 bg-white mt-3.5 rounded-lg shadow-sm">
-            {cardData.summary}
+          <div className="w-full h-[310px] bg-white mt-3.5 px-4 py-[22px] rounded-2xl shadow-sm text-left">
+            <b className="block text-xl not-italic font-medium leading-7 mb-[14px]">
+              당신은 이런 성향입니다
+            </b>
+            <p className="break-all">
+              {cardData.summary} asdfsffffasdfsffffasdfsffffasdfsffff
+              asdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffff
+              asdfsffffasdfsffffasdfsffffasdfsffffasdfsfffff
+            </p>
           </div>
           <div className="w-full flex gap-[15px] mt-3.5">
             <div
-              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              잘맞아요 {cardData.bestMatchCode1}
+              <p className="text-[13px] font-medium leading-4">
+                이런 캐릭터와 맞아요
+              </p>
+              <img
+                src="/src/assets/images/robot.png"
+                alt="로봇 캐릭터"
+                className="w-[70px] h-[70px] mt-1 mb-2"
+              />
+              <b>{cardData.bestMatchCode1}</b>
             </div>
             <div
-              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              안맞아요 {cardData.worstMatchCode1}
+              <p className="text-[13px] font-medium leading-4">
+                이런 캐릭터와 맞지 않아요
+              </p>
+              <img
+                src="/src/assets/images/robot.png"
+                alt="로봇 캐릭터"
+                className="w-[70px] h-[70px] mt-1 mb-2"
+              />
+              <b>{cardData.worstMatchCode1}</b>
             </div>
           </div>
-          <div className="mt-[35px] mb-[31px]">
-            <p className="text-lg font-medium">친구에게 공유하기</p>
+
+          {/* TODO: 보류 */}
+          {/* <div className="mt-[35px] mb-[31px]">
+            <p className="text-[13px] font-medium leading-4">
+              친구에게 공유하기
+            </p>
             <div className="flex gap-4 mt-4 mb-[30px]">
               {[1, 2, 3, 4].map(index => (
                 <div
@@ -182,16 +209,18 @@ const ResultPage = () => {
                 />
               ))}
             </div>
-            <a
-              href="/"
-              className="text-primary hover:underline"
-              aria-label="재검사하기"
-            >
-              재검사하기
-            </a>
-          </div>
+            <div>
+              <a
+                href="/test"
+                className="text-[13px] font-medium leading-4"
+                aria-label="재검사하기"
+              >
+                재검사하기
+              </a>
+            </div>
+          </div> */}
 
-          <div className="w-full flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-2 mt-[38px]">
             <button
               className="flex h-[54px] justify-center items-center gap-2.5 bg-white self-stretch px-[93px] py-[13px] rounded-[10px] shadow-sm hover:bg-gray-50 transition-colors"
               aria-label="모든 결과 유형보기"

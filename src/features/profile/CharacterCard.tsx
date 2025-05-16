@@ -70,20 +70,19 @@ const PersonalityTag = ({
 
   switch (position) {
     case 'topLeft':
-      positionClass = 'absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2';
+      positionClass = 'absolute top-2 -left-20';
       break;
     case 'topRight':
-      positionClass = 'absolute top-0 right-0 translate-x-1/2 -translate-y-1/2';
+      positionClass = 'absolute top-12 -right-30';
       break;
     case 'bottomLeft':
-      positionClass =
-        'absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2';
+      positionClass = 'absolute bottom-6 -left-12';
       break;
   }
 
   return (
     <div
-      className={`${positionClass} flex w-[97px] h-[31px] justify-center items-center gap-2.5 shrink-0 bg-[#EEECFF] shadow-[0px_0px_2px_0px_#5F4AFF] px-[17px] py-[3px] rounded-lg text-[#5F4AFF] text-center text-lg font-medium`}
+      className={`${positionClass} flex w-[97px] h-[31px] justify-center items-center gap-2.5 shrink-0 bg-white shadow-[0px_0px_2px_0px_#9A9A9A] rounded-lg text-gray-dark text-center text-lg font-medium`}
     >
       {text}
     </div>
@@ -100,15 +99,14 @@ export const CharacterCard = ({name, score, tags}: CharacterCardProps) => {
 bg-[linear-gradient(0deg,#F1F2FB_0%,#F1F2FB_100%),linear-gradient(187deg,#FFF_0.79%,rgba(255,255,255,0.00)_69.96%)]
         "
       >
-        <h3 className="text-left text-xl font-medium text-black">
-          나의 성향은
-        </h3>
-        <div className="flex flex-col items-center justify-center mb-[42px]">
-          <div className="relative w-48 h-48 mx-auto mb-6">
+        <h3 className="text-left text-xl font-medium text-black">나의 성향</h3>
+        <div className="flex flex-col items-center justify-center mb-[11px]">
+          <div className="relative w-[120px] h-[200px]">
+            <div className="absolute top-[10px] left-[20px] w-[150px] h-[150px] bg-white rounded-full " />
             <img
               src="/src/assets/images/robot.png"
               alt="로봇 캐릭터"
-              className="w-full h-full object-contain"
+              className="absolute top-0 left-0 w-[120px] h-[120px] object-contain z-20"
             />
 
             <PersonalityTag text={tags.topLeft} position="topLeft" />
