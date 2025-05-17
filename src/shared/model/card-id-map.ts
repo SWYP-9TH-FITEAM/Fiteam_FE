@@ -7,12 +7,17 @@ import {loadable} from 'jotai/utils';
 const cardIdMapAtom = loadable(
   atom(async () => {
     const queryClient = new QueryClient();
-    const cards = await queryClient.fetchQuery(cardQueries.allCards());
+    try {
+      const cards = await queryClient.fetchQuery(cardQueries.allCards());
 
-    return cards.reduce((acc, card) => {
-      acc.set(card.id, card);
-      return acc;
-    }, new Map<number, GetAllCardsResponseDto[number]>());
+      return cards.reduce((acc, card) => {
+        acc.set(card.id, card);
+        return acc;
+      }, new Map<number, GetAllCardsResponseDto[number]>());
+    } catch (error) {
+      console.error('Failed to fetch card data:', error);
+      return new Map<number, GetAllCardsResponseDto[number]>();
+    }
   }),
 );
 
