@@ -279,7 +279,10 @@ const ProfileEditPage = () => {
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="URL"
             {...register('url', {
-              max: {value: 200, message: '최대 200자 이내로 입력해주세요.'},
+              maxLength: {
+                value: 200,
+                message: '최대 200자 이내로 입력해주세요.',
+              },
             })}
           />
           <p className="text-sm text-red-500">{errors.url?.message}</p>
@@ -293,7 +296,10 @@ const ProfileEditPage = () => {
             className="w-full h-32 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="ex) 활동 내역 등"
             {...register('introduction', {
-              max: {value: 65535, message: '최대 65535자 이내로 입력해주세요.'},
+              maxLength: {
+                value: 65535,
+                message: '최대 65535자 이내로 입력해주세요.',
+              },
             })}
           />
           <p className="text-sm text-red-500">{errors.introduction?.message}</p>
