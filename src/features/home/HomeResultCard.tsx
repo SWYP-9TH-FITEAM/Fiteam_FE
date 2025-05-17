@@ -75,7 +75,7 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
       </div>
       <div className="text-right">
         <Link
-          to="/test"
+          to="/test/start"
           className="text-[#767676] text-right text-[13px] not-italic font-medium leading-4"
         >
           다시하기
