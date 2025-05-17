@@ -14,7 +14,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
 }) => {
   const currentGroupId = useCurrentGroupId();
 
-  const {data: positions} = useQuery({
+  const {data: positions, isError} = useQuery({
     ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
     enabled: currentGroupId !== null,
   });
@@ -25,7 +25,10 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
 
   return (
     <div className="flex items-center mt-3 justify-center pt-3 px-5 bg-white rounded-[20px_16px_0px_0px]">
-      {!positions && <div className="loading loading-spinner loading-xl" />}
+      {!positions && !isError && (
+        <div className="loading loading-spinner loading-xl" />
+      )}
+      {isError && <div className="text-red-500">Failed to load positions</div>}
       {positions?.map((role, index) => (
         <button
           key={index}
