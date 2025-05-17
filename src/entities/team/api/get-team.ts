@@ -8,6 +8,7 @@ import {
   getTeamRequestReceivedResponseDto,
   getTeamSenderIdGroupIdResponseDto,
 } from './dto';
+import {HTTPError} from 'ky';
 
 export const getTeamContacts = async (teamId: number) => {
   const ENDPOINT = `v1/team/${teamId}/contacts`;
@@ -36,8 +37,8 @@ export const getTeamBySenderIdGroupId = async (
   });
 };
 
-export const getTeamBuildingStatus = async () => {
-  const ENDPOINT = `v1/team/teambuildingstatus`;
+export const getTeamBuildingStatus = async (groupId: number) => {
+  const ENDPOINT = `v1/team/teambuildingstatus/${groupId}`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -72,14 +73,23 @@ export const getTeamRequestFromUserId = async (userId: number) => {
   });
 };
 
-export const getTeamMyTeam = async () => {
-  const ENDPOINT = `v1/team/myteam`;
+export const getTeamMyTeam = async (groupId: number) => {
+  const ENDPOINT = `v1/team/myteam/${groupId}`;
 
-  const response = await apiWithAuth.get(ENDPOINT).json();
+  try {
+    const response = await apiWithAuth.get(ENDPOINT).json();
 
-  return validateSchema({
-    dto: response,
-    schema: getTeamMyTeamResponseDto,
-    schemaName: ENDPOINT,
-  });
+    return validateSchema({
+      dto: response,
+      schema: getTeamMyTeamResponseDto,
+      schemaName: ENDPOINT,
+    });
+  } catch (e) {
+    if (e instanceof HTTPError && e.response.status === 400) {
+      const message = await e.response.text();
+      if (message === '해당 그룹에 속한 팀이 없습니다.') return null;
+    }
+
+    throw e;
+  }
 };

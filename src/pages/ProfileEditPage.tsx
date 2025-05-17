@@ -1,4 +1,3 @@
-import {getPositions} from '@/entities/member/api/positions';
 import ProfileLoadingScreen from '@/features/profile/ProfileLoadingScreen';
 import ProfileSkipDialog from '@/features/profile/ProfileSkipDialog';
 import LayoutMo from '@/layouts/LayoutMo';
@@ -8,17 +7,27 @@ import {useForm} from 'react-hook-form';
 import {useQuery} from '@tanstack/react-query';
 import {memberQueries} from '@/entities/member/api/member.query';
 import {patchMemberMyProfile} from '@/entities/member/api/update-member';
-
-const groupId = 1; // TODO: 실제 그룹 ID로 교체
+import {useCurrentGroupId} from '@/shared/model/group-id';
 
 const ProfileEditPage = () => {
   const navigate = useNavigate();
+  const currentGroupId = useCurrentGroupId();
 
-  const [positions, setPositions] = useState<string[]>([]);
+  const {data: positions} = useQuery({
+    ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
+    enabled: currentGroupId !== null,
+  });
   const [isSkipDialogOpen, setIsSkipDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {register, handleSubmit, setValue, watch, reset} = useForm<{
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: {errors},
+  } = useForm<{
     position: string;
     workHistory: number;
     projectGoal: string;
@@ -37,9 +46,10 @@ const ProfileEditPage = () => {
   });
 
   // 기존 프로필 데이터 패치
-  const {data: myProfile, isLoading: isProfileLoading} = useQuery(
-    memberQueries.myProfile(groupId),
-  );
+  const {data: myProfile, isLoading: isProfileLoading} = useQuery({
+    ...memberQueries.myProfile(currentGroupId ?? 0),
+    enabled: currentGroupId !== null,
+  });
 
   // myProfile이 있으면 폼에 값 세팅
   useEffect(() => {
@@ -75,9 +85,10 @@ const ProfileEditPage = () => {
   );
 
   const handleComplete = handleSubmit(async data => {
+    if (currentGroupId === null) return;
     setIsLoading(true);
     try {
-      await patchMemberMyProfile(groupId, {
+      await patchMemberMyProfile(currentGroupId, {
         position: data.position,
         workHistory: Number(data.workHistory),
         projectGoal: data.projectGoal,
@@ -112,13 +123,6 @@ const ProfileEditPage = () => {
 
     return `${percentage}%`;
   };
-
-  useEffect(() => {
-    getPositions(1).then(data => {
-      // TODO:
-      setPositions(data);
-    });
-  }, []);
 
   if (isLoading || isProfileLoading) {
     return <ProfileLoadingScreen onComplete={handleLoadingComplete} />;
@@ -155,7 +159,7 @@ const ProfileEditPage = () => {
         <div className="w-full mb-6">
           <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
           <div className="flex gap-2 w-full flex-wrap">
-            {positions.map(eachPosition => (
+            {positions?.map(eachPosition => (
               <button
                 key={eachPosition}
                 type="button"
@@ -242,8 +246,14 @@ const ProfileEditPage = () => {
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="ex) 최고의 PM이 되는 것"
-            {...register('projectGoal')}
+            {...register('projectGoal', {
+              maxLength: {
+                value: 200,
+                message: '최대 200자 이내로 입력해주세요.',
+              },
+            })}
           />
+          <p className="text-sm text-red-500">{errors.projectGoal?.message}</p>
         </div>
         {/* 목적 */}
         <div className="w-full mb-4">
@@ -251,8 +261,16 @@ const ProfileEditPage = () => {
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="ex) 수익화"
-            {...register('projectPurpose')}
+            {...register('projectPurpose', {
+              maxLength: {
+                value: 50,
+                message: '최대 50자 이내로 입력해주세요.',
+              },
+            })}
           />
+          <p className="text-sm text-red-500">
+            {errors.projectPurpose?.message}
+          </p>
         </div>
         {/* 포트폴리오 */}
         <div className="w-full mb-4">
@@ -260,8 +278,11 @@ const ProfileEditPage = () => {
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="URL"
-            {...register('url')}
+            {...register('url', {
+              max: {value: 200, message: '최대 200자 이내로 입력해주세요.'},
+            })}
           />
+          <p className="text-sm text-red-500">{errors.url?.message}</p>
         </div>
         {/* 하고 싶은 소개 */}
         <div className="w-full mb-8">
@@ -271,8 +292,11 @@ const ProfileEditPage = () => {
           <textarea
             className="w-full h-32 bg-gray-100 rounded-lg p-3 resize-none"
             placeholder="ex) 활동 내역 등"
-            {...register('introduction')}
+            {...register('introduction', {
+              max: {value: 65535, message: '최대 65535자 이내로 입력해주세요.'},
+            })}
           />
+          <p className="text-sm text-red-500">{errors.introduction?.message}</p>
         </div>
         {/* 완료 버튼 */}
         <button
