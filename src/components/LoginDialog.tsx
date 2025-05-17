@@ -1,4 +1,5 @@
 import {Dialog, DialogContent} from '@/components/ui/dialog';
+import {useNavigate} from 'react-router-dom';
 
 interface LoginDialogProps {
   open: boolean;
@@ -6,6 +7,13 @@ interface LoginDialogProps {
 }
 
 const LoginDialog = ({open, onOpenChange}: LoginDialogProps) => {
+  const navigate = useNavigate();
+
+  const navigateToLogin = () => {
+    navigate('/login');
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 border-0 shadow-none bg-transparent flex items-center justify-center [&>button]:hidden">
@@ -22,7 +30,10 @@ const LoginDialog = ({open, onOpenChange}: LoginDialogProps) => {
           </div>
           <div className="text-6xl mb-6">✋</div>
           <div className="flex w-full gap-1.5 mt-auto">
-            <button className="flex-1 h-[54px] rounded-lg bg-[#EEECFF] text-[#5F4AFF] font-bold text-xl whitespace-nowrap">
+            <button
+              onClick={navigateToLogin}
+              className="flex-1 h-[54px] rounded-lg bg-[#EEECFF] text-[#5F4AFF] font-bold text-xl whitespace-nowrap"
+            >
               10초만에 회원가입하기
             </button>
             <button

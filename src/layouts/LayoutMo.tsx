@@ -8,6 +8,7 @@ interface LayoutMoProps {
   bgColor?: string;
   text?: string;
   rightChildren?: ReactNode;
+  onClickBack?: () => void;
 }
 
 const LayoutMo = ({
@@ -16,6 +17,7 @@ const LayoutMo = ({
   bgColor = '#fafafa',
   text,
   rightChildren,
+  onClickBack,
 }: LayoutMoProps) => {
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ const LayoutMo = ({
           <div className="flex gap-2.5">
             <button
               className="w-6 h-6 flex justify-center items-center cursor-pointer"
-              onClick={navigateToBack}
+              onClick={onClickBack || navigateToBack}
               aria-label="뒤로가기"
             >
               <img src={arrowLeftIcon} alt="뒤로가기" />
