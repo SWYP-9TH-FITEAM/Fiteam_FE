@@ -50,10 +50,10 @@ export const TeamBuilding = () => {
   const [excludeClosed, setExcludeClosed] = React.useState(false);
 
   React.useEffect(() => {
-    if (!loading && positions) {
+    if (!loading && positions && !selectedRole) {
       setSelectedRole(positions[0]);
     }
-  }, [positions, loading]);
+  }, [positions, loading, selectedRole]);
 
   return (
     <div className="flex flex-col">
