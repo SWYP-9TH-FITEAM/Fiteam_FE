@@ -4,24 +4,94 @@ import ProfileSkipDialog from '@/features/profile/ProfileSkipDialog';
 import LayoutMo from '@/layouts/LayoutMo';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useForm} from 'react-hook-form';
+import {useQuery} from '@tanstack/react-query';
+import {memberQueries} from '@/entities/member/api/member.query';
+import {patchMemberMyProfile} from '@/entities/member/api/update-member';
+
+const groupId = 1; // TODO: 실제 그룹 ID로 교체
 
 const ProfileEditPage = () => {
   const navigate = useNavigate();
 
   const [positions, setPositions] = useState<string[]>([]);
-  const [selectedJob, setSelectedJob] = useState<string>('');
-
-  const [career, setCareer] = useState<number>(10);
   const [isSkipDialogOpen, setIsSkipDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleComplete = () => {
+  const {register, handleSubmit, setValue, watch, reset} = useForm<{
+    position: string;
+    workHistory: number;
+    projectGoal: string;
+    projectPurpose: string;
+    url: string;
+    introduction: string;
+  }>({
+    defaultValues: {
+      position: '',
+      workHistory: 0,
+      projectGoal: '',
+      projectPurpose: '',
+      url: '',
+      introduction: '',
+    },
+  });
+
+  // 기존 프로필 데이터 패치
+  const {data: myProfile, isLoading: isProfileLoading} = useQuery(
+    memberQueries.myProfile(groupId),
+  );
+
+  // myProfile이 있으면 폼에 값 세팅
+  useEffect(() => {
+    if (myProfile) {
+      reset({
+        position: myProfile.position ?? '',
+        workHistory: myProfile.workHistory != null ? myProfile.workHistory : 0,
+        projectGoal: myProfile.projectGoal ?? '',
+        projectPurpose: myProfile.projectPurpose ?? '',
+        url: myProfile.url ?? '',
+        introduction: myProfile.introduction ?? '',
+      });
+    }
+  }, [myProfile, reset]);
+
+  const workHistory = watch('workHistory');
+  const position = watch('position');
+  const projectGoal = watch('projectGoal');
+  const projectPurpose = watch('projectPurpose');
+  const url = watch('url');
+  const introduction = watch('introduction');
+
+  // 모든 필드가 비어있지 않아야 제출 가능
+  const isFormValid = [
+    position,
+    workHistory,
+    projectGoal,
+    projectPurpose,
+    url,
+    introduction,
+  ].every(
+    v => v !== '' && v != null && (typeof v === 'number' ? v >= 0 : true),
+  );
+
+  const handleComplete = handleSubmit(async data => {
     setIsLoading(true);
-    // 10초 후 로딩 완료 및 프로필 페이지로 이동
-    setTimeout(() => {
+    try {
+      await patchMemberMyProfile(groupId, {
+        position: data.position,
+        workHistory: Number(data.workHistory),
+        projectGoal: data.projectGoal,
+        projectPurpose: data.projectPurpose,
+        url: data.url,
+        introduction: data.introduction,
+      });
       navigate('/profile');
-    }, 10000);
-  };
+    } catch (error) {
+      setIsLoading(false);
+      console.error('프로필 저장 에러:', error);
+      alert('프로필 저장에 실패했습니다.');
+    }
+  });
 
   const handleLoadingComplete = () => {
     // 로딩이 완료되면 다음 페이지로 이동
@@ -30,7 +100,7 @@ const ProfileEditPage = () => {
 
   // 슬라이더 툴팁 위치 계산 함수 (가장자리에서 잘리지 않도록)
   const getTooltipPosition = () => {
-    const percentage = (career / 20) * 100;
+    const percentage = (Number(workHistory) / 37) * 100;
 
     if (percentage > 92) {
       return '92%';
@@ -44,13 +114,12 @@ const ProfileEditPage = () => {
   };
 
   useEffect(() => {
-    getPositions(2).then(data => {
-      console.log(data);
+    getPositions(1).then(data => {
       setPositions(data);
     });
   }, []);
 
-  if (isLoading) {
+  if (isLoading || isProfileLoading) {
     return <ProfileLoadingScreen onComplete={handleLoadingComplete} />;
   }
 
@@ -66,7 +135,10 @@ const ProfileEditPage = () => {
         </button>
       }
     >
-      <div className="flex flex-col items-center pb-12">
+      <form
+        onSubmit={handleComplete}
+        className="flex flex-col items-center pb-12 w-full"
+      >
         <p className="text-[#111] text-center text-2xl not-italic font-semibold leading-8 tracking-[-0.6px] mt-4 mb-6">
           안녕하세요, 토온님!
           <br />
@@ -82,17 +154,18 @@ const ProfileEditPage = () => {
         <div className="w-full mb-6">
           <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
           <div className="flex gap-2 w-full flex-wrap">
-            {positions.map(position => (
+            {positions.map(eachPosition => (
               <button
-                key={position}
+                key={eachPosition}
+                type="button"
                 className={`flex-1 h-[38px] rounded-lg ${
-                  selectedJob === position
+                  position === eachPosition
                     ? 'border border-solid border-primary bg-[#EEECFF] text-primary'
                     : 'bg-[#F1F2F4]'
                 }`}
-                onClick={() => setSelectedJob(position as typeof selectedJob)}
+                onClick={() => setValue('position', eachPosition)}
               >
-                {position}
+                {eachPosition}
               </button>
             ))}
           </div>
@@ -106,7 +179,7 @@ const ProfileEditPage = () => {
               <div
                 className="h-full rounded-full"
                 style={{
-                  width: `${(career / 20) * 100}%`,
+                  width: `${(Number(workHistory) / 37) * 100}%`,
                   background:
                     'linear-gradient(90deg, #9182FF 0%, #5F4AFF 58.51%, #4432CE 169.03%)',
                 }}
@@ -117,10 +190,11 @@ const ProfileEditPage = () => {
             <input
               type="range"
               min="0"
-              max="20"
+              max="37"
               step="1"
-              value={career}
-              onChange={e => setCareer(parseInt(e.target.value))}
+              value={workHistory}
+              {...register('workHistory')}
+              onChange={e => setValue('workHistory', Number(e.target.value))}
               className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer"
             />
 
@@ -144,26 +218,30 @@ const ProfileEditPage = () => {
               ></div>
 
               {/* 툴팁 본문 */}
-              <div className="bg-white shadow-md rounded-md w-[70px] h-[35px] flex items-center justify-center">
-                <span className="font-medium text-center">{career}년</span>
+              <div className="bg-white shadow-md rounded-md w-fit h-[35px] px-2 flex items-center justify-center">
+                <span className="font-medium text-center whitespace-nowrap">
+                  {Number(workHistory) === 37
+                    ? '3년+'
+                    : Number(workHistory) < 12
+                      ? `${workHistory}개월`
+                      : (() => {
+                          const year = Math.floor(Number(workHistory) / 12);
+                          const month = Number(workHistory) % 12;
+                          if (month === 0) return `${year}년`;
+                          return `${year}년 ${month}개월`;
+                        })()}
+                </span>
               </div>
             </div>
           </div>
-        </div>
-        {/* 활동내역 */}
-        <div className="w-full mb-4">
-          <p className="text-base mb-2 text-left">활동내역을 적어주세요</p>
-          <textarea
-            className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
-            placeholder="활동내역을 입력하세요"
-          />
         </div>
         {/* 목표 */}
         <div className="w-full mb-4">
           <p className="text-base mb-2 text-left">목표를 입력해주세요.</p>
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
-            placeholder="목표를 입력하세요"
+            placeholder="ex) 최고의 PM이 되는 것"
+            {...register('projectGoal')}
           />
         </div>
         {/* 목적 */}
@@ -171,7 +249,8 @@ const ProfileEditPage = () => {
           <p className="text-base mb-2 text-left">목적을 입력해주세요.</p>
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
-            placeholder="목적을 입력하세요"
+            placeholder="ex) 수익화"
+            {...register('projectPurpose')}
           />
         </div>
         {/* 포트폴리오 */}
@@ -179,7 +258,8 @@ const ProfileEditPage = () => {
           <p className="text-base mb-2 text-left">포트폴리오를 올려주세요</p>
           <textarea
             className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
-            placeholder="포트폴리오 URL을 입력하세요"
+            placeholder="URL"
+            {...register('url')}
           />
         </div>
         {/* 하고 싶은 소개 */}
@@ -189,18 +269,19 @@ const ProfileEditPage = () => {
           </p>
           <textarea
             className="w-full h-32 bg-gray-100 rounded-lg p-3 resize-none"
-            placeholder="자기소개를 입력하세요"
+            placeholder="ex) 활동 내역 등"
+            {...register('introduction')}
           />
         </div>
         {/* 완료 버튼 */}
-        {/* // TODO:: validation */}
         <button
-          className="w-full h-[54px] bg-primary text-white rounded-lg text-lg font-medium"
-          onClick={handleComplete}
+          className="w-full h-[54px] bg-primary text-white rounded-lg text-lg font-medium disabled:bg-gray-300"
+          type="submit"
+          disabled={!isFormValid}
         >
           완료하기
         </button>
-      </div>
+      </form>
 
       <ProfileSkipDialog
         open={isSkipDialogOpen}
