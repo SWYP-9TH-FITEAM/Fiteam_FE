@@ -32,6 +32,10 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
       );
       toast.success('좋아요를 눌렀습니다.');
     },
+    onError: error => {
+      toast.error('좋아요를 누르는 중 오류가 발생했습니다.');
+      console.error('Like error:', error);
+    },
   });
 
   const {mutateAsync: removeLike} = useMutation({
@@ -42,6 +46,10 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
         memberQueries.membersByGroupId(currentGroupId),
       );
       toast.success('좋아요를 취소했습니다.');
+    },
+    onError: error => {
+      toast.error('좋아요를 취소하는 중 오류가 발생했습니다.');
+      console.error('Unlike error:', error);
     },
   });
 
