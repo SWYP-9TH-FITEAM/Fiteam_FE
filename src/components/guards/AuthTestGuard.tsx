@@ -1,7 +1,7 @@
 import {Navigate, Outlet, useLocation} from 'react-router-dom';
 import {useToken} from '@/shared/model/auth';
-import ky, {HTTPError} from 'ky';
 import {useState, useEffect} from 'react';
+import {api} from '@/shared/api/client';
 
 /**
  * A route guard that allows access only if the user IS authenticated.
@@ -13,26 +13,23 @@ const AuthTestGuard = () => {
   const token = useToken();
   const location = useLocation();
 
-  const [status, setStatus] = useState<
-    'idle' | 'loading' | 'success' | 'error400' | 'errorOther'
-  >('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'fail'>(
+    'idle',
+  );
 
   useEffect(() => {
     if (!token) return;
     setStatus('loading');
-    ky.get('/v1/user/card', {
-      headers: {Authorization: `Bearer ${token}`},
-    })
-      .then(() => {
-        setStatus('success');
-      })
-      .catch(error => {
-        console.log(error);
-        if (error instanceof HTTPError && error.response.status === 400) {
-          setStatus('error400');
+    api<unknown>('v1/user/card', {method: 'GET'})
+      .then(res => {
+        if (res.ok) {
+          setStatus('success');
         } else {
-          setStatus('errorOther');
+          setStatus('fail');
         }
+      })
+      .catch(() => {
+        setStatus('fail');
       });
   }, [token]);
 
@@ -42,14 +39,15 @@ const AuthTestGuard = () => {
     return <Navigate to="/login" state={{from: location}} replace />;
   }
 
-  // status가 'loading' 또는 'idle'이면 아무것도 렌더링하지 않음(=대기)
   if (status === 'loading' || status === 'idle') {
     return null;
   }
 
-  if (status === 'error400') {
+  if (status === 'fail') {
     return <Navigate to="/test/start" replace />;
   }
+
+  // status === 'success'일 때만 자식 라우트 렌더링
   return <Outlet />;
 };
 
