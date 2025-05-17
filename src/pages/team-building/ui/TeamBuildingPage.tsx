@@ -24,6 +24,7 @@ export const TeamBuildingPage: React.FC = () => {
   const {
     data: [{data: acceptedGroups}, {data: pendingGroups}, {data: myProfile}],
     loading,
+    error,
   } = useQueries({
     queries: [
       userQueries.groupsAccepted(),
@@ -37,6 +38,7 @@ export const TeamBuildingPage: React.FC = () => {
       return {
         data,
         loading: data.some(data => data.isLoading),
+        error: data.some(data => data.isError),
       };
     },
   });
@@ -101,6 +103,22 @@ export const TeamBuildingPage: React.FC = () => {
         header={<TeamBuildingHeader />}
       >
         <div className="loading loading-spinner loading-xl" />
+      </LayoutBottomBar>
+    );
+  }
+
+  if (error) {
+    return (
+      <LayoutBottomBar
+        classNames={{
+          wrapper: 'bg-white',
+          scrollableArea: 'flex items-center justify-center',
+        }}
+        header={<TeamBuildingHeader />}
+      >
+        <div className="text-red-500">
+          데이터를 불러오는 중 오류가 발생했습니다.
+        </div>
       </LayoutBottomBar>
     );
   }
