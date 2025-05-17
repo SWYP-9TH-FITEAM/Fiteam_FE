@@ -38,11 +38,18 @@ export type GetTeamSenderIdGroupIdResponseDto = z.infer<
 
 export const getTeamBuildingStatusResponseDto = z.array(
   z.object({
-    userId: z.number().int(),
-    isMaster: z.boolean(),
-    userName: z.string(),
-    profileImgUrl: z.string(),
-    position: z.string(),
+    teamId: z.number().int(),
+    masterUserId: z.number().int(),
+    teamStatus: z.string(),
+    members: z.array(
+      z.object({
+        userId: z.number().int(),
+        isMaster: z.boolean(),
+        userName: z.string(),
+        profileImgUrl: z.string().url().nullable(),
+        position: z.string().nullable(),
+      }),
+    ),
   }),
 );
 
@@ -78,14 +85,19 @@ export type GetTeamRequestFromUserIdResponseDto = z.infer<
   typeof getTeamRequestFromUserIdResponseDto
 >;
 
-export const getTeamMyTeamResponseDto = z.array(
-  z.object({
-    userId: z.number().int(),
-    isMaster: z.boolean(),
-    userName: z.string(),
-    profileImgUrl: z.string(),
-    position: z.string(),
-  }),
-);
+export const getTeamMyTeamResponseDto = z.object({
+  teamId: z.number().int(),
+  masterUserId: z.number().int(),
+  teamStatus: z.string(),
+  members: z.array(
+    z.object({
+      userId: z.number().int(),
+      isMaster: z.boolean(),
+      userName: z.string(),
+      profileImgUrl: z.string().url().nullable(),
+      position: z.string().nullable(),
+    }),
+  ),
+});
 
 export type GetTeamMyTeamResponseDto = z.infer<typeof getTeamMyTeamResponseDto>;

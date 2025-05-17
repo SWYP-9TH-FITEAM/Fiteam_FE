@@ -3,6 +3,7 @@ import {z} from 'zod';
 // 카드 응답 DTO
 export const getCardResponseDto = z.object({
   id: z.number(),
+  imgUrl: z.string(),
   code: z.string(),
   name: z.string(),
   keyword: z.string().optional(),
@@ -17,11 +18,6 @@ export const getCardResponseDto = z.object({
   worstMatchReason1: z.string().optional(),
   worstMatchCode2: z.string().optional(),
   worstMatchReason2: z.string().optional(),
-  details: z.string().optional(),
-  ei: z.number().optional(),
-  pd: z.number().optional(),
-  cl: z.number().optional(),
-  va: z.number().optional(),
 });
 
 export type GetCardResponseDto = z.infer<typeof getCardResponseDto>;

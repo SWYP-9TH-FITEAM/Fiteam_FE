@@ -17,6 +17,8 @@ import ResultPage from './pages/ResultPage';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
 import TestPage from './pages/TestPage';
 import TestStartPage from './pages/TestStartPage';
+import {OtherProfile} from './pages/team-building/ui/OtherProfile';
+import {MyTeam} from './pages/team-building/ui/MyTeam';
 
 function App() {
   return (
@@ -38,11 +40,13 @@ function App() {
         {/* Protected Routes: Accessible only when authenticated */}
         <Route element={<AuthTestGuard />}>
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:memberId" element={<OtherProfile />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
           <Route path="/profile/create" element={<ProfileEditPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/team-building" element={<TeamBuildingPage />} />
+          <Route path="/my-team" element={<MyTeam />} />
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/announcements" element={<Announcements />} />

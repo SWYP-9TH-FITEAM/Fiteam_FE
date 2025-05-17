@@ -2,54 +2,54 @@ import * as React from 'react';
 import robot from '@/assets/images/robot.png';
 import {cn} from '@/lib/utils';
 import chatIcon from '@/assets/icons/chat.svg';
-import heartIcon from '@/assets/icons/heart.svg';
+import {GetAllCardsResponseDto} from '@/entities/card';
+import {Link} from 'react-router-dom';
+
+import {LikeButton} from './LikeButton';
 
 interface UserCardProps {
   userName: string;
-  userType: string;
   profileImageUrl?: string;
   role: string;
-  onClick?: () => void;
-  isLiked?: boolean;
-  onHeartClick?: (event: React.MouseEvent) => void;
+  teamStatus: string;
+  cardIdDataMap: Map<number, GetAllCardsResponseDto[number]> | null;
+  cardId: number;
+  memberId: number;
+  likeId: number | null;
+  userId: number;
 }
 
 export const UserCard: React.FC<UserCardProps> = ({
   userName,
-  userType,
+  cardId,
   profileImageUrl,
   role,
-  onClick,
-  onHeartClick,
-  isLiked = false,
+  likeId,
+  teamStatus,
+  cardIdDataMap,
+  memberId,
+  userId,
 }) => {
-  const handleHeartClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onHeartClick?.(e);
-  };
-
   return (
-    <div
-      className="flex justify-between items-center p-[14px_20px_24px] bg-white border-b border-[#EEEEEE] cursor-pointer"
-      onClick={onClick}
+    <Link
+      to={`/profile/${memberId}`}
+      className={cn(
+        'flex justify-between items-center p-[14px_20px_24px] bg-white border-b border-[#EEEEEE] cursor-pointer',
+        teamStatus === '마감' && 'bg-[#D9D9D9]',
+      )}
     >
       <div className="flex gap-2">
         <div className="w-24 h-24 rounded-[10px] bg-[#E9E9E9] overflow-hidden relative">
           <img
-            src={profileImageUrl || robot}
+            src={profileImageUrl || cardIdDataMap?.get(cardId)?.imgUrl || robot}
             alt={`${userName}'s profile`}
             className="w-full h-full object-cover"
           />
-          <button
-            className="absolute bottom-[5px] right-[5px] rounded-full bg-white w-6 h-6 flex items-center justify-center"
-            onClick={handleHeartClick}
-          >
-            <img
-              src={heartIcon}
-              alt="Like"
-              className={cn('w-4 h-4', !isLiked && 'grayscale-100')}
-            />
-          </button>
+          <LikeButton
+            className="absolute bottom-[5px] right-[5px] "
+            likeId={likeId}
+            userId={userId}
+          />
         </div>
 
         <div className="flex flex-col gap-1 w-[101px] pt-1 text-left">
@@ -57,7 +57,7 @@ export const UserCard: React.FC<UserCardProps> = ({
             {userName}
           </span>
           <span className="text-[13px] font-medium leading-[1.23] tracking-[-2.5%] text-[#767676]">
-            {userType}
+            {cardIdDataMap?.get(cardId)?.name}
           </span>
         </div>
       </div>
@@ -83,6 +83,6 @@ export const UserCard: React.FC<UserCardProps> = ({
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

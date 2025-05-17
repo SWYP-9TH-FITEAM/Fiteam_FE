@@ -5,8 +5,10 @@ import {ReactNode} from 'react';
 import {useNavigate} from 'react-router-dom';
 import MyProfileEmpty from './MyProfileEmpty';
 import {memberQueries} from '@/entities/member/api';
+import {useCurrentGroupId} from '@/shared/model/group-id';
+import {GroupDrawer} from '../../shared/ui/GroupDrawer';
 
-const SectionInfo = ({children}: {children: ReactNode}) => {
+export const SectionInfo = ({children}: {children: ReactNode}) => {
   return (
     <div className="bg-white rounded-[20px] px-[18px] py-3">{children}</div>
   );
@@ -18,7 +20,7 @@ export interface SectionProps {
   rightContent?: ReactNode;
 }
 
-const Section2 = ({title, children}: Partial<SectionProps>) => {
+export const Section2 = ({title, children}: Partial<SectionProps>) => {
   return (
     <div className="bg-white rounded-[20px] p-[13px] text-left">
       <div className="flex justify-between items-center">
@@ -30,7 +32,7 @@ const Section2 = ({title, children}: Partial<SectionProps>) => {
 };
 
 // 정보 행 컴포넌트
-const InfoRow = ({label, content}: {label: string; content: string}) => {
+export const InfoRow = ({label, content}: {label: string; content: string}) => {
   return (
     <div className="flex mb-2 last:mb-0">
       <div className="w-20 text-left font-medium">{label}</div>
@@ -43,14 +45,18 @@ const InfoRow = ({label, content}: {label: string; content: string}) => {
 
 const MyProfile = () => {
   const navigate = useNavigate();
-  const groupId = 1; // TODO:: localStorage
+  const currentGroupId = useCurrentGroupId();
 
   const {data: userCardData} = useQuery(userQueries.card());
   const {data: acceptedGroupsData} = useQuery(userQueries.groupsAccepted());
-  const {data: groupProfileMiniData} = useQuery(
-    memberQueries.myProfileMini(groupId),
-  );
-  const {data: myProfileData} = useQuery(memberQueries.myProfile(groupId));
+  const {data: groupProfileMiniData} = useQuery({
+    ...memberQueries.myProfileMini(currentGroupId ?? 0),
+    enabled: currentGroupId !== null,
+  });
+  const {data: myProfileData} = useQuery({
+    ...memberQueries.myProfile(currentGroupId ?? 0),
+    enabled: currentGroupId !== null,
+  });
 
   if (!userCardData) return <div>로딩 중...</div>;
 
@@ -61,7 +67,7 @@ const MyProfile = () => {
   if (!groupProfileMiniData?.position) {
     return (
       <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
-        {/* TODO:: 그룹명들 드롭다운 */}
+        <GroupDrawer />
         <MyProfileEmpty userCardData={userCardData} isInGroup={true} />
       </div>
     );
@@ -71,10 +77,7 @@ const MyProfile = () => {
 
   return (
     <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
-      {/* TODO 드롭다운 */}
-      {acceptedGroupsData?.map(group => (
-        <div key={group.groupId}>{group.groupName}</div>
-      ))}
+      <GroupDrawer />
       {/* 성향 카드 */}
       <CharacterCard
         name={userCardData.name}

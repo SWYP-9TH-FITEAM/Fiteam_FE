@@ -26,10 +26,10 @@ export const teamQueries = {
     }),
 
   teamBuildingStatusKey: () => [...teamQueries.all(), 'team-building-status'],
-  teamBuildingStatus: () =>
+  teamBuildingStatus: (groupId: number) =>
     queryOptions({
-      queryKey: [...teamQueries.teamBuildingStatusKey()],
-      queryFn: () => getTeamBuildingStatus(),
+      queryKey: [...teamQueries.teamBuildingStatusKey(), groupId],
+      queryFn: () => getTeamBuildingStatus(groupId),
     }),
 
   requestReceivedKey: () => [
@@ -58,9 +58,9 @@ export const teamQueries = {
     }),
 
   myTeamKey: () => [...teamQueries.all(), 'team', 'my-team'],
-  myTeam: () =>
+  myTeam: (groupId: number) =>
     queryOptions({
-      queryKey: [...teamQueries.myTeamKey()],
-      queryFn: () => getTeamMyTeam(),
+      queryKey: [...teamQueries.myTeamKey(), groupId],
+      queryFn: () => getTeamMyTeam(groupId),
     }),
 };

@@ -1,4 +1,4 @@
-import {atom} from 'jotai';
+import {atom, SetStateAction} from 'jotai';
 import {z} from 'zod';
 
 export const atomWithLocalStorage = <Schema extends z.ZodTypeAny>(
@@ -17,11 +17,19 @@ export const atomWithLocalStorage = <Schema extends z.ZodTypeAny>(
 
   const baseAtom = atom(getInitialValue());
 
-  const derivedAtom = atom<z.infer<Schema>, [z.infer<Schema>], void>(
+  const derivedAtom = atom<
+    z.infer<Schema>,
+    [SetStateAction<z.infer<Schema>>],
+    void
+  >(
     get => get(baseAtom),
     (get, set, update) => {
       const nextValue =
-        typeof update === 'function' ? update(get(baseAtom)) : update;
+        typeof update === 'function'
+          ? (update as (prev: z.infer<Schema>) => z.infer<Schema>)(
+              get(baseAtom),
+            )
+          : update;
 
       set(baseAtom, nextValue);
 
