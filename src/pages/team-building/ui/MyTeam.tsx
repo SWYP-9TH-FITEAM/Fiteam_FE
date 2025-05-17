@@ -184,6 +184,7 @@ export const MyTeam: React.FC = () => {
           {cardData.state === 'hasData' &&
             filteredMembers?.map(member => (
               <div
+                key={member.userId}
                 className={cn(
                   'flex justify-between items-center p-[14px_20px_24px] bg-white border-b border-[#EEEEEE]',
                 )}
