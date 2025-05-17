@@ -3,10 +3,14 @@ import {CharacterCard} from '@/features/profile/CharacterCard';
 import {InfoRow, Section2, SectionInfo} from '@/features/profile/MyProfile';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {useCardIdMap} from '@/shared/model/card-id-map';
-import {useQuery} from '@tanstack/react-query';
+import {useQueries} from '@tanstack/react-query';
+import {ChevronLeft} from 'lucide-react';
+import chatIcon from '@/assets/icons/chat.svg';
 
 import * as React from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import {LikeButton} from './LikeButton';
+import {useCurrentGroupId} from '@/shared/model/group-id';
 
 export const OtherProfile: React.FC = () => {
   const {memberId} = useParams<{memberId: string}>();
@@ -19,9 +23,27 @@ export const OtherProfile: React.FC = () => {
 
   const cardData = useCardIdMap();
 
-  const {data: profile} = useQuery({
-    ...memberQueries.profileByMemberId(parsedMemberId),
-    enabled: !isNotValidMemberId,
+  const currentGroupId = useCurrentGroupId();
+
+  const {
+    data: [{data: profile}, {data: members}],
+  } = useQueries({
+    queries: [
+      {
+        ...memberQueries.profileByMemberId(parsedMemberId),
+        enabled: !isNotValidMemberId,
+      },
+      {
+        ...memberQueries.membersByGroupId(currentGroupId ?? 0),
+        enabled: !!currentGroupId,
+      },
+    ],
+    combine: data => {
+      return {
+        data,
+        loading: data.some(data => data.isLoading),
+      };
+    },
   });
 
   const keywords = React.useMemo(() => {
@@ -35,12 +57,35 @@ export const OtherProfile: React.FC = () => {
     }
   }, [profile, isNotValidMemberId, navigate]);
 
+  const targetMember = React.useMemo(() => {
+    if (!currentGroupId || !members) return null;
+    return members.find(member => member.memberId === parsedMemberId);
+  }, [members, currentGroupId, parsedMemberId]);
+
   return (
     <LayoutBottomBar
+      hideBottomBar
       classNames={{wrapper: 'bg-[#f6f6f6]'}}
       header={
-        <header className="sticky top-0 z-10 h-12 px-4 py-3 text-center font-semibold text-lg">
-          나의 프로필
+        <header className="px-3 py-2.5 flex gap-2.5 items-center">
+          <button onClick={() => navigate(-1)}>
+            <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
+          </button>
+          <span className="text-xl tracking-[-0.5px] font-semibold">
+            프로필
+          </span>
+          {targetMember && (
+            <div className="ml-auto flex gap-2 items-center">
+              <LikeButton
+                className="bg-transparent"
+                likeId={targetMember.likeId}
+                userId={targetMember.userId}
+              />
+              <button className="w-6 h-6 rounded-full flex items-center justify-center">
+                <img src={chatIcon} alt="Message icon" className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </header>
       }
     >

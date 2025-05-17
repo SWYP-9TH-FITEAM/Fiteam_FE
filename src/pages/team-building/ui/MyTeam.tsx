@@ -1,4 +1,3 @@
-import {Button} from '@/components/ui/button';
 import {memberQueries} from '@/entities/member/api';
 import {teamQueries} from '@/entities/team/api/team.query';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
