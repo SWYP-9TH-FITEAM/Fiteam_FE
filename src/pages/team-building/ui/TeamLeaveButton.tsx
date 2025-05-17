@@ -23,24 +23,20 @@ interface TeamLeaveButtonProps {
 export const TeamLeaveButton: React.FC<TeamLeaveButtonProps> = ({teamId}) => {
   const [open, setOpen] = React.useState(false);
 
-  const [isPending, startTransition] = React.useTransition();
-
-  const {mutateAsync: leaveTeam} = useMutation({mutationFn: deleteTeamLeave});
+  const {mutateAsync: leaveTeam, isPending} = useMutation({
+    mutationFn: deleteTeamLeave,
+  });
 
   const navigate = useNavigate();
 
-  const handleTeamLeave = () => {
+  const handleTeamLeave = withHandleError(async () => {
     if (isPending) return;
 
-    startTransition(
-      withHandleError(async () => {
-        await leaveTeam(teamId);
+    await leaveTeam(teamId);
 
-        navigate('/team-building');
-        setOpen(false);
-      }),
-    );
-  };
+    navigate('/team-building');
+    setOpen(false);
+  });
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
