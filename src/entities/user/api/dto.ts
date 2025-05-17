@@ -2,6 +2,7 @@ import {z} from 'zod';
 
 export const getUserCardResponseDto = z.object({
   code: z.string(),
+  imgUrl: z.string(),
   name: z.string(),
   keyword: z.string(),
   summary: z.string(),

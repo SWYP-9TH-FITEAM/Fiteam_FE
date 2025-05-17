@@ -76,11 +76,11 @@ export type GetMemberProfileMyResponseDto = z.infer<
 export const getMemberMyprofileMiniResponseDto = z.object({
   userId: z.number().int(),
   userName: z.string(),
-  profileImageUrl: z.string().url(),
-  position: z.string(),
+  imageUrl: z.string().url().nullable(),
+  position: z.string().nullable(),
   teamStatus: z.string(),
   teamId: z.number().int(),
-  projectGoal: z.string(),
+  projectGoal: z.string().nullable(),
   cardId: z.number().int(),
 });
 

@@ -67,7 +67,7 @@ const ResultPage = () => {
   const onProfileCardClick = () => {
     const userInfo = localStorage.getItem('user-info');
     if (userInfo) {
-      navigate('/home');
+      navigate('/profile');
     } else {
       setProfileDialogOpen(true);
     }
