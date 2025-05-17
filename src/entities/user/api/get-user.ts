@@ -1,6 +1,7 @@
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
+  getUserCardIdsResponseDto,
   getUserCardResponseDto,
   getUserGroupsAcceptedResponseDto,
   getUserGroupsPendingResponseDto,
@@ -77,6 +78,18 @@ export const getUserGroupsPending = async () => {
   return validateSchema({
     dto: response,
     schema: getUserGroupsPendingResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getUserCardIds = async () => {
+  const ENDPOINT = 'v1/user/card-ids';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserCardIdsResponseDto,
     schemaName: ENDPOINT,
   });
 };

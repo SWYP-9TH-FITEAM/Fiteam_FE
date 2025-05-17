@@ -94,3 +94,28 @@ export const getUserMiniResultResponseDto = z.object({
 export type GetUserMiniResultResponseDto = z.infer<
   typeof getUserMiniResultResponseDto
 >;
+
+export const getUserCardIdsResponseDto = z.array(
+  z.object({
+    code: z.string(),
+    imgUrl: z.string(),
+    name: z.string(),
+    keyword: z.string(),
+    summary: z.string(),
+    teamStrength: z.string(),
+    caution: z.string(),
+    bestMatchCode1: z.string(),
+    bestMatchReason1: z.string(),
+    bestMatchCode2: z.string(),
+    bestMatchReason2: z.string(),
+    worstMatchCode1: z.string(),
+    worstMatchReason1: z.string(),
+    worstMatchCode2: z.string(),
+    worstMatchReason2: z.string(),
+    details: z.string(),
+  }),
+);
+
+export type GetUserCardIdsResponseDto = z.infer<
+  typeof getUserCardIdsResponseDto
+>;
