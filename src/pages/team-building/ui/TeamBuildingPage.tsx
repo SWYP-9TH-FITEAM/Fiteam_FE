@@ -8,7 +8,6 @@ import {useQueries} from '@tanstack/react-query';
 import {userQueries} from '@/entities/user/api';
 import {memberQueries} from '@/entities/member/api';
 import {useCurrentGroupId, useSetCurrentGroupId} from '@/shared/model/group-id';
-import {cardQueries} from '@/entities/card/api/card.query';
 
 const PAGES = Object.freeze({
   NO_GROUPS: 'NO_GROUPS',
@@ -33,7 +32,6 @@ export const TeamBuildingPage: React.FC = () => {
         ...memberQueries.myProfile(currentGroupId ?? 0),
         enabled: currentGroupId !== null,
       },
-      cardQueries.allCards(),
     ],
     combine: data => {
       return {
