@@ -1,4 +1,6 @@
 import LayoutMo from '@/layouts/LayoutMo';
+import {userQueries} from '@/entities/user/api';
+import {useQuery} from '@tanstack/react-query';
 
 interface ResultHistoryPageProps {
   onClose: () => void;
@@ -20,6 +22,10 @@ const dummyHistory = [
 ];
 
 const ResultHistoryPage = ({onClose}: ResultHistoryPageProps) => {
+  const {data: cardIdsData} = useQuery(userQueries.cardIds());
+
+  console.log(cardIdsData);
+
   return (
     <LayoutMo
       hasHeader={true}
@@ -38,18 +44,20 @@ const ResultHistoryPage = ({onClose}: ResultHistoryPageProps) => {
               alt="캐릭터"
               className="w-[80px] h-[80px] rounded-[18px] bg-[#F7F7FA] object-contain mr-4"
             />
-            <div className="flex-1 min-w-0">
-              <div className="text-xs text-[#BDBDBD] mb-1">{item.date}</div>
-              <div className="text-lg font-medium text-[#111] truncate mb-2">
-                {item.title}
+            <div className="flex flex-col flex-1">
+              <div className="flex-1 text-left">
+                <div className="text-xs text-[#BDBDBD] mb-1">{item.date}</div>
+                <div className="text-lg font-medium text-[#111] truncate mb-2">
+                  {item.title}
+                </div>
               </div>
+              <button
+                className="ml-auto px-[9px] py-1 w-[70px] h-[28px] border border-gray-2 rounded-[4px] text-gray-5 text-[13px] font-medium bg-white"
+                disabled
+              >
+                결과 보기
+              </button>
             </div>
-            <button
-              className="ml-2 px-3 py-1.5 border border-[#E5E5E5] rounded-[8px] text-[#BDBDBD] text-sm font-medium bg-[#F7F7FA] cursor-not-allowed"
-              disabled
-            >
-              결과 보기
-            </button>
           </div>
         ))}
       </div>
