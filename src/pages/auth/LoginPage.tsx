@@ -11,6 +11,7 @@ import {postAuthLogin} from '@/entities/auth/api';
 import {withHandleError} from '@/shared/util/handle-error';
 import {useSetToken} from '@/shared/model/auth';
 import {useSetUserInfo} from '@/shared/model/user';
+import {postSaveCard} from '@/entities/user/api/savecard';
 
 export const LoginPage: React.FC = () => {
   const form = useForm<LoginFormSchema>({
@@ -48,8 +49,14 @@ export const LoginPage: React.FC = () => {
 
         setToken(token);
         setUserInfo({email: data.email, type});
+        const testResult = localStorage.getItem('test-scores');
 
-        navigate('/home');
+        if (testResult) {
+          await postSaveCard({scores: JSON.parse(testResult)});
+          navigate('/result');
+        } else {
+          navigate('/home');
+        }
       }),
     );
   };

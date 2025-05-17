@@ -1,15 +1,14 @@
-import xIcon from '@/assets/xIcon.svg';
 import LoginDialog from '@/components/LoginDialog';
-import ResultAllType from '@/features/result/ResultAllType';
-import LayoutMo from '@/layouts/LayoutMo';
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useAtomValue} from 'jotai';
-import {testResultAtom} from '@/shared/model/test-result';
 import {getCardById, GetCardResponseDto} from '@/entities/card';
 import {CharacterCard} from '@/features/profile/CharacterCard';
+import ResultAllType from '@/features/result/ResultAllType';
 import TypeDialog from '@/features/result/TypeDialog';
+import LayoutMo from '@/layouts/LayoutMo';
 import {useToken} from '@/shared/model/auth';
+import {testResultAtom} from '@/shared/model/test-result';
+import {useAtomValue} from 'jotai';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import ResultHistoryPage from './ResultHistoryPage';
 
 const ResultPage = () => {
@@ -128,11 +127,12 @@ const ResultPage = () => {
     <>
       <LayoutMo bgColor="#F1F2F4">
         <div className="flex flex-col items-center mb-[45px]">
-          <div className="h-12 flex ml-auto">
-            <button aria-label="홈으로 이동">
+          {/* 0517 제거 고도화시 개선 */}
+          {/* <div className="h-12 flex ml-auto">
+            <button aria-label="홈으로 이동" onClick={handleClickClose}>
               <img src={xIcon} alt="홈으로" />
             </button>
-          </div>
+          </div> */}
           <CharacterCard
             name={cardData.name}
             score={
