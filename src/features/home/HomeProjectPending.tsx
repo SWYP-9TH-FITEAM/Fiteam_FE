@@ -10,7 +10,10 @@ const HomeProjectPending = () => {
       <div className="flex flex-col gap-2 mt-[14px] text-left">
         {projectList && projectList.length > 0 ? (
           projectList.map(project => (
-            <div className="p-3.5 bg-[#EEECFF] rounded-md">
+            <div
+              key={project.groupId}
+              className="p-3.5 bg-[#EEECFF] rounded-md"
+            >
               <span className="text-sm text-[#5F4AFF] font-medium">
                 {project.groupName}
               </span>

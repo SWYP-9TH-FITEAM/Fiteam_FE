@@ -115,6 +115,7 @@ const ProfileEditPage = () => {
 
   useEffect(() => {
     getPositions(1).then(data => {
+      // TODO:
       setPositions(data);
     });
   }, []);

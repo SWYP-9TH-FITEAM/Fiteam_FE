@@ -10,7 +10,10 @@ const HomeProjectInProgress = () => {
       <div className="flex flex-col gap-2 mt-[14px] text-left">
         {projectList && projectList.length > 0 ? (
           projectList?.map(project => (
-            <div className="p-3.5 rounded-md bg-gray-1 text-gray-dark font-medium text-sm transition hover:bg-primary-light hover:text-primary cursor-pointer">
+            <div
+              key={project.groupId}
+              className="p-3.5 rounded-md bg-gray-1 text-gray-dark font-medium text-sm transition hover:bg-primary-light hover:text-primary cursor-pointer"
+            >
               <span>{project.groupName}</span>
             </div>
           ))

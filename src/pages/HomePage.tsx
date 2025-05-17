@@ -1,31 +1,16 @@
-import {getUserCard, GetUserMiniResultResponseDto} from '@/entities/user/api';
+import {userQueries} from '@/entities/user/api';
 import ContentsCard from '@/features/home/components/ContentsCard';
 import {HomeHeader} from '@/features/home/HomeHeader';
 import HomeProjectInProgress from '@/features/home/HomeProjectInProgress';
 import HomeProjectPending from '@/features/home/HomeProjectPending';
 import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
-import {useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
 
 const HomePage = () => {
-  const [miniResultData, setMiniResultData] =
-    useState<GetUserMiniResultResponseDto | null>(null);
+  const {data: userMiniResultData} = useQuery(userQueries.miniResult());
 
-  useEffect(() => {
-    getUserCard().then(data => {
-      const miniData = {
-        code: data.code,
-        name: data.name,
-        numEI: data.ei,
-        numPD: data.pd,
-        numVA: data.va,
-        numCL: data.cl,
-      };
-      setMiniResultData(miniData);
-    });
-  }, []);
-
-  if (!miniResultData) {
+  if (!userMiniResultData) {
     return (
       <LayoutBottomBar classNames={{wrapper: 'bg-gray-1'}}>
         <HomeHeader />
@@ -48,7 +33,7 @@ const HomePage = () => {
     <LayoutBottomBar classNames={{wrapper: 'bg-gray-1'}}>
       <HomeHeader />
       <div className="flex flex-col gap-4 pb-4">
-        <HomeResultCard data={miniResultData} />
+        <HomeResultCard data={userMiniResultData} />
         <HomeProjectInProgress />
         <HomeProjectPending />
       </div>

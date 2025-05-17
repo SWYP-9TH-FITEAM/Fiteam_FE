@@ -70,13 +70,13 @@ const PersonalityTag = ({
 
   switch (position) {
     case 'topLeft':
-      positionClass = 'absolute top-2 -left-20';
+      positionClass = 'absolute top-2 left-[-60%]';
       break;
     case 'topRight':
-      positionClass = 'absolute top-12 -right-30';
+      positionClass = 'absolute top-12 right-[-70%]';
       break;
     case 'bottomLeft':
-      positionClass = 'absolute bottom-6 -left-12';
+      positionClass = 'absolute bottom-6 left-[-40%]';
       break;
   }
 

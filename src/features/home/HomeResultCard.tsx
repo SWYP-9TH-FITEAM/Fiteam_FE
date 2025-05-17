@@ -1,8 +1,6 @@
+import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
 import {Link} from 'react-router-dom';
 import ContentsCard from './components/ContentsCard';
-import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
-import {useAtomValue} from 'jotai';
-import {testResultAtom} from '@/shared/model/test-result';
 
 interface HomeResultCardProps {
   data: GetUserMiniResultResponseDto;
@@ -16,13 +14,8 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
   const clType = data.numCL > THRESHOLD ? '창의형' : '분석형';
   const vaType = data.numVA > THRESHOLD ? '조율형' : '주도형';
 
-  const myCardId = useAtomValue(testResultAtom)?.cardId;
-
   return (
-    <ContentsCard
-      title="나의 테스트 결과 보러가기"
-      arrowLink={`/result/${myCardId}`}
-    >
+    <ContentsCard title="나의 테스트 결과 보러가기" arrowLink={`/result`}>
       <div className="flex mt-4 mb-3 h-[120px]">
         <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
         <div className="flex-1">
