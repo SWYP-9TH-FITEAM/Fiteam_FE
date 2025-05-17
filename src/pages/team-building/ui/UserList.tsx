@@ -17,7 +17,7 @@ export const UserList: React.FC<UserListProps> = ({
 }) => {
   const currentGroupId = useCurrentGroupId();
 
-  const data = useCardIdMap();
+  const cardData = useCardIdMap();
 
   const {
     data: [{data: members}],
@@ -48,11 +48,11 @@ export const UserList: React.FC<UserListProps> = ({
 
   return (
     <div className="flex flex-col">
-      {(loading || data.state === 'loading') && (
+      {(loading || cardData.state === 'loading') && (
         <div className="loading loading-spinner loading-xl" />
       )}
-      {data.state === 'hasError' && <div>에러가 발생했습니다.</div>}
-      {data.state === 'hasData' &&
+      {cardData.state === 'hasError' && <div>에러가 발생했습니다.</div>}
+      {cardData.state === 'hasData' &&
         filteredMembers?.map(member => (
           <UserCard
             key={member.userId}
@@ -61,7 +61,7 @@ export const UserList: React.FC<UserListProps> = ({
             profileImageUrl={member.profileImageUrl ?? ''}
             role={member.position ?? ''}
             teamStatus={member.teamStatus}
-            cardIdDataMap={data.data}
+            cardIdDataMap={cardData.data}
             memberId={member.memberId}
             likeId={member.likeId}
             userId={member.userId}
