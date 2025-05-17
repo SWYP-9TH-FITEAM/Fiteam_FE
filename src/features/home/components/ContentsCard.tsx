@@ -3,7 +3,7 @@ import {ReactNode} from 'react';
 import {Link} from 'react-router-dom';
 
 interface ContentsCardProps {
-  title: string;
+  title?: string;
   arrowLink?: string;
   children: ReactNode;
 }

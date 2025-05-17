@@ -32,16 +32,16 @@ export const memberQueries = {
     }),
 
   myProfileKey: () => [...memberQueries.all(), 'my-profile'],
-  myProfile: () =>
+  myProfile: (groupId: number) =>
     queryOptions({
-      queryKey: [...memberQueries.myProfileKey()],
-      queryFn: () => getMemberMyProfile(),
+      queryKey: [...memberQueries.myProfileKey(), groupId],
+      queryFn: () => getMemberMyProfile(groupId),
     }),
 
   myProfileMiniKey: () => [...memberQueries.all(), 'my-profile-mini'],
-  myProfileMini: () =>
+  myProfileMini: (groupId: number) =>
     queryOptions({
-      queryKey: [...memberQueries.myProfileMiniKey()],
-      queryFn: () => getMemberMyProfileMini(),
+      queryKey: [...memberQueries.myProfileMiniKey(), groupId],
+      queryFn: () => getMemberMyProfileMini(groupId),
     }),
 };

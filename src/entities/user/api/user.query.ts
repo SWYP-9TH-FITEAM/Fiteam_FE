@@ -1,8 +1,10 @@
 import {queryOptions} from '@tanstack/react-query';
 import {
   getUserCard,
+  getUserCardIds,
   getUserGroupsAccepted,
   getUserGroupsPending,
+  getUserMiniResult,
   getUserNameImgJob,
   getUserSettings,
 } from './get-user';
@@ -29,6 +31,20 @@ export const userQueries = {
     queryOptions({
       queryKey: [...userQueries.settingsKey()],
       queryFn: () => getUserSettings(),
+    }),
+
+  cardIdsKey: () => [...userQueries.all(), 'card-ids'],
+  cardIds: () =>
+    queryOptions({
+      queryKey: [...userQueries.cardIdsKey()],
+      queryFn: () => getUserCardIds(),
+    }),
+
+  miniResultKey: () => [...userQueries.all(), 'mini-result'],
+  miniResult: () =>
+    queryOptions({
+      queryKey: [...userQueries.miniResultKey()],
+      queryFn: () => getUserMiniResult(),
     }),
 
   groupsAcceptedKey: () => [...userQueries.all(), 'groups-accepted'],

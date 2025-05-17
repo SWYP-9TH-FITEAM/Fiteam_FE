@@ -280,7 +280,7 @@ const TestPage = () => {
     setTestResult(result);
 
     // 결과 페이지로 이동
-    navigate(`/result/${result.cardId}`);
+    navigate('/result');
   };
 
   const progressPercent =
@@ -313,7 +313,6 @@ const TestPage = () => {
       </LayoutMo>
     );
   }
-  console.log(testScore);
 
   return (
     <LayoutMobile header={<TestPageHeader onClickBack={handleClickBack} />}>

@@ -1,9 +1,11 @@
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
+  getUserCardIdsResponseDto,
   getUserCardResponseDto,
   getUserGroupsAcceptedResponseDto,
   getUserGroupsPendingResponseDto,
+  getUserMiniResultResponseDto,
   getUserNameImgJobResponseDto,
   getUserSettingsResponseDto,
 } from './dto';
@@ -44,6 +46,18 @@ export const getUserSettings = async () => {
   });
 };
 
+export const getUserMiniResult = async () => {
+  const ENDPOINT = 'v1/user/mini-result';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserMiniResultResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
 export const getUserGroupsAccepted = async () => {
   const ENDPOINT = 'v1/user/groups/accepted';
 
@@ -64,6 +78,18 @@ export const getUserGroupsPending = async () => {
   return validateSchema({
     dto: response,
     schema: getUserGroupsPendingResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getUserCardIds = async () => {
+  const ENDPOINT = 'v1/user/card-ids';
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getUserCardIdsResponseDto,
     schemaName: ENDPOINT,
   });
 };

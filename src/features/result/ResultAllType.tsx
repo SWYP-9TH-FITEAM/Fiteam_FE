@@ -4,7 +4,11 @@ import {useState, useEffect} from 'react';
 import {getAllCards} from '@/entities/card';
 import type {GetAllCardsResponseDto} from '@/entities/card';
 
-const ResultAllType = () => {
+interface ResultAllTypeProps {
+  onClose: () => void;
+}
+
+const ResultAllType = ({onClose}: ResultAllTypeProps) => {
   const [isTypeDialogOpen, setIsTypeDialogOpen] = useState(false);
   const [selectedTypeId, setSelectedTypeId] = useState<number>(0);
   const [allCards, setAllCards] = useState<GetAllCardsResponseDto>([]);
@@ -27,7 +31,12 @@ const ResultAllType = () => {
   };
 
   return (
-    <LayoutMo hasHeader={true} text="모든 결과 유형">
+    <LayoutMo
+      hasHeader={true}
+      text="모든 결과 유형"
+      onClickBack={onClose}
+      bgColor="white"
+    >
       <div className="flex flex-col items-center mt-1 mb-[67px]">
         <div className="flex flex-col gap-3 w-full">
           {allCards.map(card => (

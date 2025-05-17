@@ -2,7 +2,10 @@ import {Button} from '@/components/ui/button';
 import {useNavigate} from 'react-router-dom';
 import backgroundImage from '@/assets/images/background.png';
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import {useToken} from '@/shared/model/auth';
+
 const TestStartPage = () => {
+  const token = useToken();
   const navigate = useNavigate();
 
   const routeToTest = () => {
@@ -12,7 +15,7 @@ const TestStartPage = () => {
     navigate('/login');
   };
   const navigateToBack = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   return (
@@ -55,12 +58,14 @@ const TestStartPage = () => {
       >
         테스트하기
       </Button>
-      <Button
-        className="w-full flex h-[54px]  justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-[#E9E9E9] text-black text-xl font-medium "
-        onClick={routeToLogin}
-      >
-        로그인하기
-      </Button>
+      {!token && (
+        <Button
+          className="w-full flex h-[54px]  justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-[#E9E9E9] text-black text-xl font-medium "
+          onClick={routeToLogin}
+        >
+          로그인하기
+        </Button>
+      )}
     </div>
   );
 };

@@ -3,14 +3,17 @@ import LoginDialog from '@/components/LoginDialog';
 import ResultAllType from '@/features/result/ResultAllType';
 import LayoutMo from '@/layouts/LayoutMo';
 import {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAtomValue} from 'jotai';
 import {testResultAtom} from '@/shared/model/test-result';
 import {getCardById, GetCardResponseDto} from '@/entities/card';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import TypeDialog from '@/features/result/TypeDialog';
+import {useToken} from '@/shared/model/auth';
+import ResultHistoryPage from './ResultHistoryPage';
 
 const ResultPage = () => {
+  const token = useToken();
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [cardData, setCardData] = useState<GetCardResponseDto | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,21 +22,23 @@ const ResultPage = () => {
   const [selectedCard, setSelectedCard] = useState<GetCardResponseDto | null>(
     null,
   );
+  const [testSubPage, setTestSubPage] = useState<'ALL_TYPE' | 'HISTORY' | ''>(
+    '',
+  );
 
   const navigate = useNavigate();
-  const {id} = useParams();
-  const isResultAll = id === 'all';
 
   // 저장된 테스트 결과 가져오기
   const testResult = useAtomValue(testResultAtom);
+  console.log('testResult', testResult);
   // URL의 id와 저장된 결과의 cardId가 일치하는지 확인
   useEffect(() => {
-    if (!isResultAll && id) {
+    if (testResult?.cardId) {
       setIsLoading(true);
       setError(null);
 
       // URL에서 가져온 ID 또는 테스트 결과의 cardId 사용
-      const cardId = parseInt(id, 10);
+      const cardId = testResult.cardId;
 
       if (isNaN(cardId)) {
         setError('유효하지 않은 카드 ID입니다.');
@@ -53,23 +58,27 @@ const ResultPage = () => {
           setIsLoading(false);
         });
     }
-  }, [testResult, id, isResultAll]);
+  }, [testResult]);
 
   const handleViewAllResults = () => {
-    navigate('/result/all');
+    setTestSubPage('ALL_TYPE');
   };
 
   const onProfileCardClick = () => {
     const userInfo = localStorage.getItem('user-info');
     if (userInfo) {
-      navigate('/profile/create');
+      navigate('/profile');
     } else {
       setProfileDialogOpen(true);
     }
   };
 
-  if (isResultAll) {
-    return <ResultAllType />;
+  if (testSubPage === 'ALL_TYPE') {
+    return <ResultAllType onClose={() => setTestSubPage('')} />;
+  }
+
+  if (testSubPage === 'HISTORY') {
+    return <ResultHistoryPage onClose={() => setTestSubPage('')} />;
   }
 
   if (isLoading) {
@@ -117,7 +126,7 @@ const ResultPage = () => {
   // 나머지 렌더링 코드
   return (
     <>
-      <LayoutMo bgColor="#F1F2F4" hasHeader={isResultAll}>
+      <LayoutMo bgColor="#F1F2F4">
         <div className="flex flex-col items-center mb-[45px]">
           <div className="h-12 flex ml-auto">
             <button aria-label="홈으로 이동">
@@ -143,35 +152,62 @@ const ResultPage = () => {
             }}
           />
           {testResult && (
-            <p className="ml-[26px] mr-3 text-[#111]">
-              이미지를 꾹 누르면 저장이 돼요
+            <p className="mt-[11px] text-gray-4">
+              ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
             </p>
           )}
-          <div className="w-[335px] h-[310px] shrink-0 bg-white mt-3.5 rounded-lg shadow-sm">
-            {cardData.summary}
+          <div className="w-full h-[310px] bg-white mt-3.5 px-4 py-[22px] rounded-2xl shadow-sm text-left">
+            <b className="block text-xl not-italic font-medium leading-7 mb-[14px]">
+              당신은 이런 성향입니다
+            </b>
+            <p className="break-all">
+              {cardData.summary} asdfsffffasdfsffffasdfsffffasdfsffff
+              asdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffffasdfsffff
+              asdfsffffasdfsffffasdfsffffasdfsffffasdfsfffff
+            </p>
           </div>
           <div className="w-full flex gap-[15px] mt-3.5">
             <div
-              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              잘맞아요 {cardData.bestMatchCode1}
+              <p className="text-[13px] font-medium leading-4">
+                이런 캐릭터와 맞아요
+              </p>
+              <img
+                src="/src/assets/images/robot.png"
+                alt="로봇 캐릭터"
+                className="w-[70px] h-[70px] mt-1 mb-2"
+              />
+              <b>{cardData.bestMatchCode1}</b>
             </div>
             <div
-              className="flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              안맞아요 {cardData.worstMatchCode1}
+              <p className="text-[13px] font-medium leading-4">
+                이런 캐릭터와 맞지 않아요
+              </p>
+              <img
+                src="/src/assets/images/robot.png"
+                alt="로봇 캐릭터"
+                className="w-[70px] h-[70px] mt-1 mb-2"
+              />
+              <b>{cardData.worstMatchCode1}</b>
             </div>
           </div>
+
           <div className="mt-[35px] mb-[31px]">
-            <p className="text-lg font-medium">친구에게 공유하기</p>
+            {/* TODO: 보류 */}
+            {/* <p className="text-[13px] font-medium leading-4">
+              친구에게 공유하기
+            </p>
             <div className="flex gap-4 mt-4 mb-[30px]">
               {[1, 2, 3, 4].map(index => (
                 <div
@@ -181,14 +217,25 @@ const ResultPage = () => {
                   tabIndex={0}
                 />
               ))}
+            </div> */}
+            <div>
+              <a
+                href="/test"
+                className="text-[13px] font-medium leading-4"
+                aria-label="재검사하기"
+              >
+                재검사하기
+              </a>
+              {token && (
+                <button
+                  onClick={() => setTestSubPage('HISTORY')}
+                  className="text-[13px] font-medium leading-4 before:content-['•'] before:text-gray-3 before:mx-1 before:text-[13px]"
+                  aria-label="히스토리"
+                >
+                  히스토리
+                </button>
+              )}
             </div>
-            <a
-              href="/"
-              className="text-primary hover:underline"
-              aria-label="재검사하기"
-            >
-              재검사하기
-            </a>
           </div>
 
           <div className="w-full flex flex-col gap-2">

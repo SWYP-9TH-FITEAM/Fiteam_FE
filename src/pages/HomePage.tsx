@@ -1,19 +1,22 @@
+import {userQueries} from '@/entities/user/api';
 import {HomeHeader} from '@/features/home/HomeHeader';
-import HomeProfile from '@/features/home/HomeProfile';
-import HomeProjectList from '@/features/home/HomeProjectList';
+import HomeProjectInProgress from '@/features/home/HomeProjectInProgress';
+import HomeProjectPending from '@/features/home/HomeProjectPending';
 import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
+import {useQuery} from '@tanstack/react-query';
 
 const HomePage = () => {
-  const isLogin = true; //TODO: 로그인 . props를 넘길지, 전역관리할지
+  const {data: userMiniResultData} = useQuery(userQueries.miniResult());
 
+  // TOODO:: 각 바 누르면 해당 팀빌딩 화면
   return (
-    <LayoutBottomBar classNames={{wrapper: 'bg-[#f1f2f4]'}}>
-      <HomeHeader isLogin={isLogin} />
+    <LayoutBottomBar classNames={{wrapper: 'bg-gray-1'}}>
+      <HomeHeader />
       <div className="flex flex-col gap-4 pb-4">
-        <HomeResultCard isLogin={isLogin} />
-        <HomeProfile isLogin={isLogin} />
-        <HomeProjectList isLogin={isLogin} />
+        {userMiniResultData && <HomeResultCard data={userMiniResultData} />}
+        <HomeProjectInProgress />
+        <HomeProjectPending />
       </div>
     </LayoutBottomBar>
   );

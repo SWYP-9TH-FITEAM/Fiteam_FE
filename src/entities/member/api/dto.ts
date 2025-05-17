@@ -56,12 +56,12 @@ export type GetMemberProfileMemberIdResponseDto = z.infer<
 >;
 
 export const getMemberProfileMyResponseDto = z.object({
-  position: z.string(),
-  workHistory: z.number().int(),
-  projectGoal: z.string(),
-  projectPurpose: z.string(),
-  url: z.string().url(),
-  introduction: z.string(),
+  position: z.string().nullable(),
+  workHistory: z.number().int().nullable(),
+  projectGoal: z.string().nullable(),
+  projectPurpose: z.string().nullable(),
+  url: z.string().url().nullable(),
+  introduction: z.string().nullable(),
   cardId: z.number().int(),
   numEI: z.number().int(),
   numPD: z.number().int(),
@@ -76,11 +76,11 @@ export type GetMemberProfileMyResponseDto = z.infer<
 export const getMemberMyprofileMiniResponseDto = z.object({
   userId: z.number().int(),
   userName: z.string(),
-  profileImageUrl: z.string().url(),
-  position: z.string(),
+  imageUrl: z.string().url().nullable(),
+  position: z.string().nullable(),
   teamStatus: z.string(),
   teamId: z.number().int(),
-  projectGoal: z.string(),
+  projectGoal: z.string().nullable(),
   cardId: z.number().int(),
 });
 

@@ -44,8 +44,8 @@ export const getMemberProfileByMemberId = async (memberId: number) => {
   });
 };
 
-export const getMemberMyProfile = async () => {
-  const ENDPOINT = 'v1/member/my';
+export const getMemberMyProfile = async (groupId: number) => {
+  const ENDPOINT = `v1/member/${groupId}/profile/my`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
@@ -56,8 +56,8 @@ export const getMemberMyProfile = async () => {
   });
 };
 
-export const getMemberMyProfileMini = async () => {
-  const ENDPOINT = 'v1/member/my/mini';
+export const getMemberMyProfileMini = async (groupId: number) => {
+  const ENDPOINT = `v1/member/${groupId}/profile/mini`;
 
   const response = await apiWithAuth.get(ENDPOINT).json();
 
