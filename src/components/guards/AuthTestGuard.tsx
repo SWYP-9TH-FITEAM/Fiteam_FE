@@ -20,7 +20,12 @@ const AuthTestGuard = () => {
   useEffect(() => {
     if (!token) return;
     setStatus('loading');
-    api<unknown>('v1/user/card', {method: 'GET'})
+    api<unknown>('v1/user/card', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(res => {
         if (res.ok) {
           setStatus('success');
