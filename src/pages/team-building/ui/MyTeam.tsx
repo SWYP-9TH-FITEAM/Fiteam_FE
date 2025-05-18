@@ -30,6 +30,7 @@ export const MyTeam: React.FC = () => {
   const {
     data: [{data: myTeam}, {data: positions}, {data: teamBuildingStatus}],
     loading,
+    error,
   } = useQueries({
     queries: [
       {
@@ -49,6 +50,7 @@ export const MyTeam: React.FC = () => {
       return {
         data,
         loading: data.some(data => data.isLoading),
+        error: data.some(data => data.isError),
       };
     },
   });
@@ -67,24 +69,40 @@ export const MyTeam: React.FC = () => {
     );
   }, [teamBuildingStatus, excludeClosed]);
 
+  const header = (
+    <header className="px-3 py-2.5 flex gap-2.5 items-center">
+      <button onClick={() => navigate(-1)}>
+        <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
+      </button>
+      <span className="text-xl tracking-[-0.5px] font-semibold">나의 팀</span>
+
+      {myTeam && <TeamLeaveButton teamId={myTeam.teamId} />}
+    </header>
+  );
+
+  if (error) {
+    return (
+      <LayoutBottomBar
+        hideBottomBar
+        classNames={{
+          wrapper: 'bg-white',
+        }}
+        header={header}
+      >
+        <div className="text-red-500">
+          데이터를 불러오는 중 오류가 발생했습니다.
+        </div>
+      </LayoutBottomBar>
+    );
+  }
+
   return (
     <LayoutBottomBar
       hideBottomBar
       classNames={{
         wrapper: 'bg-white',
       }}
-      header={
-        <header className="px-3 py-2.5 flex gap-2.5 items-center">
-          <button onClick={() => navigate(-1)}>
-            <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
-          </button>
-          <span className="text-xl tracking-[-0.5px] font-semibold">
-            나의 팀
-          </span>
-
-          {myTeam && <TeamLeaveButton teamId={myTeam.teamId} />}
-        </header>
-      }
+      header={header}
     >
       <GroupDrawer />
       <div
