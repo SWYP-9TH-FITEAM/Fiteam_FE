@@ -1,12 +1,13 @@
+import {useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {useForm} from 'react-hook-form';
+import {useNavigate} from 'react-router-dom';
+
+import {memberQueries} from '@/entities/member/api/member.query';
+import {patchMemberMyProfile} from '@/entities/member/api/update-member';
 import ProfileLoadingScreen from '@/features/profile/ProfileLoadingScreen';
 import ProfileSkipDialog from '@/features/profile/ProfileSkipDialog';
 import LayoutMo from '@/layouts/LayoutMo';
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useForm} from 'react-hook-form';
-import {useQuery} from '@tanstack/react-query';
-import {memberQueries} from '@/entities/member/api/member.query';
-import {patchMemberMyProfile} from '@/entities/member/api/update-member';
 import {useCurrentGroupId} from '@/shared/model/group-id';
 
 const ProfileEditPage = () => {
@@ -142,30 +143,30 @@ const ProfileEditPage = () => {
     >
       <form
         onSubmit={handleComplete}
-        className="flex flex-col items-center pb-12 w-full"
+        className="flex w-full flex-col items-center pb-12"
       >
-        <p className="text-[#111] text-center text-2xl not-italic font-semibold leading-8 tracking-[-0.6px] mt-4 mb-6">
+        <p className="mt-4 mb-6 text-center text-2xl leading-8 font-semibold tracking-[-0.6px] text-[#111] not-italic">
           안녕하세요, 토온님!
           <br />
           프로필 생성을 도와드릴게요
         </p>
-        <div className="w-32 h-32 flex items-center justify-center mb-[47px]">
-          <div className="w-28 h-28 bg-gray-200 rounded-full flex items-center justify-center">
+        <div className="mb-[47px] flex h-32 w-32 items-center justify-center">
+          <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gray-200">
             {/* 로봇 이미지 - 임시로 텍스트로 대체 */}
             <span className="text-4xl">🤖</span>
           </div>
         </div>
         {/* 직무 선택 */}
-        <div className="w-full mb-6">
-          <p className="text-base mb-2 text-left">어떤 직무신가요?</p>
-          <div className="flex gap-2 w-full flex-wrap">
+        <div className="mb-6 w-full">
+          <p className="mb-2 text-left text-base">어떤 직무신가요?</p>
+          <div className="flex w-full flex-wrap gap-2">
             {positions?.map(eachPosition => (
               <button
                 key={eachPosition}
                 type="button"
-                className={`flex-1 h-[38px] rounded-lg ${
+                className={`h-[38px] flex-1 rounded-lg ${
                   position === eachPosition
-                    ? 'border border-solid border-primary bg-[#EEECFF] text-primary'
+                    ? 'border-primary text-primary border border-solid bg-[#EEECFF]'
                     : 'bg-[#F1F2F4]'
                 }`}
                 onClick={() => setValue('position', eachPosition)}
@@ -176,11 +177,11 @@ const ProfileEditPage = () => {
           </div>
         </div>
         {/* 경력 선택 */}
-        <div className="w-full mb-10">
-          <p className="text-base mb-2 text-left">경력이 있으신가요?</p>
-          <div className="w-full relative overflow-visible">
+        <div className="mb-10 w-full">
+          <p className="mb-2 text-left text-base">경력이 있으신가요?</p>
+          <div className="relative w-full overflow-visible">
             {/* 슬라이더 트랙 */}
-            <div className="w-full h-3 rounded-full bg-[#F1F2F4] overflow-hidden">
+            <div className="h-3 w-full overflow-hidden rounded-full bg-[#F1F2F4]">
               <div
                 className="h-full rounded-full"
                 style={{
@@ -200,12 +201,12 @@ const ProfileEditPage = () => {
               value={workHistory}
               {...register('workHistory')}
               onChange={e => setValue('workHistory', Number(e.target.value))}
-              className="absolute top-0 left-0 w-full h-3 opacity-0 cursor-pointer"
+              className="absolute top-0 left-0 h-3 w-full cursor-pointer opacity-0"
             />
 
             {/* 현재 값 표시 - 툴팁 형태 */}
             <div
-              className="absolute pointer-events-none"
+              className="pointer-events-none absolute"
               style={{
                 left: getTooltipPosition(),
                 top: '14px',
@@ -214,7 +215,7 @@ const ProfileEditPage = () => {
             >
               {/* 세모 꼭지 (위쪽 삼각형) */}
               <div
-                className="w-0 h-0 mx-auto"
+                className="mx-auto h-0 w-0"
                 style={{
                   borderLeft: '8px solid transparent',
                   borderRight: '8px solid transparent',
@@ -223,8 +224,8 @@ const ProfileEditPage = () => {
               ></div>
 
               {/* 툴팁 본문 */}
-              <div className="bg-white shadow-md rounded-md w-fit h-[35px] px-2 flex items-center justify-center">
-                <span className="font-medium text-center whitespace-nowrap">
+              <div className="flex h-[35px] w-fit items-center justify-center rounded-md bg-white px-2 shadow-md">
+                <span className="text-center font-medium whitespace-nowrap">
                   {Number(workHistory) === 37
                     ? '3년+'
                     : Number(workHistory) < 12
@@ -241,10 +242,10 @@ const ProfileEditPage = () => {
           </div>
         </div>
         {/* 목표 */}
-        <div className="w-full mb-4">
-          <p className="text-base mb-2 text-left">목표를 입력해주세요.</p>
+        <div className="mb-4 w-full">
+          <p className="mb-2 text-left text-base">목표를 입력해주세요.</p>
           <textarea
-            className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
+            className="h-20 w-full resize-none rounded-lg bg-gray-100 p-3"
             placeholder="ex) 최고의 PM이 되는 것"
             {...register('projectGoal', {
               maxLength: {
@@ -256,10 +257,10 @@ const ProfileEditPage = () => {
           <p className="text-sm text-red-500">{errors.projectGoal?.message}</p>
         </div>
         {/* 목적 */}
-        <div className="w-full mb-4">
-          <p className="text-base mb-2 text-left">목적을 입력해주세요.</p>
+        <div className="mb-4 w-full">
+          <p className="mb-2 text-left text-base">목적을 입력해주세요.</p>
           <textarea
-            className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
+            className="h-20 w-full resize-none rounded-lg bg-gray-100 p-3"
             placeholder="ex) 수익화"
             {...register('projectPurpose', {
               maxLength: {
@@ -273,10 +274,10 @@ const ProfileEditPage = () => {
           </p>
         </div>
         {/* 포트폴리오 */}
-        <div className="w-full mb-4">
-          <p className="text-base mb-2 text-left">포트폴리오를 올려주세요</p>
+        <div className="mb-4 w-full">
+          <p className="mb-2 text-left text-base">포트폴리오를 올려주세요</p>
           <textarea
-            className="w-full h-20 bg-gray-100 rounded-lg p-3 resize-none"
+            className="h-20 w-full resize-none rounded-lg bg-gray-100 p-3"
             placeholder="URL"
             {...register('url', {
               maxLength: {
@@ -288,12 +289,12 @@ const ProfileEditPage = () => {
           <p className="text-sm text-red-500">{errors.url?.message}</p>
         </div>
         {/* 하고 싶은 소개 */}
-        <div className="w-full mb-8">
-          <p className="text-base mb-2 text-left">
+        <div className="mb-8 w-full">
+          <p className="mb-2 text-left text-base">
             하고 싶은 소개를 남겨주세요!
           </p>
           <textarea
-            className="w-full h-32 bg-gray-100 rounded-lg p-3 resize-none"
+            className="h-32 w-full resize-none rounded-lg bg-gray-100 p-3"
             placeholder="ex) 활동 내역 등"
             {...register('introduction', {
               maxLength: {
@@ -306,7 +307,7 @@ const ProfileEditPage = () => {
         </div>
         {/* 완료 버튼 */}
         <button
-          className="w-full h-[54px] bg-primary text-white rounded-lg text-lg font-medium disabled:bg-gray-300"
+          className="bg-primary h-[54px] w-full rounded-lg text-lg font-medium text-white disabled:bg-gray-300"
           type="submit"
           disabled={!isFormValid}
         >

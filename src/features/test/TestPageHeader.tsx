@@ -1,6 +1,7 @@
+import {useNavigate} from 'react-router-dom';
+
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
 import homeDarkIcon from '@/assets/icons/home-dark.svg';
-import {useNavigate} from 'react-router-dom';
 import logo from '@/assets/images/logo.png';
 
 interface TestPageHeaderProps {
@@ -19,10 +20,10 @@ const TestPageHeader = ({onClickBack}: TestPageHeaderProps) => {
   };
 
   return (
-    <header className="flex justify-between items-center pl-3 pr-5 py-2.5 h-12">
+    <header className="flex h-12 items-center justify-between py-2.5 pr-5 pl-3">
       <div className="flex gap-2.5">
         <button
-          className="w-6 h-6 flex justify-center items-center cursor-pointer"
+          className="flex h-6 w-6 cursor-pointer items-center justify-center"
           onClick={navigateToBack}
           aria-label="뒤로가기"
         >

@@ -16,9 +16,9 @@ export const FilterSection = ({
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 px-5 py-4 bg-white">
+    <div className="flex items-center justify-between gap-4 bg-white px-5 py-4">
       <div className="flex items-center gap-2.5">
-        <label className="flex items-center cursor-pointer">
+        <label className="flex cursor-pointer items-center">
           <input
             type="checkbox"
             className="sr-only"
@@ -26,9 +26,9 @@ export const FilterSection = ({
             onChange={handleCheckboxChange}
           />
           <span
-            className={`relative w-4 h-4 border ${
+            className={`relative h-4 w-4 border ${
               excludeClosed ? 'border-[#BEBEBE]' : 'border-[#BEBEBE]'
-            } rounded inline-block mr-2.5`}
+            } mr-2.5 inline-block rounded`}
           >
             {excludeClosed && (
               <span className="absolute inset-0 flex items-center justify-center text-xs">
@@ -36,7 +36,7 @@ export const FilterSection = ({
               </span>
             )}
           </span>
-          <span className="text-[13px] font-medium leading-[1.23] text-[#111111] tracking-[-2.5%]">
+          <span className="text-[13px] leading-[1.23] font-medium tracking-[-2.5%] text-[#111111]">
             마감 제외하고 보기
           </span>
         </label>

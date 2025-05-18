@@ -1,7 +1,8 @@
-import {Button} from '@/components/ui/button';
 import {useNavigate} from 'react-router-dom';
-import backgroundImage from '@/assets/images/background.png';
+
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import backgroundImage from '@/assets/images/background.png';
+import {Button} from '@/components/ui/button';
 import {useToken} from '@/shared/model/auth';
 
 const TestStartPage = () => {
@@ -20,7 +21,7 @@ const TestStartPage = () => {
 
   return (
     <div
-      className="relative flex flex-col justify-between px-5 py-[40px] min-h-screen"
+      className="relative flex min-h-screen flex-col justify-between px-5 py-[40px]"
       style={{
         background: `linear-gradient(
           0deg,
@@ -32,35 +33,35 @@ const TestStartPage = () => {
       }}
     >
       <button
-        className="absolute top-3 left-3 w-6 h-6 flex justify-center items-center cursor-pointer"
+        className="absolute top-3 left-3 flex h-6 w-6 cursor-pointer items-center justify-center"
         onClick={navigateToBack}
         aria-label="뒤로가기"
       >
         <img src={arrowLeftIcon} alt="뒤로가기" />
       </button>
-      <p className="text-gray-6 text-3xl font-semibold whitespace-pre-line font-[paperlogy] mt-[18px]">
+      <p className="text-gray-6 mt-[18px] font-[paperlogy] text-3xl font-semibold whitespace-pre-line">
         나만의 팀을 찾기 위한
       </p>
-      <p className="font-[paperlogy] text-[40px] font-extrabold leading-[48px] text-primary">
+      <p className="text-primary font-[paperlogy] text-[40px] leading-[48px] font-extrabold">
         성향테스트
       </p>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-[75px]">
-        <div className="relative w-full ">
-          <div className="w-full h-[300px] flex-shrink-0 bg-gray-200 flex items-center justify-center text-2xl font-bold">
+      <div className="flex flex-1 flex-col items-center justify-center px-[75px]">
+        <div className="relative w-full">
+          <div className="flex h-[300px] w-full flex-shrink-0 items-center justify-center bg-gray-200 text-2xl font-bold">
             ?
           </div>
         </div>
       </div>
       <Button
-        className="w-full flex h-[54px] mb-2 justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-primary text-white text-xl font-medium "
+        className="bg-primary mb-2 flex h-[54px] w-full shrink-0 items-center justify-center gap-2.5 rounded-[10px] px-[132px] py-[13px] text-xl font-medium text-white"
         onClick={routeToTest}
       >
         테스트하기
       </Button>
       {!token && (
         <Button
-          className="w-full flex h-[54px]  justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-[#E9E9E9] text-black text-xl font-medium "
+          className="flex h-[54px] w-full shrink-0 items-center justify-center gap-2.5 rounded-[10px] bg-[#E9E9E9] px-[132px] py-[13px] text-xl font-medium text-black"
           onClick={routeToLogin}
         >
           로그인하기

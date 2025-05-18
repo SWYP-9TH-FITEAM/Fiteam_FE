@@ -1,7 +1,8 @@
 import {useState} from 'react';
-import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
+
 import {ChatItem} from '@/features/chat/ChatItem';
 import {dummyData} from '@/features/chat/dummy';
+import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import ChatRoom from '../features/chat/ChatRoom';
 
 interface SelectedRoom {
@@ -22,10 +23,10 @@ const ChatPage = () => {
 
   return (
     <LayoutBottomBar>
-      <header className="flex justify-center items-center h-12 px-3 py-2 text-[#111] text-2xl font-semibold leading-8">
+      <header className="flex h-12 items-center justify-center px-3 py-2 text-2xl leading-8 font-semibold text-[#111]">
         채팅
       </header>
-      <ul className="flex flex-col gap-3 mt-4">
+      <ul className="mt-4 flex flex-col gap-3">
         {dummyData.map(data => (
           <ChatItem
             key={data.chatRoomId}

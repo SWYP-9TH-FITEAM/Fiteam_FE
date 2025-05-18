@@ -1,13 +1,14 @@
+import {useQuery} from '@tanstack/react-query';
+
 import {userQueries} from '@/entities/user/api';
 import MyProfile from '@/features/profile/MyProfile';
 import MyProfileEmpty from '@/features/profile/MyProfileEmpty';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
-import {useQuery} from '@tanstack/react-query';
 
 // 헤더 컴포넌트
 const ProfileHeader = () => {
   return (
-    <header className="sticky top-0 z-10 h-12 px-4 py-3 text-center font-semibold text-lg">
+    <header className="sticky top-0 z-10 h-12 px-4 py-3 text-center text-lg font-semibold">
       나의 프로필
     </header>
   );

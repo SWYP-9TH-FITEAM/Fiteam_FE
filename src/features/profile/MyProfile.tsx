@@ -1,16 +1,18 @@
+import type {ReactNode} from 'react';
+
+import {useQuery} from '@tanstack/react-query';
+import {useNavigate} from 'react-router-dom';
+
+import {memberQueries} from '@/entities/member/api';
 import {userQueries} from '@/entities/user/api';
 import {CharacterCard} from '@/features/profile/CharacterCard';
-import {useQuery} from '@tanstack/react-query';
-import {ReactNode} from 'react';
-import {useNavigate} from 'react-router-dom';
-import MyProfileEmpty from './MyProfileEmpty';
-import {memberQueries} from '@/entities/member/api';
 import {useCurrentGroupId} from '@/shared/model/group-id';
 import {GroupDrawer} from '../../shared/ui/GroupDrawer';
+import MyProfileEmpty from './MyProfileEmpty';
 
 export const SectionInfo = ({children}: {children: ReactNode}) => {
   return (
-    <div className="bg-white rounded-[20px] px-[18px] py-3">{children}</div>
+    <div className="rounded-[20px] bg-white px-[18px] py-3">{children}</div>
   );
 };
 
@@ -22,8 +24,8 @@ export interface SectionProps {
 
 export const Section2 = ({title, children}: Partial<SectionProps>) => {
   return (
-    <div className="bg-white rounded-[20px] p-[13px] text-left">
-      <div className="flex justify-between items-center">
+    <div className="rounded-[20px] bg-white p-[13px] text-left">
+      <div className="flex items-center justify-between">
         <h3 className="text-xl font-medium text-black">{title}</h3>
       </div>
       {children}
@@ -34,7 +36,7 @@ export const Section2 = ({title, children}: Partial<SectionProps>) => {
 // 정보 행 컴포넌트
 export const InfoRow = ({label, content}: {label: string; content: string}) => {
   return (
-    <div className="flex mb-2 last:mb-0">
+    <div className="mb-2 flex last:mb-0">
       <div className="w-20 text-left font-medium">{label}</div>
       <div className="flex-1 text-left">{content}</div>
     </div>
@@ -66,7 +68,7 @@ const MyProfile = () => {
 
   if (!groupProfileMiniData?.position) {
     return (
-      <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
+      <div className="flex flex-col gap-[13px] pt-1.5 pb-3.5">
         <GroupDrawer />
         <MyProfileEmpty userCardData={userCardData} isInGroup={true} />
       </div>
@@ -76,7 +78,7 @@ const MyProfile = () => {
   const keywords = userCardData?.keyword?.split(',').map(k => k.trim()) ?? [];
 
   return (
-    <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
+    <div className="flex flex-col gap-[13px] pt-1.5 pb-3.5">
       <GroupDrawer />
       {/* 성향 카드 */}
       <CharacterCard
@@ -113,7 +115,7 @@ const MyProfile = () => {
       {/* 수정하기 버튼 */}
       <div className="mt-6 mb-8">
         <button
-          className="w-full py-3 bg-gray-400 text-white rounded-lg font-medium"
+          className="w-full rounded-lg bg-gray-400 py-3 font-medium text-white"
           onClick={() => navigate('/profile/edit')}
         >
           수정하기

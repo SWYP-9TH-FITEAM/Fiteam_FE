@@ -1,19 +1,22 @@
+import type {SignUpFormSchema} from '@/entities/auth/model/form';
+
 import * as React from 'react';
-import {Button} from '@/components/ui/button';
-import {useNavigate} from 'react-router-dom';
-import {ChevronLeft, Eye, EyeOff} from 'lucide-react';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Controller, useForm} from 'react-hook-form';
-import {signUpFormSchema, SignUpFormSchema} from '@/entities/auth/model/form';
 import {Input} from '@heroui/react';
-import {cn} from '@/lib/utils';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {ChevronLeft, Eye, EyeOff} from 'lucide-react';
+import {Controller, useForm} from 'react-hook-form';
+import {useNavigate} from 'react-router-dom';
+import {toast} from 'sonner';
+
+import {Button} from '@/components/ui/button';
 import {
   postAuthSendVerificationCode,
   postAuthSignUp,
   postAuthVerifyCode,
 } from '@/entities/auth/api';
+import {signUpFormSchema} from '@/entities/auth/model/form';
+import {cn} from '@/lib/utils';
 import {withHandleError} from '@/shared/util/handle-error';
-import {toast} from 'sonner';
 
 export const SignUpPage: React.FC = () => {
   const form = useForm<SignUpFormSchema>({
@@ -121,18 +124,18 @@ export const SignUpPage: React.FC = () => {
       onClick={() => setIsPasswordVisible(prev => !prev)}
     >
       {isPasswordVisible ? (
-        <EyeOff className="w-5 h-5 stroke-[1.5]" />
+        <EyeOff className="h-5 w-5 stroke-[1.5]" />
       ) : (
-        <Eye className="w-5 h-5 stroke-[1.5]" />
+        <Eye className="h-5 w-5 stroke-[1.5]" />
       )}
     </button>
   );
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center px-3 py-2.5 gap-2.5">
+      <div className="flex items-center gap-2.5 px-3 py-2.5">
         <button onClick={handleBack}>
-          <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
+          <ChevronLeft className="h-6 w-6 stroke-[1.5]" />
         </button>
         <div className="text-xl font-medium">회원가입</div>
       </div>
@@ -171,7 +174,7 @@ export const SignUpPage: React.FC = () => {
                     <Button
                       type="button"
                       variant="secondary"
-                      className="bg-[#D9D9D9] rounded-lg px-2 py-1 min-h-fit text-sm font-medium h-[1.625rem] my-auto"
+                      className="my-auto h-[1.625rem] min-h-fit rounded-lg bg-[#D9D9D9] px-2 py-1 text-sm font-medium"
                       onClick={handleVerifyEmail}
                       disabled={isVerifyButtonDisabled || isPending}
                     >
@@ -249,10 +252,10 @@ export const SignUpPage: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col gap-3 mt-16">
+          <div className="mt-16 flex flex-col gap-3">
             <Button
               type="submit"
-              className="w-full h-[3.375rem]"
+              className="h-[3.375rem] w-full"
               disabled={isPending}
             >
               가입하기

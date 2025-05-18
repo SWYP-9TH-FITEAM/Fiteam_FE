@@ -1,15 +1,15 @@
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+
 import arrowLeftIcon from '@/assets/arrowLeft.svg';
 import arrowRightIcon from '@/assets/arrowRight.svg';
 import onboarding1 from '@/assets/images/onboarding/onboarding1.png';
 import onboarding2 from '@/assets/images/onboarding/onboarding2.png';
 import onboarding3 from '@/assets/images/onboarding/onboarding3.png';
 import onboarding4 from '@/assets/images/onboarding/onboarding4.png';
-
 import {Button} from '@/components/ui/button';
 import LayoutMo from '@/layouts/LayoutMo';
-import {useState} from 'react';
 import {cn} from '@/lib/utils';
-import {useNavigate} from 'react-router-dom';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -45,23 +45,23 @@ const OnboardingPage = () => {
 
   return (
     <LayoutMo>
-      <div className="flex flex-col justify-between h-full min-h-[764px] text-black py-[60px]">
-        <p className="text-2xl font-semibold whitespace-pre-line h-[64px]">
+      <div className="flex h-full min-h-[764px] flex-col justify-between py-[60px] text-black">
+        <p className="h-[64px] text-2xl font-semibold whitespace-pre-line">
           {texts[currentIndex]}
         </p>
-        <div className="flex-1 flex flex-col items-center justify-center px-[75px]">
-          <div className="relative w-full ">
+        <div className="flex flex-1 flex-col items-center justify-center px-[75px]">
+          <div className="relative w-full">
             {/* 이전/다음 버튼 */}
             <button
               onClick={goToPrevious}
-              className="absolute -left-16 top-1/2 -translate-y-1/2 w-10 h-10  flex items-center justify-center bg-white rounded-full shadow-md hover:bg-gray-50"
+              className="absolute top-1/2 -left-16 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50"
               aria-label="이전으로"
             >
               <img src={arrowLeftIcon} alt="이전으로" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute -right-16 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-gray-50"
+              className="absolute top-1/2 -right-16 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50"
               aria-label="다음으로"
             >
               <img src={arrowRightIcon} alt="다음으로" />
@@ -76,12 +76,12 @@ const OnboardingPage = () => {
                 {slides.map((slide, index) => (
                   <div
                     key={index}
-                    className="w-full h-[300px] flex-shrink-0 flex items-center justify-center"
+                    className="flex h-[300px] w-full flex-shrink-0 items-center justify-center"
                   >
                     <img
                       src={slide}
                       alt={`온보딩 ${index + 1}`}
-                      className="max-w-full max-h-full object-contain"
+                      className="max-h-full max-w-full object-contain"
                     />
                   </div>
                 ))}
@@ -90,7 +90,7 @@ const OnboardingPage = () => {
           </div>
 
           {/* 하단 인디케이터 */}
-          <div className="flex justify-center gap-2 mt-16">
+          <div className="mt-16 flex justify-center gap-2">
             {slides.map((_, index) => (
               <button
                 key={index}
@@ -98,7 +98,7 @@ const OnboardingPage = () => {
                 className={cn(
                   'h-2 w-2 rounded-full transition-all',
                   currentIndex === index
-                    ? 'w-6 bg-primary'
+                    ? 'bg-primary w-6'
                     : 'bg-primary-light',
                 )}
               />
@@ -106,7 +106,7 @@ const OnboardingPage = () => {
           </div>
         </div>
         <Button
-          className="w-full flex h-[54px] justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-primary text-white text-xl font-medium "
+          className="bg-primary flex h-[54px] w-full shrink-0 items-center justify-center gap-2.5 rounded-[10px] px-[132px] py-[13px] text-xl font-medium text-white"
           onClick={routeToTest}
         >
           시작하기

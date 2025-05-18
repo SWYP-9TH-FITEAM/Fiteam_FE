@@ -1,6 +1,8 @@
-import {Dialog, DialogContent} from '@/components/ui/dialog';
-import {useNavigate} from 'react-router-dom';
 import type {GetCardResponseDto} from '@/entities/card';
+
+import {useNavigate} from 'react-router-dom';
+
+import {Dialog, DialogContent} from '@/components/ui/dialog';
 
 interface TypeDialogProps {
   open: boolean;
@@ -21,21 +23,21 @@ const TypeDialog = ({open, onOpenChange, card}: TypeDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 border-0 shadow-none bg-transparent flex items-center justify-center [&>button]:hidden">
-        <div className="w-[347px] h-[350px] rounded-2xl bg-white pt-[17px] pb-[19px] px-[15px] flex flex-col items-center shadow-xl">
-          <div className="w-[140px] h-[140px] bg-gray-200 mb-[10px]"></div>
+      <DialogContent className="flex items-center justify-center border-0 bg-transparent p-0 shadow-none [&>button]:hidden">
+        <div className="flex h-[350px] w-[347px] flex-col items-center rounded-2xl bg-white px-[15px] pt-[17px] pb-[19px] shadow-xl">
+          <div className="mb-[10px] h-[140px] w-[140px] bg-gray-200"></div>
 
-          <div className="text-center mb-4">
-            <div className="text-black text-xl font-medium leading-tight mb-1">
+          <div className="mb-4 text-center">
+            <div className="mb-1 text-xl leading-tight font-medium text-black">
               {title}
             </div>
-            <div className="text-[#111] text-center text-base font-medium leading-6 tracking-[-0.4px]">
+            <div className="text-center text-base leading-6 font-medium tracking-[-0.4px] text-[#111]">
               {description}
             </div>
           </div>
-          <div className="flex w-full gap-1.5 mt-auto">
+          <div className="mt-auto flex w-full gap-1.5">
             <button
-              className="w-full h-[54px] rounded-lg bg-gray-100 text-[#111] font-medium text-base"
+              className="h-[54px] w-full rounded-lg bg-gray-100 text-base font-medium text-[#111]"
               onClick={handleClickMore}
               type="button"
               disabled={!card}

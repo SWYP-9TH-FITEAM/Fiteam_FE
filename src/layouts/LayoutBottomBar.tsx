@@ -1,4 +1,5 @@
-import {ReactNode} from 'react';
+import type {ReactNode} from 'react';
+
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import * as icons from '@/assets/bottomIcon';
@@ -57,7 +58,7 @@ const BottomBar = () => {
   };
 
   return (
-    <nav className="sticky bottom-0 z-10 bg-white shadow-[0px_-1px_4px_0px_rgba(89,89,89,0.25)] px-4 py-2">
+    <nav className="sticky bottom-0 z-10 bg-white px-4 py-2 shadow-[0px_-1px_4px_0px_rgba(89,89,89,0.25)]">
       <div className="flex justify-around">
         {menuItems.map(menuItem => (
           <button
@@ -65,7 +66,7 @@ const BottomBar = () => {
             className="flex flex-col items-center text-sm"
             onClick={() => handleNavigate(menuItem.path)}
           >
-            <div className="w-6 h-6 flex items-center justify-center">
+            <div className="flex h-6 w-6 items-center justify-center">
               <img
                 src={
                   currentPath === menuItem.path
@@ -73,7 +74,7 @@ const BottomBar = () => {
                     : menuItem.icon
                 }
                 alt={menuItem.label}
-                className="w-6 h-6"
+                className="h-6 w-6"
                 style={{objectFit: 'contain'}}
               />
             </div>
@@ -94,7 +95,7 @@ export const LayoutBottomBar = ({
   return (
     <div
       className={cn(
-        'flex flex-col h-[100dvh] bg-[#fafafa] relative w-full max-w-[500px]',
+        'relative flex h-[100dvh] w-full max-w-[500px] flex-col bg-[#fafafa]',
         classNames?.wrapper,
       )}
     >

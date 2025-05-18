@@ -1,13 +1,14 @@
 import * as React from 'react';
+import {useQueries} from '@tanstack/react-query';
+
+import noGroups from '@/assets/images/no-group.png';
+import {memberQueries} from '@/entities/member/api';
+import {userQueries} from '@/entities/user/api';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
-import {TeamBuildingHeader} from './TeamBuildingHeader';
+import {useCurrentGroupId, useSetCurrentGroupId} from '@/shared/model/group-id';
 import {RegisterProfileCard} from './RegisterProfileCard';
 import {TeamBuilding} from './TeamBuilding';
-import noGroups from '@/assets/images/no-group.png';
-import {useQueries} from '@tanstack/react-query';
-import {userQueries} from '@/entities/user/api';
-import {memberQueries} from '@/entities/member/api';
-import {useCurrentGroupId, useSetCurrentGroupId} from '@/shared/model/group-id';
+import {TeamBuildingHeader} from './TeamBuildingHeader';
 
 const PAGES = Object.freeze({
   NO_GROUPS: 'NO_GROUPS',
@@ -134,7 +135,7 @@ export const TeamBuildingPage: React.FC = () => {
             현재 참가하고 있는 그룹이 없습니다.
           </div>
           <img
-            className="w-52 h-52 mx-auto mt-20"
+            className="mx-auto mt-20 h-52 w-52"
             src={noGroups}
             alt="no group"
           />

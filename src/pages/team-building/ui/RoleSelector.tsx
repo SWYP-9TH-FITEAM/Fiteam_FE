@@ -1,7 +1,8 @@
+import * as React from 'react';
+import {useQuery} from '@tanstack/react-query';
+
 import {memberQueries} from '@/entities/member/api';
 import {useCurrentGroupId} from '@/shared/model/group-id';
-import {useQuery} from '@tanstack/react-query';
-import * as React from 'react';
 
 interface RoleSelectorProps {
   onRoleSelect?: (role: string) => void;
@@ -24,7 +25,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
   };
 
   return (
-    <div className="flex items-center mt-3 justify-center pt-3 px-5 bg-white rounded-[20px_16px_0px_0px]">
+    <div className="mt-3 flex items-center justify-center rounded-[20px_16px_0px_0px] bg-white px-5 pt-3">
       {!positions && !isError && (
         <div className="loading loading-spinner loading-xl" />
       )}
@@ -32,14 +33,14 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
       {positions?.map((role, index) => (
         <button
           key={index}
-          className={`flex justify-center items-center py-[10px] px-[15px] ${
+          className={`flex items-center justify-center px-[15px] py-[10px] ${
             selectedRole === role
               ? 'border-b border-[#5F4AFF] text-[#5F4AFF]'
               : 'text-[#979797]'
           }`}
           onClick={() => handleRoleClick(role)}
         >
-          <span className="font-medium text-[18px] leading-[1.33] tracking-[-2.5%]">
+          <span className="text-[18px] leading-[1.33] font-medium tracking-[-2.5%]">
             {role}
           </span>
         </button>

@@ -1,5 +1,6 @@
-import {apiWithAuth} from '@/shared/api/client';
 import {HTTPError} from 'ky';
+
+import {apiWithAuth} from '@/shared/api/client';
 
 export const deleteTeamLeave = async (teamId: number) => {
   try {

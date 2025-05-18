@@ -1,7 +1,8 @@
-import logo from '@/assets/images/logo.png';
-import {useUserInfo} from '@/shared/model/user';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
 import alarmIcon from '@/assets/icons/alarm.svg';
+import {useUserInfo} from '@/shared/model/user';
+import {Header} from '@/shared/ui/desktop/Header';
 
 interface ManagerHeaderProps {
   isLoginPage?: boolean;
@@ -9,7 +10,6 @@ interface ManagerHeaderProps {
 
 const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
   const userInfo = useUserInfo();
-  const navigate = useNavigate();
 
   const status = isLoginPage
     ? 'LOGIN_PAGE'
@@ -19,75 +19,56 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
 
   const userName = '이름'; // TODO: get /manager/name
 
-  const navigateToHome = () => {
-    navigate('/');
-  };
-  const navigateToManagerHome = () => {
-    navigate('/manager');
-  };
-  const navigateToMypage = () => {
-    navigate('/manager/mypage');
-  };
-
   return (
-    <header className="fixed top-0 left-0 w-full min-w-[1400px] h-[80px] bg-white z-50 shadow flex items-center justify-center">
-      <div className="w-full max-w-[1400px] px-8 mx-auto flex items-center justify-between">
-        <img
-          src={logo}
-          onClick={navigateToManagerHome}
-          alt="logo"
-          className="w-[135px]"
-        />
-
-        {status === 'AFTER_LOGIN' && (
-          <>
-            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl">
-              <Link to="/manager/team-building">팀빌딩</Link>
-              <Link to="/manager/chat">1:1 채팅</Link>
-            </div>
-            <div className="flex items-center gap-2 ml-auto">
-              <button
-                className="w-[206px] h-[52px] flex items-center justify-center gap-[10px] border text-base font-medium leading-6 rounded-[30px] border-solid border-gray-3 tracking-[-0.4px]"
-                onClick={navigateToMypage}
-              >
-                <span className="w-[28px] h-[28px] rounded-full bg-gray-200 inline-block" />
-                {userName}님, 안녕하세요!
-              </button>
-              <button className="ml-2">
-                <img src={alarmIcon} alt="알림" />
-              </button>
-            </div>
-          </>
-        )}
-
-        {status === 'BEFORE_LOGIN' && (
-          <>
-            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl">
-              <Link to="/test/start">성향테스트</Link>
-              <Link to="/profile">나의 프로필</Link>
-              <Link to="/team-building">팀빌딩</Link>
-              <Link to="/chat">1:1 채팅</Link>
-            </div>
-            <div className="flex items-center gap-4 ml-auto text-gray-500 text-[15px]">
-              <Link to="/manager/login">로그인</Link>
-              <span>|</span>
-              <Link to="/manager/sign-up">회원가입</Link>
-            </div>
-          </>
-        )}
-
-        {status === 'LOGIN_PAGE' && (
-          <div className="flex items-center ml-auto">
-            <button
-              onClick={navigateToHome}
-              className="w-[154px] h-12 border text-base font-medium leading-6 rounded-[30px] border-solid border-gray-3 tracking-[-0.4px]"
+    <Header>
+      {status === 'AFTER_LOGIN' && (
+        <>
+          <div className="ml-[76px] flex flex-1 items-center gap-12 text-xl font-medium">
+            <Link to="/manager/team-building">팀빌딩</Link>
+            <Link to="/manager/chat">1:1 채팅</Link>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <Link
+              className="border-gray-3 flex h-[52px] w-[206px] items-center justify-center gap-[10px] rounded-[30px] border border-solid text-base leading-6 font-medium tracking-[-0.4px]"
+              to="/manager/mypage"
             >
-              Fiteam 홈 바로가기
+              <span className="inline-block h-[28px] w-[28px] rounded-full bg-gray-200" />
+              {userName}님, 안녕하세요!
+            </Link>
+            <button className="ml-2">
+              <img src={alarmIcon} alt="알림" />
             </button>
           </div>
-        )}
-      </div>
-    </header>
+        </>
+      )}
+
+      {status === 'BEFORE_LOGIN' && (
+        <>
+          <div className="ml-[76px] flex flex-1 items-center gap-12 text-xl font-medium">
+            <Link to="/test/start">성향테스트</Link>
+            <Link to="/profile">나의 프로필</Link>
+            <Link to="/team-building">팀빌딩</Link>
+            <Link to="/chat">1:1 채팅</Link>
+          </div>
+          <div className="ml-auto flex items-center gap-4 text-[15px] text-gray-500">
+            <Link to="/manager/login">로그인</Link>
+            <span>|</span>
+            <Link to="/manager/sign-up">회원가입</Link>
+          </div>
+        </>
+      )}
+
+      {status === 'LOGIN_PAGE' && (
+        <div className="ml-auto flex items-center">
+          <Link
+            to="/"
+            className="border-gray-3 h-12 w-[154px] rounded-[30px] border border-solid text-base leading-6 font-medium tracking-[-0.4px]"
+          >
+            Fiteam 홈 바로가기
+          </Link>
+        </div>
+      )}
+    </Header>
   );
 };
 

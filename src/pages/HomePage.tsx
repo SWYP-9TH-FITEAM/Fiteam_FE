@@ -1,10 +1,11 @@
+import {useQuery} from '@tanstack/react-query';
+
 import {userQueries} from '@/entities/user/api';
 import {HomeHeader} from '@/features/home/HomeHeader';
 import HomeProjectInProgress from '@/features/home/HomeProjectInProgress';
 import HomeProjectPending from '@/features/home/HomeProjectPending';
 import {HomeResultCard} from '@/features/home/HomeResultCard';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
-import {useQuery} from '@tanstack/react-query';
 
 const HomePage = () => {
   const {data: userMiniResultData} = useQuery(userQueries.miniResult());

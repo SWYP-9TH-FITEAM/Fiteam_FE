@@ -1,5 +1,7 @@
+import type {PostLikeAddRequestDto} from './dto';
+
 import {apiWithAuth} from '@/shared/api/client';
-import {postLikeAddRequestDto, PostLikeAddRequestDto} from './dto';
+import {postLikeAddRequestDto} from './dto';
 
 export const postLikeAdd = (payload: PostLikeAddRequestDto) => {
   const ENDPOINT = 'v1/like/add';

@@ -1,8 +1,10 @@
+import type {GetAllCardsResponseDto} from '@/entities/card';
+
+import {useEffect, useState} from 'react';
+
+import {getAllCards} from '@/entities/card';
 import LayoutMo from '@/layouts/LayoutMo';
 import TypeDialog from './TypeDialog';
-import {useState, useEffect} from 'react';
-import {getAllCards} from '@/entities/card';
-import type {GetAllCardsResponseDto} from '@/entities/card';
 
 interface ResultAllTypeProps {
   onClose: () => void;
@@ -37,15 +39,15 @@ const ResultAllType = ({onClose}: ResultAllTypeProps) => {
       onClickBack={onClose}
       bgColor="white"
     >
-      <div className="flex flex-col items-center mt-1 mb-[67px]">
-        <div className="flex flex-col gap-3 w-full">
+      <div className="mt-1 mb-[67px] flex flex-col items-center">
+        <div className="flex w-full flex-col gap-3">
           {allCards.map(card => (
             <div
               key={card.id}
-              className="bg-gray-1 rounded-lg p-4 h-[206px] shadow-sm flex flex-col items-center justify-center cursor-pointer"
+              className="bg-gray-1 flex h-[206px] cursor-pointer flex-col items-center justify-center rounded-lg p-4 shadow-sm"
               onClick={() => handleTypeClick(card.id)}
             >
-              <div className="w-[140px] h-[140px] bg-gray-200 mb-[10px]"></div>
+              <div className="mb-[10px] h-[140px] w-[140px] bg-gray-200"></div>
               <div className="text-lg font-medium">{card.name}</div>
             </div>
           ))}

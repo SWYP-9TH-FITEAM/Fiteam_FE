@@ -1,7 +1,6 @@
-import {
-  postTestResultRequestDto,
-  PostTestResultRequestDto,
-} from '@/entities/question/api/dto';
+import type {PostTestResultRequestDto} from '@/entities/question/api/dto';
+
+import {postTestResultRequestDto} from '@/entities/question/api/dto';
 import {apiWithAuth} from '@/shared/api/client';
 
 // 실제 API 호출 함수 (응답값 없음)

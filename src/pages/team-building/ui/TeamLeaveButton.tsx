@@ -1,3 +1,7 @@
+import * as React from 'react';
+import {useMutation} from '@tanstack/react-query';
+import {useNavigate} from 'react-router-dom';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +15,6 @@ import {
 import {Button} from '@/components/ui/button';
 import {deleteTeamLeave} from '@/entities/team/api/delete-team';
 import {withHandleError} from '@/shared/util/handle-error';
-import {useMutation} from '@tanstack/react-query';
-
-import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
 
 interface TeamLeaveButtonProps {
   teamId: number;
@@ -43,12 +43,12 @@ export const TeamLeaveButton: React.FC<TeamLeaveButtonProps> = ({teamId}) => {
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
-          className="text-sm h-fit w-fit py-0.5 px-1 ml-auto"
+          className="ml-auto h-fit w-fit px-1 py-0.5 text-sm"
         >
           팀 나가기
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="border-transparent sm:max-w-sm max-w-sm shadow-[0px_0px_8px_0px_rgba(0,0,0,0.25)]">
+      <AlertDialogContent className="max-w-sm border-transparent shadow-[0px_0px_8px_0px_rgba(0,0,0,0.25)] sm:max-w-sm">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">
             정말 팀을 나가시겠습니까?

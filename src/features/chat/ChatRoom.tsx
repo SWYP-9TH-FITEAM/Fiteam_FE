@@ -1,8 +1,9 @@
+import {useEffect, useRef, useState} from 'react';
+
 import {ChatInput} from '@/features/chat/ChatInput';
 import {ChatMessage} from '@/features/chat/ChatMessage';
 import {ChatRoomHeader} from '@/features/chat/ChatRoomHeader';
 import {dummyChatMessages} from '@/features/chat/dummy';
-import {useEffect, useRef, useState} from 'react';
 
 type Message = {
   id: number;
@@ -126,14 +127,14 @@ const ChatRoom = ({roomInfo, onBack}: ChatRoomProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen bg-[#EEECFF]">
-      <div className="relative w-full max-w-[500px] h-full flex flex-col">
+    <div className="flex h-screen flex-col items-center bg-[#EEECFF]">
+      <div className="relative flex h-full w-full max-w-[500px] flex-col">
         <ChatRoomHeader otherName={otherUserName} handleBack={onBack} />
 
         {/* 스크롤 가능한 영역 */}
         <div className="flex-1 overflow-y-auto" ref={chatContainerRef}>
-          <div className="flex flex-col h-full mx-3">
-            <div className="flex-1 text-left ">{getGroupedMessages()}</div>
+          <div className="mx-3 flex h-full flex-col">
+            <div className="flex-1 text-left">{getGroupedMessages()}</div>
           </div>
         </div>
         <ChatInput onSendMessage={handleSendMessage} />

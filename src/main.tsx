@@ -1,11 +1,13 @@
 import {HeroUIProvider} from '@heroui/react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {createRoot} from 'react-dom/client';
 import {Toaster} from 'sonner';
-import App from './App.tsx';
+
+import App from './App';
+import {JotaiDevTools} from './components/JotaiDevTools';
+
 import './index.css';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {JotaiDevTools} from './components/JotaiDevTools.tsx';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 

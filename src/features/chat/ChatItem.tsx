@@ -21,11 +21,11 @@ export const ChatItem = ({
 
   return (
     <li
-      className="w-full h-[76px] rounded-md flex items-center text-black text-sm cursor-pointer"
+      className="flex h-[76px] w-full cursor-pointer items-center rounded-md text-sm text-black"
       onClick={onClick}
     >
       <div
-        className="w-12 h-12 bg-gray-200 rounded flex-shrink-0"
+        className="h-12 w-12 flex-shrink-0 rounded bg-gray-200"
         style={
           otherUserProfileImgUrl
             ? {
@@ -36,15 +36,15 @@ export const ChatItem = ({
         }
       ></div>
       <div className="ml-4 flex-grow text-left">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <span className="font-medium">{otherUserName}</span>
         </div>
-        <p className="truncate w-[203px]">{lastMessageContent}</p>
+        <p className="w-[203px] truncate">{lastMessageContent}</p>
       </div>
-      <div className="w-[56px] flex flex-col items-end">
-        <span className="text-[10px] text-[#A4A4A4] h-4">{formattedTime}</span>
+      <div className="flex w-[56px] flex-col items-end">
+        <span className="h-4 text-[10px] text-[#A4A4A4]">{formattedTime}</span>
         {unreadMessageCount > 0 && (
-          <div className="min-w-[18px] h-[18px] bg-[#E95D42] text-white rounded-full flex items-center justify-center">
+          <div className="flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E95D42] text-white">
             <span className="text-xs">
               {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
             </span>

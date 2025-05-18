@@ -1,8 +1,10 @@
-import {GetAllCardsResponseDto} from '@/entities/card';
-import {cardQueries} from '@/entities/card/api/card.query';
+import type {GetAllCardsResponseDto} from '@/entities/card';
+
 import {QueryClient} from '@tanstack/react-query';
 import {atom, useAtomValue} from 'jotai';
 import {loadable} from 'jotai/utils';
+
+import {cardQueries} from '@/entities/card/api/card.query';
 
 const cardIdMapAtom = loadable(
   atom(async () => {

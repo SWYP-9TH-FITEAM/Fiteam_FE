@@ -1,5 +1,7 @@
-import {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
+import type {GetUserMiniResultResponseDto} from '@/entities/user/api/dto';
+
 import {Link} from 'react-router-dom';
+
 import ContentsCard from './components/ContentsCard';
 
 interface HomeResultCardProps {
@@ -16,49 +18,49 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
 
   return (
     <ContentsCard title="나의 테스트 결과 보러가기" arrowLink={`/result`}>
-      <div className="flex mt-4 mb-3 h-[120px]">
-        <div className="w-[130px] h-[120px] mr-4 bg-blue-300"></div>
+      <div className="mt-4 mb-3 flex h-[120px]">
+        <div className="mr-4 h-[120px] w-[130px] bg-blue-300"></div>
         <div className="flex-1">
-          <h4 className="text-[#111] text-lg font-bold leading-6 mb-3">
+          <h4 className="mb-3 text-lg leading-6 font-bold text-[#111]">
             {data.name}
           </h4>
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
-              <span className="text-xs w-12">{eiType}</span>
-              <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
+              <span className="w-12 text-xs">{eiType}</span>
+              <div className="relative h-2 w-32 flex-1 rounded-[10px] bg-[#D9D9D9]">
                 <div
-                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  className="absolute top-0 left-0 h-full rounded-[10px] bg-[#5F4AFF]"
                   style={{width: `${(data.numEI / 75) * 100}%`}}
                 ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs w-12">{pdType}</span>
-              <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
+              <span className="w-12 text-xs">{pdType}</span>
+              <div className="relative h-2 w-32 flex-1 rounded-[10px] bg-[#D9D9D9]">
                 <div
-                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  className="absolute top-0 left-0 h-full rounded-[10px] bg-[#5F4AFF]"
                   style={{width: `${(data.numPD / 75) * 100}%`}}
                 ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs w-12">{clType}</span>
-              <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
+              <span className="w-12 text-xs">{clType}</span>
+              <div className="relative h-2 w-32 flex-1 rounded-[10px] bg-[#D9D9D9]">
                 <div
-                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  className="absolute top-0 left-0 h-full rounded-[10px] bg-[#5F4AFF]"
                   style={{width: `${(data.numCL / 75) * 100}%`}}
                 ></div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs w-12">{vaType}</span>
-              <div className="relative w-32 h-2 flex-1 rounded-[10px] bg-[#D9D9D9]">
+              <span className="w-12 text-xs">{vaType}</span>
+              <div className="relative h-2 w-32 flex-1 rounded-[10px] bg-[#D9D9D9]">
                 <div
-                  className="absolute left-0 top-0 h-full bg-[#5F4AFF] rounded-[10px]"
+                  className="absolute top-0 left-0 h-full rounded-[10px] bg-[#5F4AFF]"
                   style={{width: `${(data.numVA / 75) * 100}%`}}
                 ></div>
               </div>
@@ -69,7 +71,7 @@ export const HomeResultCard = ({data}: HomeResultCardProps) => {
       <div className="text-right">
         <Link
           to="/test/start"
-          className="text-[#767676] text-right text-[13px] not-italic font-medium leading-4"
+          className="text-right text-[13px] leading-4 font-medium text-[#767676] not-italic"
         >
           다시하기
         </Link>
