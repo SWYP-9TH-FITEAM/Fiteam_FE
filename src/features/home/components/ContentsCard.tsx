@@ -1,5 +1,6 @@
+import type {ReactNode} from 'react';
+
 import {ChevronRightIcon} from 'lucide-react';
-import {ReactNode} from 'react';
 import {Link} from 'react-router-dom';
 
 interface ContentsCardProps {
@@ -9,14 +10,14 @@ interface ContentsCardProps {
 }
 const ContentsCard = ({title, arrowLink, children}: ContentsCardProps) => {
   return (
-    <div className="bg-white rounded-[14px] px-4 py-3 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] ">
-      <div className="flex justify-between items-center">
-        <h3 className="text-black text-base font-medium leading-6 tracking-[-0.4px]">
+    <div className="rounded-[14px] bg-white px-4 py-3 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
+      <div className="flex items-center justify-between">
+        <h3 className="text-base leading-6 font-medium tracking-[-0.4px] text-black">
           {title}
         </h3>
         {arrowLink && (
           <Link to={arrowLink}>
-            <ChevronRightIcon className="w-6 h-6" />
+            <ChevronRightIcon className="h-6 w-6" />
           </Link>
         )}
       </div>

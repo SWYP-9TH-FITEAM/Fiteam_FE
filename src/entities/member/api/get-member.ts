@@ -1,3 +1,5 @@
+import {HTTPError} from 'ky';
+
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
@@ -7,7 +9,6 @@ import {
   getMemberProfileMemberIdResponseDto,
   getMemberProfileMyResponseDto,
 } from './dto';
-import {HTTPError} from 'ky';
 
 export const getMemberPositionsByGroupId = async (groupId: number) => {
   const ENDPOINT = `v1/member/${groupId}/positions`;

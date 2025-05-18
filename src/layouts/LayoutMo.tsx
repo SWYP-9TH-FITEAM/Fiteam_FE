@@ -1,6 +1,8 @@
-import {ReactNode} from 'react';
-import arrowLeftIcon from '@/assets/arrowLeft.svg';
+import type {ReactNode} from 'react';
+
 import {useNavigate} from 'react-router-dom';
+
+import arrowLeftIcon from '@/assets/arrowLeft.svg';
 
 interface LayoutMoProps {
   hasHeader?: boolean;
@@ -27,15 +29,15 @@ const LayoutMo = ({
 
   return (
     <div
-      className="flex flex-col h-full min-h-[812px]"
+      className="flex h-full min-h-[812px] flex-col"
       style={{backgroundColor: bgColor}}
     >
       {hasHeader && (
-        <div className="flex justify-between h-12 items-center shrink-0 px-3 bg-white">
+        <div className="flex h-12 shrink-0 items-center justify-between bg-white px-3">
           {/* 왼쪽 */}
           <div className="flex gap-2.5">
             <button
-              className="w-6 h-6 flex justify-center items-center cursor-pointer"
+              className="flex h-6 w-6 cursor-pointer items-center justify-center"
               onClick={onClickBack || navigateToBack}
               aria-label="뒤로가기"
             >
@@ -45,12 +47,12 @@ const LayoutMo = ({
           </div>
 
           {/* 가운데 */}
-          <div className=" bg-pink-200"></div>
+          <div className="bg-pink-200"></div>
           {/* 오른쪽 */}
           <div>{rightChildren && rightChildren}</div>
         </div>
       )}
-      <div className="flex-1 mx-5">{children}</div>
+      <div className="mx-5 flex-1">{children}</div>
     </div>
   );
 };

@@ -1,7 +1,8 @@
+import {useEffect, useState} from 'react';
 import {Navigate, Outlet, useLocation} from 'react-router-dom';
-import {useToken} from '@/shared/model/auth';
-import {useState, useEffect} from 'react';
+
 import {api} from '@/shared/api/client';
+import {useToken} from '@/shared/model/auth';
 
 /**
  * A route guard that allows access only if the user IS authenticated.

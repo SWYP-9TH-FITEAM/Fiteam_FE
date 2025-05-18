@@ -1,11 +1,8 @@
+import type {GetAllCardsResponseDto, GetCardResponseDto} from './dto';
+
 import {api} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
-import {
-  GetCardResponseDto,
-  getCardResponseDto,
-  GetAllCardsResponseDto,
-  getAllCardsResponseDto,
-} from './dto';
+import {getAllCardsResponseDto, getCardResponseDto} from './dto';
 
 /**
  * 카드 아이디로 카드 정보를 조회하는 API

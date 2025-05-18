@@ -1,14 +1,17 @@
+import type {GetCardResponseDto} from '@/entities/card';
+
+import {useEffect, useState} from 'react';
+import {useAtomValue} from 'jotai';
+import {useNavigate} from 'react-router-dom';
+
 import LoginDialog from '@/components/LoginDialog';
-import {getCardById, GetCardResponseDto} from '@/entities/card';
+import {getCardById} from '@/entities/card';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import ResultAllType from '@/features/result/ResultAllType';
 import TypeDialog from '@/features/result/TypeDialog';
 import LayoutMo from '@/layouts/LayoutMo';
 import {useToken} from '@/shared/model/auth';
 import {testResultAtom} from '@/shared/model/test-result';
-import {useAtomValue} from 'jotai';
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import ResultHistoryPage from './ResultHistoryPage';
 
 const ResultPage = () => {
@@ -83,7 +86,7 @@ const ResultPage = () => {
   if (isLoading) {
     return (
       <LayoutMo hasHeader={true}>
-        <div className="flex flex-col h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
           <p>결과를 불러오는 중입니다...</p>
         </div>
       </LayoutMo>
@@ -93,10 +96,10 @@ const ResultPage = () => {
   if (error) {
     return (
       <LayoutMo hasHeader={true}>
-        <div className="flex flex-col h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
           <p>{error}</p>
           <button
-            className="mt-4 px-4 py-2 bg-primary text-white rounded-md"
+            className="bg-primary mt-4 rounded-md px-4 py-2 text-white"
             onClick={() => navigate('/test')}
           >
             테스트 다시하기
@@ -109,10 +112,10 @@ const ResultPage = () => {
   if (!cardData) {
     return (
       <LayoutMo hasHeader={true}>
-        <div className="flex flex-col h-full items-center justify-center">
+        <div className="flex h-full flex-col items-center justify-center">
           <p>결과를 찾을 수 없습니다.</p>
           <button
-            className="mt-4 px-4 py-2 bg-primary text-white rounded-md"
+            className="bg-primary mt-4 rounded-md px-4 py-2 text-white"
             onClick={() => navigate('/test')}
           >
             테스트 다시하기
@@ -126,7 +129,7 @@ const ResultPage = () => {
   return (
     <>
       <LayoutMo bgColor="#F1F2F4">
-        <div className="flex flex-col items-center mb-[45px]">
+        <div className="mb-[45px] flex flex-col items-center">
           {/* 0517 제거 고도화시 개선 */}
           {/* <div className="h-12 flex ml-auto">
             <button aria-label="홈으로 이동" onClick={handleClickClose}>
@@ -152,12 +155,12 @@ const ResultPage = () => {
             }}
           />
           {testResult && (
-            <p className="mt-[11px] text-gray-4">
+            <p className="text-gray-4 mt-[11px]">
               ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
             </p>
           )}
-          <div className="w-full h-[310px] bg-white mt-3.5 px-4 py-[22px] rounded-2xl shadow-sm text-left">
-            <b className="block text-xl not-italic font-medium leading-7 mb-[14px]">
+          <div className="mt-3.5 h-[310px] w-full rounded-2xl bg-white px-4 py-[22px] text-left shadow-sm">
+            <b className="mb-[14px] block text-xl leading-7 font-medium not-italic">
               당신은 이런 성향입니다
             </b>
             <p className="break-all">
@@ -166,38 +169,38 @@ const ResultPage = () => {
               asdfsffffasdfsffffasdfsffffasdfsffffasdfsfffff
             </p>
           </div>
-          <div className="w-full flex gap-[15px] mt-3.5">
+          <div className="mt-3.5 flex w-full gap-[15px]">
             <div
-              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex h-40 flex-1 shrink-0 flex-col items-center justify-center rounded-lg bg-white shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              <p className="text-[13px] font-medium leading-4">
+              <p className="text-[13px] leading-4 font-medium">
                 이런 캐릭터와 맞아요
               </p>
               <img
                 src="/src/assets/images/robot.png"
                 alt="로봇 캐릭터"
-                className="w-[70px] h-[70px] mt-1 mb-2"
+                className="mt-1 mb-2 h-[70px] w-[70px]"
               />
               <b>{cardData.bestMatchCode1}</b>
             </div>
             <div
-              className="flex flex-col items-center justify-center flex-1 h-40 shrink-0 bg-white rounded-lg shadow-sm"
+              className="flex h-40 flex-1 shrink-0 flex-col items-center justify-center rounded-lg bg-white shadow-sm"
               onClick={() => {
                 setIsTypeDialogOpen(true);
                 setSelectedCard(cardData);
               }}
             >
-              <p className="text-[13px] font-medium leading-4">
+              <p className="text-[13px] leading-4 font-medium">
                 이런 캐릭터와 맞지 않아요
               </p>
               <img
                 src="/src/assets/images/robot.png"
                 alt="로봇 캐릭터"
-                className="w-[70px] h-[70px] mt-1 mb-2"
+                className="mt-1 mb-2 h-[70px] w-[70px]"
               />
               <b>{cardData.worstMatchCode1}</b>
             </div>
@@ -221,7 +224,7 @@ const ResultPage = () => {
             <div>
               <a
                 href="/test"
-                className="text-[13px] font-medium leading-4"
+                className="text-[13px] leading-4 font-medium"
                 aria-label="재검사하기"
               >
                 재검사하기
@@ -229,7 +232,7 @@ const ResultPage = () => {
               {token && (
                 <button
                   onClick={() => setTestSubPage('HISTORY')}
-                  className="text-[13px] font-medium leading-4 before:content-['•'] before:text-gray-3 before:mx-1 before:text-[13px]"
+                  className="before:text-gray-3 text-[13px] leading-4 font-medium before:mx-1 before:text-[13px] before:content-['•']"
                   aria-label="히스토리"
                 >
                   히스토리
@@ -238,16 +241,16 @@ const ResultPage = () => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-2">
+          <div className="flex w-full flex-col gap-2">
             <button
-              className="flex h-[54px] justify-center items-center gap-2.5 bg-white self-stretch px-[93px] py-[13px] rounded-[10px] shadow-sm hover:bg-gray-50 transition-colors"
+              className="flex h-[54px] items-center justify-center gap-2.5 self-stretch rounded-[10px] bg-white px-[93px] py-[13px] shadow-sm transition-colors hover:bg-gray-50"
               aria-label="모든 결과 유형보기"
               onClick={handleViewAllResults}
             >
               모든 결과 유형보기
             </button>
             <button
-              className="flex h-[54px] justify-center items-center gap-2.5 self-stretch bg-primary px-7 py-[13px] rounded-[10px] text-white hover:bg-primary/90 transition-colors"
+              className="bg-primary hover:bg-primary/90 flex h-[54px] items-center justify-center gap-2.5 self-stretch rounded-[10px] px-7 py-[13px] text-white transition-colors"
               aria-label="내 캐릭터 토대로 프로필카드 만들기"
               onClick={onProfileCardClick}
             >

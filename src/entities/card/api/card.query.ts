@@ -1,4 +1,5 @@
 import {queryOptions} from '@tanstack/react-query';
+
 import {getAllCards, getCardById} from './create-card';
 
 export const cardQueries = {

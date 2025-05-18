@@ -1,3 +1,5 @@
+import {HTTPError} from 'ky';
+
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
@@ -8,7 +10,6 @@ import {
   getTeamRequestReceivedResponseDto,
   getTeamSenderIdGroupIdResponseDto,
 } from './dto';
-import {HTTPError} from 'ky';
 
 export const getTeamContacts = async (teamId: number) => {
   const ENDPOINT = `v1/team/${teamId}/contacts`;

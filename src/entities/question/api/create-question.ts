@@ -1,10 +1,8 @@
+import type {PostTestResultRequestDto} from './dto';
+
 import {api} from '@/shared/api/client';
-import {
-  getQuestionsResponseDto,
-  PostTestResultRequestDto,
-  postTestResultRequestDto,
-} from './dto';
 import {validateSchema} from '@/shared/api/validate';
+import {getQuestionsResponseDto, postTestResultRequestDto} from './dto';
 
 export const getAllQuestions = async () => {
   const ENDPOINT = 'v1/question/all';

@@ -1,3 +1,7 @@
+import * as React from 'react';
+import {ChevronRight} from 'lucide-react';
+import {useNavigate} from 'react-router-dom';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,9 +14,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import {useSetToken} from '@/shared/model/auth';
 import {useSetUserInfo} from '@/shared/model/user';
-import {ChevronRight} from 'lucide-react';
-import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
 
 export const LogoutButton: React.FC = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,12 +31,12 @@ export const LogoutButton: React.FC = () => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <button className="py-3 font-medium h-16 w-full text-lg tracking-[-0.45px] flex items-center justify-between">
+        <button className="flex h-16 w-full items-center justify-between py-3 text-lg font-medium tracking-[-0.45px]">
           <span>로그아웃</span>
           <ChevronRight className="stroke-[1.5]" />
         </button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="border-transparent sm:max-w-sm max-w-sm shadow-[0px_0px_8px_0px_rgba(0,0,0,0.25)]">
+      <AlertDialogContent className="max-w-sm border-transparent shadow-[0px_0px_8px_0px_rgba(0,0,0,0.25)] sm:max-w-sm">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center">
             정말 로그아웃 하시겠습니까?

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {UserCard} from './UserCard';
 import {useQueries} from '@tanstack/react-query';
-import {useCurrentGroupId} from '@/shared/model/group-id';
+
 import {memberQueries} from '@/entities/member/api';
 import {useCardIdMap} from '@/shared/model/card-id-map';
+import {useCurrentGroupId} from '@/shared/model/group-id';
+import {UserCard} from './UserCard';
 
 interface UserListProps {
   selectedRole: string;
@@ -55,7 +56,7 @@ export const UserList: React.FC<UserListProps> = ({
         <div>에러가 발생했습니다.</div>
       )}
       {cardData.state === 'hasData' && filteredMembers?.length === 0 && (
-        <div className="text-center p-4">해당 조건의 멤버가 없습니다.</div>
+        <div className="p-4 text-center">해당 조건의 멤버가 없습니다.</div>
       )}
       {cardData.state === 'hasData' &&
         filteredMembers?.map(member => (

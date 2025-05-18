@@ -1,6 +1,7 @@
-import {z} from 'zod';
-import {atomWithLocalStorage} from '../util/atom';
 import {useAtomValue, useSetAtom} from 'jotai';
+import {z} from 'zod';
+
+import {atomWithLocalStorage} from '../util/atom';
 
 const tokenSchema = z.string().nullable();
 

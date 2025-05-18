@@ -1,14 +1,15 @@
-import {Button} from '@/components/ui/button';
 import {useNavigate} from 'react-router-dom';
-import logo from '@/assets/images/logo.png';
+
 import backgroundImage from '@/assets/images/background.png';
+import logo from '@/assets/images/logo.png';
+import {Button} from '@/components/ui/button';
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="flex flex-col justify-between px-[60px] py-[40px] min-h-screen"
+      className="flex min-h-screen flex-col justify-between px-[60px] py-[40px]"
       style={{
         background: `linear-gradient(
           0deg,
@@ -21,14 +22,14 @@ const MainPage = () => {
     >
       <div className="flex flex-col items-center gap-1.5">
         <img src={logo} alt="Fiteam" className="w-[126px]" />
-        <p className="text-[#585858] text-center text-base font-semibold leading-7">
+        <p className="text-center text-base leading-7 font-semibold text-[#585858]">
           나만의 팀을 만드는 특별함
         </p>
       </div>
-      <div className="w-full h-[370px] bg-gray-200 " />
+      <div className="h-[370px] w-full bg-gray-200" />
       <Button
         onClick={() => navigate('/onboarding')}
-        className="w-full flex  h-[54px] justify-center items-center gap-2.5 shrink-0 px-[132px] py-[13px] rounded-[10px] bg-primary text-white text-xl font-medium"
+        className="bg-primary flex h-[54px] w-full shrink-0 items-center justify-center gap-2.5 rounded-[10px] px-[132px] py-[13px] text-xl font-medium text-white"
       >
         시작하기
       </Button>

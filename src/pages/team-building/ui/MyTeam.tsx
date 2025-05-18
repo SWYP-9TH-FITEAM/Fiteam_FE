@@ -1,21 +1,22 @@
+import * as React from 'react';
+import {useQueries} from '@tanstack/react-query';
+import {ChevronLeft} from 'lucide-react';
+import {useNavigate} from 'react-router-dom';
+import {A11y, FreeMode, Mousewheel} from 'swiper/modules';
+import {Swiper, SwiperSlide} from 'swiper/react';
+
+import chatIcon from '@/assets/icons/chat.svg';
+import robot from '@/assets/images/robot.png';
 import {memberQueries} from '@/entities/member/api';
 import {teamQueries} from '@/entities/team/api/team.query';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {cn} from '@/lib/utils';
+import {useCardIdMap} from '@/shared/model/card-id-map';
 import {useCurrentGroupId} from '@/shared/model/group-id';
 import {GroupDrawer} from '@/shared/ui/GroupDrawer';
-import {useQueries} from '@tanstack/react-query';
-import {ChevronLeft} from 'lucide-react';
-import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {A11y, FreeMode, Mousewheel} from 'swiper/modules';
-import chatIcon from '@/assets/icons/chat.svg';
-import {useCardIdMap} from '@/shared/model/card-id-map';
-import robot from '@/assets/images/robot.png';
+import {TeamLeaveButton} from './TeamLeaveButton';
 
 import './swiper.css';
-import {TeamLeaveButton} from './TeamLeaveButton';
 
 export const MyTeam: React.FC = () => {
   const navigate = useNavigate();
@@ -70,11 +71,11 @@ export const MyTeam: React.FC = () => {
   }, [teamBuildingStatus, excludeClosed]);
 
   const header = (
-    <header className="px-3 py-2.5 flex gap-2.5 items-center">
+    <header className="flex items-center gap-2.5 px-3 py-2.5">
       <button onClick={() => navigate(-1)}>
-        <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
+        <ChevronLeft className="h-6 w-6 stroke-[1.5]" />
       </button>
-      <span className="text-xl tracking-[-0.5px] font-semibold">나의 팀</span>
+      <span className="text-xl font-semibold tracking-[-0.5px]">나의 팀</span>
 
       {myTeam && <TeamLeaveButton teamId={myTeam.teamId} />}
     </header>
@@ -107,10 +108,10 @@ export const MyTeam: React.FC = () => {
       <GroupDrawer />
       <div
         className={cn(
-          'mt-2 mx-3 rounded-lg shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] bg-[#F1F2F4]',
-          !loading && !myTeam && 'flex justify-center items-center',
-          !loading && myTeam && 'grid grid-cols-2 gap-x-9 px-3.5 py-5 gap-y-3',
-          loading && 'flex justify-center items-center',
+          'mx-3 mt-2 rounded-lg bg-[#F1F2F4] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]',
+          !loading && !myTeam && 'flex items-center justify-center',
+          !loading && myTeam && 'grid grid-cols-2 gap-x-9 gap-y-3 px-3.5 py-5',
+          loading && 'flex items-center justify-center',
         )}
       >
         {loading && <div className="loading loading-spinner loading-xl" />}
@@ -120,7 +121,7 @@ export const MyTeam: React.FC = () => {
           myTeam.members.map(teamMember => (
             <div
               key={teamMember.userId}
-              className="flex justify-between items-center text-sm"
+              className="flex items-center justify-between text-sm"
             >
               <span className="text-[#767676]">{teamMember.position}</span>
               <div className="flex gap-1">
@@ -130,31 +131,31 @@ export const MyTeam: React.FC = () => {
           ))}
       </div>
 
-      <div className="flex items-center mt-3 justify-center bg-white rounded-[20px_16px_0px_0px]">
+      <div className="mt-3 flex items-center justify-center rounded-[20px_16px_0px_0px] bg-white">
         <button
           className={cn(
-            `flex justify-center items-center py-2.5 flex-1`,
+            `flex flex-1 items-center justify-center py-2.5`,
             tab === 'profile'
               ? 'border-b border-black text-black'
               : 'text-[#979797]',
           )}
           onClick={() => setTab('profile')}
         >
-          <span className="font-medium text-[18px] leading-[1.33] tracking-[-2.5%]">
+          <span className="text-[18px] leading-[1.33] font-medium tracking-[-2.5%]">
             프로필 카드
           </span>
         </button>
 
         <button
           className={cn(
-            `flex justify-center  items-center py-2.5 flex-1`,
+            `flex flex-1 items-center justify-center py-2.5`,
             tab === 'otherTeam'
               ? 'border-b border-black text-black'
               : 'text-[#979797]',
           )}
           onClick={() => setTab('otherTeam')}
         >
-          <span className="font-medium text-[18px] leading-[1.33] tracking-[-2.5%]">
+          <span className="text-[18px] leading-[1.33] font-medium tracking-[-2.5%]">
             팀 구성 현황
           </span>
         </button>
@@ -165,7 +166,7 @@ export const MyTeam: React.FC = () => {
           <Swiper
             modules={[A11y, Mousewheel, FreeMode]}
             slidesPerView="auto"
-            className="relative flex w-full items-center gap-2 my-4"
+            className="relative my-4 flex w-full items-center gap-2"
             wrapperClass="gap-2"
             mousewheel={{forceToAxis: true, enabled: true}}
             watchOverflow
@@ -174,7 +175,7 @@ export const MyTeam: React.FC = () => {
             <SwiperSlide>
               <button
                 className={cn(
-                  'flex py-1 px-4 rounded-full bg-[#EEE]',
+                  'flex rounded-full bg-[#EEE] px-4 py-1',
                   activePosition === 'all' && 'bg-[#5F4AFF] text-white',
                 )}
                 onClick={() => setActivePosition('all')}
@@ -187,7 +188,7 @@ export const MyTeam: React.FC = () => {
                 <SwiperSlide key={index}>
                   <button
                     className={cn(
-                      'flex py-1 px-4 rounded-full bg-[#EEE]',
+                      'flex rounded-full bg-[#EEE] px-4 py-1',
                       activePosition === position && 'bg-[#5F4AFF] text-white',
                     )}
                     onClick={() => setActivePosition(position)}
@@ -204,20 +205,20 @@ export const MyTeam: React.FC = () => {
               <div
                 key={member.userId}
                 className={cn(
-                  'flex justify-between items-center p-[14px_20px_24px] bg-white border-b border-[#EEEEEE]',
+                  'flex items-center justify-between border-b border-[#EEEEEE] bg-white p-[14px_20px_24px]',
                 )}
               >
                 <div className="flex gap-2">
-                  <div className="w-24 h-24 rounded-[10px] bg-[#E9E9E9] overflow-hidden relative">
+                  <div className="relative h-24 w-24 overflow-hidden rounded-[10px] bg-[#E9E9E9]">
                     <img
                       src={member.profileImgUrl || robot}
                       alt={`${member.userName}'s profile`}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
 
-                  <div className="flex flex-col gap-1 w-[101px] pt-1 text-left">
-                    <span className="text-[18px] font-medium leading-[1.33] tracking-[-2.5%] text-[#111111]">
+                  <div className="flex w-[101px] flex-col gap-1 pt-1 text-left">
+                    <span className="text-[18px] leading-[1.33] font-medium tracking-[-2.5%] text-[#111111]">
                       {member.userName}
                     </span>
                   </div>
@@ -226,24 +227,24 @@ export const MyTeam: React.FC = () => {
                 <div className="flex flex-col items-end justify-between self-stretch">
                   <div className="flex items-center gap-1">
                     <div className="flex items-center gap-1">
-                      <button className="px-2 h-6 rounded-[11.5px] bg-[#F1F2F4] flex items-center justify-center">
-                        <span className="text-[13px] font-medium leading-[1.23] tracking-[-2.5%] text-[#111111]">
+                      <button className="flex h-6 items-center justify-center rounded-[11.5px] bg-[#F1F2F4] px-2">
+                        <span className="text-[13px] leading-[1.23] font-medium tracking-[-2.5%] text-[#111111]">
                           궁합
                         </span>
                       </button>
 
-                      <button className="w-6 h-6 rounded-full bg-[#F1F2F4] flex items-center justify-center">
+                      <button className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F1F2F4]">
                         <img
                           src={chatIcon}
                           alt="Message icon"
-                          className="w-4 h-4"
+                          className="h-4 w-4"
                         />
                       </button>
                     </div>
                   </div>
 
-                  <div className="px-3 h-5 rounded-[4px] bg-[#D9D9D9] flex items-center justify-center">
-                    <span className="text-[13px] font-medium leading-[1.23] tracking-[-2.5%] text-[#111111]">
+                  <div className="flex h-5 items-center justify-center rounded-[4px] bg-[#D9D9D9] px-3">
+                    <span className="text-[13px] leading-[1.23] font-medium tracking-[-2.5%] text-[#111111]">
                       {member.position}
                     </span>
                   </div>
@@ -254,9 +255,9 @@ export const MyTeam: React.FC = () => {
       )}
       {tab === 'otherTeam' && (
         <>
-          <div className="flex justify-between items-center gap-4 px-5 py-4 bg-white">
+          <div className="flex items-center justify-between gap-4 bg-white px-5 py-4">
             <div className="flex items-center gap-2.5">
-              <label className="flex items-center cursor-pointer">
+              <label className="flex cursor-pointer items-center">
                 <input
                   type="checkbox"
                   className="sr-only"
@@ -264,9 +265,9 @@ export const MyTeam: React.FC = () => {
                   onChange={() => setExcludeClosed(prev => !prev)}
                 />
                 <span
-                  className={`relative w-4 h-4 border ${
+                  className={`relative h-4 w-4 border ${
                     excludeClosed ? 'border-[#BEBEBE]' : 'border-[#BEBEBE]'
-                  } rounded inline-block mr-2.5`}
+                  } mr-2.5 inline-block rounded`}
                 >
                   {excludeClosed && (
                     <span className="absolute inset-0 flex items-center justify-center text-xs">
@@ -274,7 +275,7 @@ export const MyTeam: React.FC = () => {
                     </span>
                   )}
                 </span>
-                <span className="text-[13px] font-medium leading-[1.23] text-[#111111] tracking-[-2.5%]">
+                <span className="text-[13px] leading-[1.23] font-medium tracking-[-2.5%] text-[#111111]">
                   모집 완료된 팀 제외하고 보기
                 </span>
               </label>
@@ -284,19 +285,19 @@ export const MyTeam: React.FC = () => {
             <div
               key={teamId}
               className={cn(
-                'mt-2 mx-3 rounded-lg shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] bg-[#F1F2F4]',
+                'mx-3 mt-2 rounded-lg bg-[#F1F2F4] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]',
               )}
             >
-              <div className="flex justify-end items-center pt-2 pr-2">
-                <div className="bg-white w-fit rounded-sm px-2 py-0.5 text-sm">
+              <div className="flex items-center justify-end pt-2 pr-2">
+                <div className="w-fit rounded-sm bg-white px-2 py-0.5 text-sm">
                   {teamStatus}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-x-9 px-3.5 py-5 gap-y-3">
+              <div className="grid grid-cols-2 gap-x-9 gap-y-3 px-3.5 py-5">
                 {members.map(teamMember => (
                   <div
                     key={teamMember.userId}
-                    className="flex justify-between items-center text-sm"
+                    className="flex items-center justify-between text-sm"
                   >
                     <span className="text-[#767676]">
                       {teamMember.position}

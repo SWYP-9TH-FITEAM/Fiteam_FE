@@ -1,6 +1,7 @@
+import {z} from 'zod';
+
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
-import {z} from 'zod';
 
 const getPositionsResponseDto = z.array(z.string());
 

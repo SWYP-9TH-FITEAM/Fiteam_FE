@@ -1,7 +1,8 @@
-import ky from 'ky';
-import {tokenAtom} from '../model/auth';
 import {getDefaultStore} from 'jotai';
+import ky from 'ky';
 import {toast} from 'sonner';
+
+import {tokenAtom} from '../model/auth';
 
 export const api = ky.create({
   prefixUrl: import.meta.env.VITE_BE_API,

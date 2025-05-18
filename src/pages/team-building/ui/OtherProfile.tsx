@@ -1,16 +1,16 @@
+import * as React from 'react';
+import {useQueries} from '@tanstack/react-query';
+import {ChevronLeft} from 'lucide-react';
+import {useNavigate, useParams} from 'react-router-dom';
+
+import chatIcon from '@/assets/icons/chat.svg';
 import {memberQueries} from '@/entities/member/api';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import {InfoRow, Section2, SectionInfo} from '@/features/profile/MyProfile';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {useCardIdMap} from '@/shared/model/card-id-map';
-import {useQueries} from '@tanstack/react-query';
-import {ChevronLeft} from 'lucide-react';
-import chatIcon from '@/assets/icons/chat.svg';
-
-import * as React from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {LikeButton} from './LikeButton';
 import {useCurrentGroupId} from '@/shared/model/group-id';
+import {LikeButton} from './LikeButton';
 
 export const OtherProfile: React.FC = () => {
   const {memberId} = useParams<{memberId: string}>();
@@ -67,22 +67,22 @@ export const OtherProfile: React.FC = () => {
       hideBottomBar
       classNames={{wrapper: 'bg-[#f6f6f6]'}}
       header={
-        <header className="px-3 py-2.5 flex gap-2.5 items-center">
+        <header className="flex items-center gap-2.5 px-3 py-2.5">
           <button onClick={() => navigate(-1)}>
-            <ChevronLeft className="w-6 h-6 stroke-[1.5]" />
+            <ChevronLeft className="h-6 w-6 stroke-[1.5]" />
           </button>
-          <span className="text-xl tracking-[-0.5px] font-semibold">
+          <span className="text-xl font-semibold tracking-[-0.5px]">
             프로필
           </span>
           {targetMember && (
-            <div className="ml-auto flex gap-2 items-center">
+            <div className="ml-auto flex items-center gap-2">
               <LikeButton
                 className="bg-transparent"
                 likeId={targetMember.likeId}
                 userId={targetMember.userId}
               />
-              <button className="w-6 h-6 rounded-full flex items-center justify-center">
-                <img src={chatIcon} alt="Message icon" className="w-4 h-4" />
+              <button className="flex h-6 w-6 items-center justify-center rounded-full">
+                <img src={chatIcon} alt="Message icon" className="h-4 w-4" />
               </button>
             </div>
           )}
@@ -93,7 +93,7 @@ export const OtherProfile: React.FC = () => {
         <div className="loading loading-spinner loading-xl" />
       )}
       {profile && cardData.state === 'hasData' && (
-        <div className="pt-1.5 pb-3.5 flex flex-col gap-[13px]">
+        <div className="flex flex-col gap-[13px] pt-1.5 pb-3.5">
           {/* 성향 카드 */}
           <CharacterCard
             name={cardData.data.get(profile.cardId)?.name ?? ''}

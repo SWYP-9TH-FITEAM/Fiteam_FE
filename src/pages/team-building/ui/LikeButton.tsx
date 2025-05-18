@@ -1,12 +1,12 @@
 import * as React from 'react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {toast} from 'sonner';
 
 import heartIcon from '@/assets/icons/heart.svg';
-import {useCurrentGroupId} from '@/shared/model/group-id';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {deleteLikeUnlike, postLikeAdd} from '@/entities/like/api';
 import {memberQueries} from '@/entities/member/api';
-import {toast} from 'sonner';
 import {cn} from '@/lib/utils';
+import {useCurrentGroupId} from '@/shared/model/group-id';
 
 interface LikeButtonProps {
   likeId: number | null;
@@ -76,7 +76,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   return (
     <button
       className={cn(
-        'rounded-full bg-white w-6 h-6 flex items-center justify-center',
+        'flex h-6 w-6 items-center justify-center rounded-full bg-white',
         className,
       )}
       onClick={handleHeartClick}
@@ -84,7 +84,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
       <img
         src={heartIcon}
         alt="Like"
-        className={cn('w-4 h-4', !isLiked && 'grayscale-100')}
+        className={cn('h-4 w-4', !isLiked && 'grayscale-100')}
       />
     </button>
   );

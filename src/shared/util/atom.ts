@@ -1,4 +1,6 @@
-import {atom, SetStateAction} from 'jotai';
+import type {SetStateAction} from 'jotai';
+
+import {atom} from 'jotai';
 import {z} from 'zod';
 
 export const atomWithLocalStorage = <Schema extends z.ZodTypeAny>(

@@ -1,6 +1,6 @@
 import {apiWithAuth} from '@/shared/api/client';
-import {getNotiAllResponseDto, getNotiByIdResponseDto} from './dto';
 import {validateSchema} from '@/shared/api/validate';
+import {getNotiAllResponseDto, getNotiByIdResponseDto} from './dto';
 
 export const getNotiById = async (id: number) => {
   const ENDPOINT = `v1/noti/${id}`;

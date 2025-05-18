@@ -1,8 +1,7 @@
+import type {PatchMemberProfileGroupMemberIdRequestDto} from './dto';
+
 import {apiWithAuth} from '@/shared/api/client';
-import {
-  patchMemberProfileGroupMemberIdRequestDto,
-  PatchMemberProfileGroupMemberIdRequestDto,
-} from './dto';
+import {patchMemberProfileGroupMemberIdRequestDto} from './dto';
 
 export const patchMemberProfileByGroupMemberId = async (
   groupMemberId: number,

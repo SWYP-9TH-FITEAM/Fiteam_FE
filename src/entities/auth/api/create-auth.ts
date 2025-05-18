@@ -1,19 +1,23 @@
-import {api} from '@/shared/api/client';
-import {
-  postAuthLoginRequestDto,
+import type {
   PostAuthLoginRequestDto,
-  postAuthLoginResponseDto,
   PostAuthResetPasswordRequestDto,
-  postAuthResetPasswordRequestDto,
   PostAuthSendVerificationCodeRequestDto,
-  postAuthSendVerificationCodeRequestDto,
-  postAuthSignUpRequestDto,
   PostAuthSignUpRequestDto,
   PostAuthVerifyCodeRequestDto,
+} from './dto';
+
+import {z} from 'zod';
+
+import {api} from '@/shared/api/client';
+import {validateSchema} from '@/shared/api/validate';
+import {
+  postAuthLoginRequestDto,
+  postAuthLoginResponseDto,
+  postAuthResetPasswordRequestDto,
+  postAuthSendVerificationCodeRequestDto,
+  postAuthSignUpRequestDto,
   postAuthVerifyCodeRequestDto,
 } from './dto';
-import {validateSchema} from '@/shared/api/validate';
-import {z} from 'zod';
 
 export const postAuthLogin = async (payload: PostAuthLoginRequestDto) => {
   const ENDPOINT = 'v1/auth/login';

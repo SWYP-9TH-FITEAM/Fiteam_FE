@@ -1,6 +1,5 @@
-import {formatTimeString} from '@/features/chat/utils/formatTimeString';
-
 import paperPlane from '@/assets/images/paper-plane.png';
+import {formatTimeString} from '@/features/chat/utils/formatTimeString';
 
 type ChatMessageProps = {
   content: string;
@@ -47,17 +46,17 @@ export const ChatMessage = ({
     const type = typeMap[messageType as keyof typeof typeMap];
     if (!type) return null;
     return (
-      <div className="flex justify-center w-full">
+      <div className="flex w-full justify-center">
         <div
-          className="flex flex-col items-center justify-between rounded-2xl w-[153px] h-[161px] px-2 py-[10px]"
+          className="flex h-[161px] w-[153px] flex-col items-center justify-between rounded-2xl px-2 py-[10px]"
           style={{backgroundColor: type.bg}}
         >
-          <div className="text-center text-[13px] font-medium leading-4">
+          <div className="text-center text-[13px] leading-4 font-medium">
             {type.text}
           </div>
-          <img src={paperPlane} alt="제안" className="w-[70px] h-[50px] mb-3" />
+          <img src={paperPlane} alt="제안" className="mb-3 h-[50px] w-[70px]" />
           <button
-            className="w-[120px] h-[36px] rounded-md text-center text-[13px] font-medium leading-4"
+            className="h-[36px] w-[120px] rounded-md text-center text-[13px] leading-4 font-medium"
             style={{backgroundColor: type.btnBg, color: type.btnText}}
           >
             {type.button}
@@ -74,15 +73,15 @@ export const ChatMessage = ({
       {!isMine && (
         <div className="flex">
           {showProfile ? (
-            <div className="w-9 h-9 bg-gray-200 rounded-md flex-shrink-0 self-start mr-[6px]" />
+            <div className="mr-[6px] h-9 w-9 flex-shrink-0 self-start rounded-md bg-gray-200" />
           ) : (
-            <div className="w-9 h-9 mr-[6px] flex-shrink-0" />
+            <div className="mr-[6px] h-9 w-9 flex-shrink-0" />
           )}
           <div>
             {showProfile && userName && (
-              <div className="text-[#111] text-[13px] font-medium leading-4 mb-[6px]">
+              <div className="mb-[6px] text-[13px] leading-4 font-medium text-[#111]">
                 {userName}
-                <span className="text-[#767676] text-[10px] font-medium leading-[13px] ml-[3px]">
+                <span className="ml-[3px] text-[10px] leading-[13px] font-medium text-[#767676]">
                   디자인
                 </span>
               </div>
@@ -92,12 +91,12 @@ export const ChatMessage = ({
               messageType === 'TEAM_REQUEST' ? (
                 renderSpecialCard()
               ) : (
-                <div className="bg-white rounded-lg p-2 min-w-fit max-w-[300px] text-black">
+                <div className="max-w-[300px] min-w-fit rounded-lg bg-white p-2 text-black">
                   {content}
                 </div>
               )}
               {showTime && (
-                <span className="text-[10px] text-gray-400 ml-1">
+                <span className="ml-1 text-[10px] text-gray-400">
                   {formattedTime}
                 </span>
               )}
@@ -109,14 +108,14 @@ export const ChatMessage = ({
       {isMine && (
         <div className="flex items-end">
           {showTime && (
-            <span className="w-full text-[10px] text-gray-400 mr-1">
+            <span className="mr-1 w-full text-[10px] text-gray-400">
               {formattedTime}
             </span>
           )}
           {messageType === 'TEAM_RESPONSE' || messageType === 'TEAM_REQUEST' ? (
             renderSpecialCard()
           ) : (
-            <div className="bg-[#6858FF] rounded-lg p-2 min-w-fit max-w-[300px] text-white">
+            <div className="max-w-[300px] min-w-fit rounded-lg bg-[#6858FF] p-2 text-white">
               {content}
             </div>
           )}
