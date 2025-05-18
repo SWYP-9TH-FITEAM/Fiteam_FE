@@ -29,7 +29,7 @@ export const getUserGroupsAcceptedResponseDto = z.array(
   z.object({
     groupId: z.number().int(),
     groupName: z.string(),
-    invitedAt: z.string().nullable(),
+    invitedAt: z.string().datetime({offset: true}).nullable(),
   }),
 );
 
@@ -41,7 +41,7 @@ export const getUserGroupsPendingResponseDto = z.array(
   z.object({
     groupId: z.number().int(),
     groupName: z.string(),
-    invitedAt: z.string().nullable(),
+    invitedAt: z.string().datetime({offset: true}).nullable(),
   }),
 );
 

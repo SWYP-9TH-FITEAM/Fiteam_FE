@@ -13,7 +13,7 @@ export const Notifications: React.FC = () => {
       </DrawerTrigger>
       <DrawerContent className="max-w-[500px] mx-auto min-h-[80dvh]">
         <DrawerTitle className="text-center">알림</DrawerTitle>
-        <div className="mt-4 border-t divide-y overflow-y-auto">
+        <div className="mt-4 border-t border-border divide-y divide-border overflow-y-auto">
           {Array.from(Array(50)).map((_, index) => (
             <div key={index} className="px-4 py-2">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,

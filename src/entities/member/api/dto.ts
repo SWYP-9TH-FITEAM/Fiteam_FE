@@ -18,12 +18,12 @@ export const getMemberGroupIdMembersResponseDto = z.array(
     userId: z.number().int(),
     memberId: z.number().int(),
     userName: z.string(),
-    profileImageUrl: z.string().url(),
+    profileImageUrl: z.string().url().nullable(),
     cardId1: z.number().int(),
-    position: z.string(),
+    position: z.string().nullable(),
     teamStatus: z.string(),
-    teamId: z.number().int(),
-    likeId: z.number().int(),
+    teamId: z.number().int().nullable(),
+    likeId: z.number().int().nullable(),
   }),
 );
 
@@ -38,12 +38,12 @@ export type GetMemberGroupIdPositionsResponseDto = z.infer<
 >;
 
 export const getMemberProfileMemberIdResponseDto = z.object({
-  position: z.string(),
-  workHistory: z.number().int(),
-  projectGoal: z.string(),
-  projectPurpose: z.string(),
-  url: z.string().url(),
-  introduction: z.string(),
+  position: z.string().nullable(),
+  workHistory: z.number().int().nullable(),
+  projectGoal: z.string().nullable(),
+  projectPurpose: z.string().nullable(),
+  url: z.string().url().nullable(),
+  introduction: z.string().nullable(),
   cardId: z.number().int(),
   numEI: z.number().int(),
   numPD: z.number().int(),
