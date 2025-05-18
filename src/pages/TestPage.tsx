@@ -171,7 +171,7 @@ const TestPage = () => {
   const fetchResultApi = async (scores: QuestionScore[]) => {
     try {
       console.log('API 호출 전 scores:', scores);
-
+      localStorage.setItem('test-scores', JSON.stringify(scores));
       // 서버 응답 시간을 고려하여 최소 로딩 시간 보장
       const startTime = Date.now();
       const result = await postTestResult({scores});
