@@ -1,153 +1,136 @@
 import {Button} from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import {Drawer, DrawerContent, DrawerTrigger} from '@/components/ui/drawer';
-import {ChevronDown, ChevronRight} from 'lucide-react';
+
+import {ChevronRight} from 'lucide-react';
 import * as React from 'react';
 import {RoleSelector} from './RoleSelector';
 import {FilterSection} from './FilterSection';
-import {UserList, User} from './UserList';
+import {UserList} from './UserList';
+import {useCurrentGroupId} from '@/shared/model/group-id';
+import {useQueries} from '@tanstack/react-query';
+import {memberQueries} from '@/entities/member/api';
+import {teamQueries} from '@/entities/team/api/team.query';
+import {cn} from '@/lib/utils';
+import {GroupDrawer} from '@/shared/ui/GroupDrawer';
+import {useCardIdMap} from '@/shared/model/card-id-map';
 import robot from '@/assets/images/robot.png';
+import {Link} from 'react-router-dom';
 
-interface TeamBuildingProps {
-  groups: {
-    groupId: number;
-    groupName: string;
-  }[];
-}
+export const TeamBuilding = () => {
+  const currentGroupId = useCurrentGroupId();
 
-export const TeamBuilding = ({groups}: TeamBuildingProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedGroup, setSelectedGroup] = React.useState<{
-    groupId: number;
-    groupName: string;
-  } | null>(null);
-  const [selectedRole, setSelectedRole] = React.useState('pm');
+  const cardData = useCardIdMap();
+
+  const {
+    data: [{data: myTeam}, {data: myProfileMini}, {data: positions}],
+    loading,
+    error,
+  } = useQueries({
+    queries: [
+      {
+        ...teamQueries.myTeam(currentGroupId ?? -1),
+        enabled: currentGroupId !== null,
+      },
+      {
+        ...memberQueries.myProfileMini(currentGroupId ?? -1),
+        enabled: currentGroupId !== null,
+      },
+      {
+        ...memberQueries.positionsByGroupId(currentGroupId ?? -1),
+        enabled: currentGroupId !== null,
+      },
+    ],
+    combine: data => {
+      return {
+        data,
+        loading: data.some(data => data.isLoading),
+        error: data.some(data => data.isError),
+      };
+    },
+  });
+
+  const [selectedRole, setSelectedRole] = React.useState(positions?.[0] ?? '');
   const [excludeClosed, setExcludeClosed] = React.useState(false);
-  const [sortOption, setSortOption] = React.useState('인기순');
-  const [likedUserIds, setLikedUserIds] = React.useState<number[]>([]);
 
-  const handleUserClick = (userId: number) => {
-    console.log('User clicked:', userId);
-    // Navigate to user detail or perform action
-  };
+  React.useEffect(() => {
+    if (!loading && positions && !selectedRole) {
+      setSelectedRole(positions[0]);
+    }
+  }, [positions, loading, selectedRole]);
 
-  const handleLikeToggle = (userId: number) => {
-    setLikedUserIds(prev =>
-      prev.includes(userId)
-        ? prev.filter(id => id !== userId)
-        : [...prev, userId],
+  if (error) {
+    return (
+      <div className="p-4 text-red-500">
+        데이터를 불러오는 중 오류가 발생했습니다.
+      </div>
     );
-  };
+  }
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-center py-2.5 px-5">
-        <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex items-center gap-2 hover:bg-white max-w-[150px] truncate"
-            >
-              {selectedGroup ? <>{selectedGroup.groupName}</> : <>그룹 선택</>}
-              <ChevronDown className="w-5 h-5 stroke-[1.5]" />
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent className="max-w-[500px] mx-auto">
-            <div className="mt-4 border-t">
-              <Command>
-                <CommandInput placeholder="그룹 검색" />
-                <CommandList>
-                  <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>
-                  <CommandGroup>
-                    {groups.map(group => (
-                      <CommandItem
-                        key={group.groupId}
-                        value={group.groupName}
-                        onSelect={groupName => {
-                          setSelectedGroup(
-                            groups.find(
-                              group => group.groupName === groupName,
-                            ) || null,
-                          );
-                          setOpen(false);
-                        }}
-                      >
-                        {group.groupName}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </div>
-          </DrawerContent>
-        </Drawer>
+        <GroupDrawer />
 
-        <Button variant="ghost" className="hover:bg-white">
-          진행상황 보기
+        <Button asChild variant="ghost" className="hover:bg-white">
+          <Link to="/my-team">진행상황 보기</Link>
         </Button>
       </div>
 
       <div className="rounded-lg mx-3 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] p-3 flex items-center justify-between bg-white">
         <div className="flex gap-2">
           <div className="px-1 py-2 bg-[#D9D9D9] rounded-lg w-24 h-24">
-            <img src={robot} alt="robot" className="w-full h-full" />
+            <img
+              src={
+                (cardData.state === 'hasData' &&
+                  cardData.data.get(myProfileMini?.cardId ?? -1)?.imgUrl) ||
+                myProfileMini?.imageUrl ||
+                robot
+              }
+              alt="내 프로필 이미지"
+              className="w-full h-full"
+            />
           </div>
-          <div>아무개</div>
+          <div>{myProfileMini?.userName}</div>
         </div>
 
-        <div className="flex flex-col justify-between items-end self-stretch">
-          <button className="flex items-center">
-            수정 <ChevronRight className="w-5 h-5 stroke-[1.5]" />
-          </button>
+        <div className="flex flex-col justify-between items-end self-stretch text-sm">
+          <Link to="/profile" className="flex items-center text-[#767676]">
+            자세히 보기 <ChevronRight className="w-5 h-5 stroke-[1.5]" />
+          </Link>
 
           <div className="flex items-center gap-1">
-            <div className="rounded px-2 bg-[#D9D9D9]">마감</div>
+            <div className="rounded px-2 bg-[#D9D9D9]">
+              {myProfileMini?.teamStatus}
+            </div>
             <div className="rounded px-2 bg-[#FFF2E4] text-[#FF8A30]">
-              디자이너
+              {myProfileMini?.position}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-2 mx-3 bg-white grid grid-cols-2 gap-x-9 px-3.5 py-5 gap-y-3 rounded-lg shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]">
-        <div className="flex justify-between items-center">
-          <span className="text-[#979797]">PM</span>
-          <div className="flex gap-1">
-            <span>아무개</span>
-            <span>아무개</span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <span className="text-[#979797]">프론트엔드</span>
-          <div className="flex gap-1">
-            <span>아무개</span>
-            <span>아무개</span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <span className="text-[#979797]">디자이너</span>
-          <div className="flex gap-1">
-            <span>아무개</span>
-            <span>아무개</span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <span className="text-[#979797]">백엔드</span>
-          <div className="flex gap-1">
-            <span>아무개</span>
-            <span>아무개</span>
-          </div>
-        </div>
+      <div
+        className={cn(
+          'mt-2 mx-3 bg-white rounded-lg shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]',
+          !loading && !myTeam && 'flex justify-center items-center',
+          !loading && myTeam && 'grid grid-cols-2 gap-x-9 px-3.5 py-5 gap-y-3',
+          loading && 'flex justify-center items-center',
+        )}
+      >
+        {loading && <div className="loading loading-spinner loading-xl" />}
+        {!loading && !myTeam && <div className="p-4">팀이 없습니다.</div>}
+        {!loading &&
+          myTeam &&
+          myTeam.members.map(teamMember => (
+            <div
+              key={teamMember.userId}
+              className="flex justify-between items-center text-sm"
+            >
+              <span className="text-[#979797]">{teamMember.position}</span>
+              <div className="flex gap-1">
+                <span>{teamMember.userName}</span>
+              </div>
+            </div>
+          ))}
       </div>
 
       <div className="sticky -top-3 z-10">
@@ -159,25 +142,10 @@ export const TeamBuilding = ({groups}: TeamBuildingProps) => {
         <FilterSection
           excludeClosed={excludeClosed}
           onExcludeClosedChange={setExcludeClosed}
-          sortOption={sortOption}
-          onSortOptionChange={setSortOption}
         />
       </div>
 
-      <UserList
-        users={MOCK_USERS}
-        onUserClick={handleUserClick}
-        likedUserIds={likedUserIds}
-        onLikeToggle={handleLikeToggle}
-      />
+      <UserList selectedRole={selectedRole} excludeClosed={excludeClosed} />
     </div>
   );
 };
-
-// Mock data for demonstration
-const MOCK_USERS: User[] = Array.from(Array(40)).map((_, index) => ({
-  id: index,
-  userName: '아무개',
-  userType: '목표를 향해 달리는 로봇 유형',
-  position: '프론트엔드',
-}));
