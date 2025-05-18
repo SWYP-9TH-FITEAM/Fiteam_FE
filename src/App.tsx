@@ -64,19 +64,19 @@ function AppRoutes() {
           </Route>
 
           {/* Protected Routes: Accessible only when authenticated */}
-        <Route element={<AuthTestGuard />}>
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/:memberId" element={<OtherProfile />} />
-          <Route path="/profile/edit" element={<ProfileEditPage />} />
-          <Route path="/profile/create" element={<ProfileEditPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/team-building" element={<TeamBuildingPage />} />
-          <Route path="/my-team" element={<MyTeam />} />
-          <Route path="/my-page" element={<MyPage />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/announcements" element={<Announcements />} />
-        </Route>
+          <Route element={<AuthTestGuard />}>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:memberId" element={<OtherProfile />} />
+            <Route path="/profile/edit" element={<ProfileEditPage />} />
+            <Route path="/profile/create" element={<ProfileEditPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/team-building" element={<TeamBuildingPage />} />
+            <Route path="/my-team" element={<MyTeam />} />
+            <Route path="/my-page" element={<MyPage />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/announcements" element={<Announcements />} />
+          </Route>
 
           {/* 매니저 */}
           <Route path="/manager" element={<ManagerPage />} />
