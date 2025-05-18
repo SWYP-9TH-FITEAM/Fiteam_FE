@@ -3,7 +3,7 @@ import ManagerHeader from './ManagerHeader';
 
 const LayoutManager = ({children}: {children: ReactNode}) => {
   return (
-    <div className="min-h-[100dvh] bg-[#fafafa] w-full flex flex-col">
+    <div className="min-h-[100dvh] bg-[#fafafa] w-full flex flex-col min-w-[1400px]">
       <ManagerHeader />
       {/* 본문 */}
       <main className="pt-[80px] flex-1 flex justify-center">

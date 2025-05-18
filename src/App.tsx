@@ -44,7 +44,7 @@ function AppRoutes() {
       <div
         className={
           `mx-auto text-center bg-white overflow-y-auto w-full min-h-[100dvh] max-h-[100dvh] shadow ` +
-          (isManager ? 'w-full]' : 'max-w-[500px]')
+          (isManager ? 'w-full' : 'max-w-[500px]')
         }
       >
         <Routes>

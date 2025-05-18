@@ -30,7 +30,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full h-[80px] bg-white z-50 shadow flex items-center justify-center">
+    <header className="fixed top-0 left-0 w-full min-w-[1400px] h-[80px] bg-white z-50 shadow flex items-center justify-center">
       <div className="w-full max-w-[1400px] px-8 mx-auto flex items-center justify-between">
         <img
           src={logo}
@@ -41,7 +41,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
 
         {status === 'AFTER_LOGIN' && (
           <>
-            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl]">
+            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl">
               <Link to="/manager/team-building">팀빌딩</Link>
               <Link to="/manager/chat">1:1 채팅</Link>
             </div>
@@ -62,7 +62,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
 
         {status === 'BEFORE_LOGIN' && (
           <>
-            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl]">
+            <div className="flex-1 flex items-center ml-[76px] gap-12 font-medium text-xl">
               <Link to="/test/start">성향테스트</Link>
               <Link to="/profile">나의 프로필</Link>
               <Link to="/team-building">팀빌딩</Link>
