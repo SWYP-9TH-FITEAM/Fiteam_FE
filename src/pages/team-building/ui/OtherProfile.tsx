@@ -34,7 +34,7 @@ export const OtherProfile: React.FC = () => {
         enabled: !isNotValidMemberId,
       },
       {
-        ...memberQueries.membersByGroupId(currentGroupId ?? 0),
+        ...memberQueries.membersByGroupId(currentGroupId ?? -1),
         enabled: !!currentGroupId,
       },
     ],

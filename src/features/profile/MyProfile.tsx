@@ -50,11 +50,11 @@ const MyProfile = () => {
   const {data: userCardData} = useQuery(userQueries.card());
   const {data: acceptedGroupsData} = useQuery(userQueries.groupsAccepted());
   const {data: groupProfileMiniData} = useQuery({
-    ...memberQueries.myProfileMini(currentGroupId ?? 0),
+    ...memberQueries.myProfileMini(currentGroupId ?? -1),
     enabled: currentGroupId !== null,
   });
   const {data: myProfileData} = useQuery({
-    ...memberQueries.myProfile(currentGroupId ?? 0),
+    ...memberQueries.myProfile(currentGroupId ?? -1),
     enabled: currentGroupId !== null,
   });
 

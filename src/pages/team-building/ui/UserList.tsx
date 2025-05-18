@@ -21,10 +21,11 @@ export const UserList: React.FC<UserListProps> = ({
   const {
     data: [{data: members}],
     loading,
+    error,
   } = useQueries({
     queries: [
       {
-        ...memberQueries.membersByGroupId(currentGroupId ?? 0),
+        ...memberQueries.membersByGroupId(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
     ],
@@ -32,6 +33,7 @@ export const UserList: React.FC<UserListProps> = ({
       return {
         data,
         loading: data.some(data => data.isLoading),
+        error: data.some(data => data.isError),
       };
     },
   });
@@ -49,7 +51,9 @@ export const UserList: React.FC<UserListProps> = ({
       {(loading || cardData.state === 'loading') && (
         <div className="loading loading-spinner loading-xl" />
       )}
-      {cardData.state === 'hasError' && <div>에러가 발생했습니다.</div>}
+      {(error || cardData.state === 'hasError') && (
+        <div>에러가 발생했습니다.</div>
+      )}
       {cardData.state === 'hasData' && filteredMembers?.length === 0 && (
         <div className="text-center p-4">해당 조건의 멤버가 없습니다.</div>
       )}

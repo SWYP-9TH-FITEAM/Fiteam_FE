@@ -30,7 +30,7 @@ export const TeamBuildingPage: React.FC = () => {
       userQueries.groupsAccepted(),
       userQueries.groupsPending(),
       {
-        ...memberQueries.myProfile(currentGroupId ?? 0),
+        ...memberQueries.myProfile(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
     ],

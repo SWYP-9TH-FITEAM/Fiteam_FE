@@ -15,7 +15,7 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({
   const currentGroupId = useCurrentGroupId();
 
   const {data: positions, isError} = useQuery({
-    ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
+    ...memberQueries.positionsByGroupId(currentGroupId ?? -1),
     enabled: currentGroupId !== null,
   });
 

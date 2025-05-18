@@ -14,7 +14,7 @@ const ProfileEditPage = () => {
   const currentGroupId = useCurrentGroupId();
 
   const {data: positions} = useQuery({
-    ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
+    ...memberQueries.positionsByGroupId(currentGroupId ?? -1),
     enabled: currentGroupId !== null,
   });
   const [isSkipDialogOpen, setIsSkipDialogOpen] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const ProfileEditPage = () => {
 
   // 기존 프로필 데이터 패치
   const {data: myProfile, isLoading: isProfileLoading} = useQuery({
-    ...memberQueries.myProfile(currentGroupId ?? 0),
+    ...memberQueries.myProfile(currentGroupId ?? -1),
     enabled: currentGroupId !== null,
   });
 

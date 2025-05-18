@@ -34,15 +34,15 @@ export const MyTeam: React.FC = () => {
   } = useQueries({
     queries: [
       {
-        ...teamQueries.myTeam(currentGroupId ?? 0),
+        ...teamQueries.myTeam(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
       {
-        ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
+        ...memberQueries.positionsByGroupId(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
       {
-        ...teamQueries.teamBuildingStatus(currentGroupId ?? 0),
+        ...teamQueries.teamBuildingStatus(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
     ],

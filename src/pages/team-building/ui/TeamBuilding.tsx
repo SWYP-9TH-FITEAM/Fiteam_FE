@@ -23,18 +23,19 @@ export const TeamBuilding = () => {
   const {
     data: [{data: myTeam}, {data: myProfileMini}, {data: positions}],
     loading,
+    error,
   } = useQueries({
     queries: [
       {
-        ...teamQueries.myTeam(currentGroupId ?? 0),
+        ...teamQueries.myTeam(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
       {
-        ...memberQueries.myProfileMini(currentGroupId ?? 0),
+        ...memberQueries.myProfileMini(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
       {
-        ...memberQueries.positionsByGroupId(currentGroupId ?? 0),
+        ...memberQueries.positionsByGroupId(currentGroupId ?? -1),
         enabled: currentGroupId !== null,
       },
     ],
@@ -42,6 +43,7 @@ export const TeamBuilding = () => {
       return {
         data,
         loading: data.some(data => data.isLoading),
+        error: data.some(data => data.isError),
       };
     },
   });
@@ -54,6 +56,14 @@ export const TeamBuilding = () => {
       setSelectedRole(positions[0]);
     }
   }, [positions, loading, selectedRole]);
+
+  if (error) {
+    return (
+      <div className="p-4 text-red-500">
+        데이터를 불러오는 중 오류가 발생했습니다.
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">
@@ -71,7 +81,7 @@ export const TeamBuilding = () => {
             <img
               src={
                 (cardData.state === 'hasData' &&
-                  cardData.data.get(myProfileMini?.cardId ?? 0)?.imgUrl) ||
+                  cardData.data.get(myProfileMini?.cardId ?? -1)?.imgUrl) ||
                 myProfileMini?.imageUrl ||
                 robot
               }
