@@ -3,7 +3,6 @@ import {UserCard} from './UserCard';
 import {useQueries} from '@tanstack/react-query';
 import {useCurrentGroupId} from '@/shared/model/group-id';
 import {memberQueries} from '@/entities/member/api';
-import {cardQueries} from '@/entities/card/api/card.query';
 import {useCardIdMap} from '@/shared/model/card-id-map';
 
 interface UserListProps {
@@ -28,7 +27,6 @@ export const UserList: React.FC<UserListProps> = ({
         ...memberQueries.membersByGroupId(currentGroupId ?? 0),
         enabled: currentGroupId !== null,
       },
-      cardQueries.allCards(),
     ],
     combine: data => {
       return {
@@ -52,6 +50,9 @@ export const UserList: React.FC<UserListProps> = ({
         <div className="loading loading-spinner loading-xl" />
       )}
       {cardData.state === 'hasError' && <div>에러가 발생했습니다.</div>}
+      {cardData.state === 'hasData' && filteredMembers?.length === 0 && (
+        <div className="text-center p-4">해당 조건의 멤버가 없습니다.</div>
+      )}
       {cardData.state === 'hasData' &&
         filteredMembers?.map(member => (
           <UserCard
