@@ -93,3 +93,9 @@ export const getUserCardIds = async () => {
     schemaName: ENDPOINT,
   });
 };
+
+export const patchAcceptGroup = async (groupId: number) => {
+  const ENDPOINT = `v1/user/accept/${groupId}`;
+
+  return apiWithAuth.patch(ENDPOINT);
+};
