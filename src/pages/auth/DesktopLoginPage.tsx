@@ -59,7 +59,7 @@ export const DesktopLoginPage: React.FC = () => {
         setUserInfo({email: data.email, type});
 
         if (type === 'user') {
-          navigate('/');
+          navigate('/home');
           return;
         }
 
