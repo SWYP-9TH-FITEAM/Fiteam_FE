@@ -1,24 +1,41 @@
-import {useState} from 'react';
+import '@/features/chat/init';
 
+import {useQuery} from '@tanstack/react-query';
+
+import {getChatList} from '@/entities/chat/api/list';
 import {ChatItem} from '@/features/chat/ChatItem';
-import {dummyData} from '@/features/chat/dummy';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
+import {useChatRoomId, useSetChatRoomId} from '@/shared/model/chat-room';
 import ChatRoom from '../features/chat/ChatRoom';
 
-interface SelectedRoom {
-  roomId: number;
-  otherUserName: string;
-  otherUserId: number;
-  otherUserProfileImgUrl: string;
-}
-
 const ChatPage = () => {
-  const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null);
+  const {data: chatList} = useQuery({
+    queryKey: ['chatList'],
+    queryFn: () => getChatList(),
+  });
 
-  if (selectedRoom) {
-    return (
-      <ChatRoom roomInfo={selectedRoom} onBack={() => setSelectedRoom(null)} />
-    );
+  const chatRoomId = useChatRoomId();
+  const setChatRoomId = useSetChatRoomId();
+
+  if (chatList?.[0]?.userId) {
+    localStorage.setItem('userId', chatList[0].userId.toString());
+  }
+
+  if (chatRoomId) {
+    const selectedRoom = chatList?.find(room => room.chatRoomId === chatRoomId);
+    if (selectedRoom) {
+      return (
+        <ChatRoom
+          roomInfo={{
+            roomId: selectedRoom.chatRoomId,
+            otherUserName: selectedRoom.otherUserName,
+          }}
+          onBack={() => setChatRoomId(null)}
+          chatRoomId={selectedRoom.chatRoomId}
+          senderId={Number(localStorage.getItem('userId'))}
+        />
+      );
+    }
   }
 
   return (
@@ -27,7 +44,7 @@ const ChatPage = () => {
         채팅
       </header>
       <ul className="mt-4 flex flex-col gap-3">
-        {dummyData.map(data => (
+        {chatList?.map(data => (
           <ChatItem
             key={data.chatRoomId}
             otherUserName={data.otherUserName}
@@ -35,14 +52,7 @@ const ChatPage = () => {
             lastMessageContent={data.lastMessageContent}
             unreadMessageCount={data.unreadMessageCount}
             lastMessageTime={data.lastMessageTime}
-            onClick={() =>
-              setSelectedRoom({
-                roomId: data.chatRoomId,
-                otherUserName: data.otherUserName,
-                otherUserId: data.otherUserId,
-                otherUserProfileImgUrl: data.otherUserProfileImgUrl,
-              })
-            }
+            onClick={() => setChatRoomId(data.chatRoomId)}
           />
         ))}
       </ul>
