@@ -1,6 +1,8 @@
+import {useQuery} from '@tanstack/react-query';
 import {Link} from 'react-router-dom';
 
 import alarmIcon from '@/assets/icons/alarm.svg';
+import {managerQueries} from '@/entities/manager/api';
 import {useUserInfo} from '@/shared/model/user';
 import {Header} from '@/shared/ui/desktop/Header';
 
@@ -17,7 +19,10 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
       ? 'AFTER_LOGIN'
       : 'BEFORE_LOGIN';
 
-  const userName = '이름'; // TODO: get /manager/name
+  const {data: managerName} = useQuery({
+    ...managerQueries.name(),
+    enabled: userInfo?.type === 'manager',
+  });
 
   return (
     <Header>
@@ -33,7 +38,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
               to="/manager/mypage"
             >
               <span className="inline-block h-[28px] w-[28px] rounded-full bg-gray-200" />
-              {userName}님, 안녕하세요!
+              {managerName?.managerName}님, 안녕하세요!
             </Link>
             <button className="ml-2">
               <img src={alarmIcon} alt="알림" />
