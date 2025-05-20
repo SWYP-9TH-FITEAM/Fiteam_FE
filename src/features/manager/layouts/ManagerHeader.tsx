@@ -34,7 +34,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
               to="/manager/team-building"
               className={
                 location.pathname.startsWith('/manager/team-building')
-                  ? 'text-violet-600'
+                  ? 'text-primary'
                   : ''
               }
             >
@@ -44,7 +44,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
               to="/manager/chat"
               className={
                 location.pathname.startsWith('/manager/chat')
-                  ? 'text-violet-600'
+                  ? 'text-primary'
                   : ''
               }
             >
