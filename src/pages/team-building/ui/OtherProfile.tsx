@@ -4,7 +4,7 @@ import {ChevronLeft} from 'lucide-react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import chatIcon from '@/assets/icons/chat.svg';
-import {postCreateChatRoom} from '@/entities/chat/api/create-room';
+import {postCreateChatRoom} from '@/entities/chat/api/user-chat/create-room';
 import {memberQueries} from '@/entities/member/api';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import {InfoRow, Section2, SectionInfo} from '@/features/profile/MyProfile';
@@ -69,10 +69,9 @@ export const OtherProfile: React.FC = () => {
   const handleCreateChatRoom = () => {
     if (!targetMember || !currentGroupId) return;
     postCreateChatRoom({
-      receiverId: targetMember.memberId,
+      receiverId: targetMember.userId,
       groupId: currentGroupId,
     }).then(response => {
-      console.log('chat room response:', response);
       setChatRoomId(Number(response.chatRoomId));
       navigate('/chat');
     });

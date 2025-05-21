@@ -2,17 +2,14 @@ import '@/features/chat/init';
 
 import {useQuery} from '@tanstack/react-query';
 
-import {getChatList} from '@/entities/chat/api/list';
+import {userChatQueries} from '@/entities/chat/api/user-chat/user-chat.query';
 import {ChatItem} from '@/features/chat/ChatItem';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {useChatRoomId, useSetChatRoomId} from '@/shared/model/chat-room';
 import ChatRoom from '../features/chat/ChatRoom';
 
 const ChatPage = () => {
-  const {data: chatList} = useQuery({
-    queryKey: ['chatList'],
-    queryFn: () => getChatList(),
-  });
+  const {data: chatList} = useQuery(userChatQueries.chatList());
 
   const chatRoomId = useChatRoomId();
   const setChatRoomId = useSetChatRoomId();
@@ -20,22 +17,10 @@ const ChatPage = () => {
   if (chatList?.[0]?.userId) {
     localStorage.setItem('userId', chatList[0].userId.toString());
   }
-
   if (chatRoomId) {
-    const selectedRoom = chatList?.find(room => room.chatRoomId === chatRoomId);
-    if (selectedRoom) {
-      return (
-        <ChatRoom
-          roomInfo={{
-            roomId: selectedRoom.chatRoomId,
-            otherUserName: selectedRoom.otherUserName,
-          }}
-          onBack={() => setChatRoomId(null)}
-          chatRoomId={selectedRoom.chatRoomId}
-          senderId={Number(localStorage.getItem('userId'))}
-        />
-      );
-    }
+    return (
+      <ChatRoom onBack={() => setChatRoomId(null)} chatRoomId={chatRoomId} />
+    );
   }
 
   return (
