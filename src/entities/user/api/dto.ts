@@ -75,7 +75,7 @@ export const getUserSettingsResponseDto = z.object({
   numPD: z.number(),
   numVA: z.number(),
   numCL: z.number(),
-  createdAt: z.string().datetime(),
+  createdAt: z.string().nullable(),
 });
 
 export type GetUserSettingsResponseDto = z.infer<
