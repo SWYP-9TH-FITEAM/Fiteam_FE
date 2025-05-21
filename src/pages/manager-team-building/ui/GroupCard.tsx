@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 
 import {Button} from '@/components/ui/button';
 import {GROUP_STATUS} from '@/entities/manager/api';
+import {GROUP_STATUS_LABELS} from '../model/status';
 
 interface GroupCardProps {
   group: GetManagerGroupsAllResponseDto[number];
@@ -61,7 +62,9 @@ const GroupCard: React.FC<GroupCardProps> = ({group}) => {
       <div className="flex items-start justify-between p-6 pb-4">
         <div className="text-left">
           <div className="mb-1 flex items-center text-2xl font-semibold text-gray-800">
-            <span className="mr-2 font-bold">[{status}]</span>
+            <span className="mr-2 font-bold">
+              [{GROUP_STATUS_LABELS[status]}]
+            </span>
             {groupName}
           </div>
           <div className="text-xl font-medium">

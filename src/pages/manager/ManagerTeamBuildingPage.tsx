@@ -1,3 +1,5 @@
+import type {GroupStatus} from '../manager-team-building/model/status';
+
 import {useState} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {Link} from 'react-router-dom';
@@ -18,19 +20,19 @@ const ManagerTeamBuildingPage = () => {
     isError,
   } = useQuery(managerQueries.groupsAll());
 
-  const statusSet = new Set([
-    '전체',
+  const statusSet = new Set<GroupStatus>([
+    'all',
     ...(groups?.map(group => group.status) || []),
   ]);
 
-  const [currentFilter, setCurrentFilter] = useState('전체');
+  const [currentFilter, setCurrentFilter] = useState('all');
 
   const handleFilterChange = (newFilter: string) => {
     setCurrentFilter(newFilter);
   };
 
   const filteredGroups = groups?.filter(group => {
-    if (currentFilter === '전체') return true;
+    if (currentFilter === 'all') return true;
     return group.status === currentFilter;
   });
 
