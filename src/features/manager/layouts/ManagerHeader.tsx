@@ -34,7 +34,7 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
           </div>
           <div className="ml-auto flex items-center gap-2">
             <Link
-              className="border-gray-3 flex h-[52px] w-[206px] items-center justify-center gap-[10px] rounded-[30px] border border-solid text-base leading-6 font-medium tracking-[-0.4px]"
+              className="border-gray-3 flex h-[52px] items-center justify-center gap-[10px] rounded-[30px] border border-solid px-4 text-base leading-6 font-medium tracking-[-0.4px]"
               to="/manager/mypage"
             >
               <span className="inline-block h-[28px] w-[28px] rounded-full bg-gray-200" />
