@@ -1,44 +1,50 @@
 import paperPlane from '@/assets/images/paper-plane.png';
+import {ChatMessageDto} from '@/entities/chat/api/user-chat/dto';
 import {formatTimeString} from '@/features/chat/utils/formatTimeString';
 
 type ChatMessageProps = {
-  content: string;
-  sentAt: string;
+  message: ChatMessageDto;
   isMine: boolean;
   showProfile?: boolean;
-  userName?: string;
+  otherName?: string;
   showTime?: boolean;
   isNewSender?: boolean;
-  messageType?: string;
+  hanleAcceptRequest?: () => void;
 };
 
 export const ChatMessage = ({
-  content,
-  sentAt,
+  message,
   isMine,
   showProfile = true,
-  userName,
+  otherName,
   showTime = false,
   isNewSender = false,
-  messageType,
+  hanleAcceptRequest,
 }: ChatMessageProps) => {
+  const {messageType, content, sentAt} = message;
   const formattedTime = formatTimeString(sentAt);
 
-  // messageType별 스타일/텍스트 객체
+  const viewTeamInfo = () => {
+    alert('나의 팀 보기');
+    // TODO:
+  };
+
   const typeMap = {
     TEAM_REQUEST: {
-      text: '제안을 하셨습니다!',
+      text: '제안을 하셨습니다!', // TODO: api응답으로 교체
       button: '수락하기',
       bg: isMine ? '#F6B354' : '#fff',
-      btnBg: '#fff',
-      btnText: '#111',
+      btnBg: isMine ? '#fff' : '#5F4AFF',
+      btnText: isMine ? '#111' : '#fff',
+      onClick: isMine ? () => {} : hanleAcceptRequest,
     },
     TEAM_RESPONSE: {
-      text: '제안을 받았습니다!',
+      text: '제안을 받았습니다!', // TODO: api응답으로 교체
       button: '나의 팀 보기',
-      bg: isMine ? '#6858FF' : '#fff',
-      btnBg: '#6858FF',
-      btnText: '#fff',
+      bg: isMine ? '#F6B354' : '#fff',
+      btnBg: isMine ? '#fff' : '#5F4AFF',
+      btnText: isMine ? '#111' : '#fff',
+      onClick: viewTeamInfo,
     },
   } as const;
 
@@ -46,16 +52,17 @@ export const ChatMessage = ({
     const type = typeMap[messageType as keyof typeof typeMap];
     if (!type) return null;
     return (
-      <div className="flex w-full justify-center">
+      <div className="flex justify-center">
         <div
           className="flex h-[161px] w-[153px] flex-col items-center justify-between rounded-2xl px-2 py-[10px]"
           style={{backgroundColor: type.bg}}
         >
-          <div className="text-center text-[13px] leading-4 font-medium">
-            {type.text}
+          <div className="text-center text-[13px] leading-4 font-medium whitespace-pre-line">
+            {message.content}
           </div>
           <img src={paperPlane} alt="제안" className="mb-3 h-[50px] w-[70px]" />
           <button
+            onClick={type.onClick}
             className="h-[36px] w-[120px] rounded-md text-center text-[13px] leading-4 font-medium"
             style={{backgroundColor: type.btnBg, color: type.btnText}}
           >
@@ -78,9 +85,9 @@ export const ChatMessage = ({
             <div className="mr-[6px] h-9 w-9 flex-shrink-0" />
           )}
           <div>
-            {showProfile && userName && (
+            {showProfile && otherName && (
               <div className="mb-[6px] text-[13px] leading-4 font-medium text-[#111]">
-                {userName}
+                {otherName}
                 <span className="ml-[3px] text-[10px] leading-[13px] font-medium text-[#767676]">
                   디자인
                 </span>
@@ -91,7 +98,7 @@ export const ChatMessage = ({
               messageType === 'TEAM_REQUEST' ? (
                 renderSpecialCard()
               ) : (
-                <div className="max-w-[300px] min-w-fit rounded-lg bg-white p-2 text-black">
+                <div className="w-fit max-w-[300px] rounded-lg bg-white p-2 text-black">
                   {content}
                 </div>
               )}
@@ -108,14 +115,14 @@ export const ChatMessage = ({
       {isMine && (
         <div className="flex items-end">
           {showTime && (
-            <span className="mr-1 w-full text-[10px] text-gray-400">
+            <span className="mr-1 text-[10px] text-gray-400">
               {formattedTime}
             </span>
           )}
           {messageType === 'TEAM_RESPONSE' || messageType === 'TEAM_REQUEST' ? (
             renderSpecialCard()
           ) : (
-            <div className="max-w-[300px] min-w-fit rounded-lg bg-[#6858FF] p-2 text-white">
+            <div className="max-w-[300px] rounded-lg bg-[#6858FF] p-2 text-white">
               {content}
             </div>
           )}

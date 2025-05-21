@@ -1,15 +1,15 @@
 import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
-  PostCreateChatRoomRequestDto,
   postCreateChatRoomRequestDto,
+  PostCreateChatRoomRequestDto,
   postCreateChatRoomResponseDto,
 } from './dto';
 
 export const postCreateChatRoom = async (
   payload: PostCreateChatRoomRequestDto,
 ) => {
-  const ENDPOINT = `v1/chat/room`;
+  const ENDPOINT = `v1/user-chat/room`;
 
   const json = postCreateChatRoomRequestDto.parse(payload);
 

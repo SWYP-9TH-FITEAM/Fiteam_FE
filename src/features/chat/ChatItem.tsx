@@ -2,10 +2,10 @@ import {formatTimeString} from '@/features/chat/utils/formatTimeString';
 
 type ChatRoomItemProps = {
   otherUserName: string;
-  otherUserProfileImgUrl: string;
+  otherUserProfileImgUrl: string | null;
   lastMessageContent: string;
   unreadMessageCount: number;
-  lastMessageTime: string;
+  lastMessageTime: string | null;
   onClick?: () => void;
 };
 
@@ -17,7 +17,11 @@ export const ChatItem = ({
   lastMessageTime,
   onClick,
 }: ChatRoomItemProps) => {
-  const formattedTime = formatTimeString(lastMessageTime);
+  const formattedTime = formatTimeString(lastMessageTime || '');
+
+  // if (!lastMessageTime) {
+  //   return null;
+  // }
 
   return (
     <li
@@ -41,8 +45,9 @@ export const ChatItem = ({
         </div>
         <p className="w-[203px] truncate">{lastMessageContent}</p>
       </div>
-      <div className="flex w-[56px] flex-col items-end">
-        <span className="h-4 text-[10px] text-[#A4A4A4]">{formattedTime}</span>
+
+      <div className="w-[56px] flex flex-col items-end gap-1">
+        <span className="text-[10px] text-[#A4A4A4] h-4">{formattedTime}</span>
         {unreadMessageCount > 0 && (
           <div className="flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E95D42] text-white">
             <span className="text-xs">
