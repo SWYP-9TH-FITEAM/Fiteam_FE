@@ -4,11 +4,13 @@ import {ChevronLeft} from 'lucide-react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import chatIcon from '@/assets/icons/chat.svg';
+import {postCreateChatRoom} from '@/entities/chat/api/user-chat/create-room';
 import {memberQueries} from '@/entities/member/api';
 import {CharacterCard} from '@/features/profile/CharacterCard';
 import {InfoRow, Section2, SectionInfo} from '@/features/profile/MyProfile';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
 import {useCardIdMap} from '@/shared/model/card-id-map';
+import {useSetChatRoomId} from '@/shared/model/chat-room';
 import {useCurrentGroupId} from '@/shared/model/group-id';
 import {LikeButton} from './LikeButton';
 
@@ -24,6 +26,8 @@ export const OtherProfile: React.FC = () => {
   const cardData = useCardIdMap();
 
   const currentGroupId = useCurrentGroupId();
+
+  const setChatRoomId = useSetChatRoomId();
 
   const {
     data: [{data: profile}, {data: members}],
@@ -62,6 +66,17 @@ export const OtherProfile: React.FC = () => {
     return members.find(member => member.memberId === parsedMemberId);
   }, [members, currentGroupId, parsedMemberId]);
 
+  const handleCreateChatRoom = () => {
+    if (!targetMember || !currentGroupId) return;
+    postCreateChatRoom({
+      receiverId: targetMember.userId,
+      groupId: currentGroupId,
+    }).then(response => {
+      setChatRoomId(Number(response.chatRoomId));
+      navigate('/chat');
+    });
+  };
+
   return (
     <LayoutBottomBar
       hideBottomBar
@@ -81,7 +96,10 @@ export const OtherProfile: React.FC = () => {
                 likeId={targetMember.likeId}
                 userId={targetMember.userId}
               />
-              <button className="flex h-6 w-6 items-center justify-center rounded-full">
+              <button
+                onClick={handleCreateChatRoom}
+                className="flex h-6 w-6 items-center justify-center rounded-full"
+              >
                 <img src={chatIcon} alt="Message icon" className="h-4 w-4" />
               </button>
             </div>

@@ -76,8 +76,8 @@ export const getManagerGroupProcessResponseDto = z.array(
     id: z.number().int(),
     name: z.string(),
     description: z.string(),
-    createdAt: z.string().datetime(),
-    endDatetime: z.string().datetime(),
+    createdAt: z.string().nullable(),
+    endDatetime: z.string().nullable(),
   }),
 );
 

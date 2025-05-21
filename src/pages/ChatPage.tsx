@@ -1,23 +1,25 @@
-import {useState} from 'react';
+import '@/features/chat/init';
 
+import {useQuery} from '@tanstack/react-query';
+
+import {userChatQueries} from '@/entities/chat/api/user-chat/user-chat.query';
 import {ChatItem} from '@/features/chat/ChatItem';
-import {dummyData} from '@/features/chat/dummy';
 import {LayoutBottomBar} from '@/layouts/LayoutBottomBar';
+import {useChatRoomId, useSetChatRoomId} from '@/shared/model/chat-room';
 import ChatRoom from '../features/chat/ChatRoom';
 
-interface SelectedRoom {
-  roomId: number;
-  otherUserName: string;
-  otherUserId: number;
-  otherUserProfileImgUrl: string;
-}
-
 const ChatPage = () => {
-  const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null);
+  const {data: chatList} = useQuery(userChatQueries.chatList());
 
-  if (selectedRoom) {
+  const chatRoomId = useChatRoomId();
+  const setChatRoomId = useSetChatRoomId();
+
+  if (chatList?.[0]?.userId) {
+    localStorage.setItem('userId', chatList[0].userId.toString());
+  }
+  if (chatRoomId) {
     return (
-      <ChatRoom roomInfo={selectedRoom} onBack={() => setSelectedRoom(null)} />
+      <ChatRoom onBack={() => setChatRoomId(null)} chatRoomId={chatRoomId} />
     );
   }
 
@@ -27,7 +29,7 @@ const ChatPage = () => {
         채팅
       </header>
       <ul className="mt-4 flex flex-col gap-3">
-        {dummyData.map(data => (
+        {chatList?.map(data => (
           <ChatItem
             key={data.chatRoomId}
             otherUserName={data.otherUserName}
@@ -35,14 +37,7 @@ const ChatPage = () => {
             lastMessageContent={data.lastMessageContent}
             unreadMessageCount={data.unreadMessageCount}
             lastMessageTime={data.lastMessageTime}
-            onClick={() =>
-              setSelectedRoom({
-                roomId: data.chatRoomId,
-                otherUserName: data.otherUserName,
-                otherUserId: data.otherUserId,
-                otherUserProfileImgUrl: data.otherUserProfileImgUrl,
-              })
-            }
+            onClick={() => setChatRoomId(data.chatRoomId)}
           />
         ))}
       </ul>
