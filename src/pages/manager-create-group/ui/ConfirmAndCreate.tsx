@@ -104,7 +104,7 @@ export const ConfirmAndCreate: React.FC<ConfirmAndCreateProps> = ({
 
         <Separator />
 
-        <div className="flex gap-10">
+        <div className="flex gap-6">
           <div className="flex flex-col gap-5 text-left">
             <span className="text-gray-5 text-[24px] leading-[32px] font-semibold tracking-[-0.6px]">
               팀 최소 인원 수
