@@ -177,8 +177,12 @@ const TestPage = () => {
       // 서버 응답 시간을 고려하여 최소 로딩 시간 보장
       const startTime = Date.now();
       const result = await postTestResult({scores});
-      if (localStorage.getItem('user-info')) {
-        await postSaveCard({scores});
+      const userInfo = localStorage.getItem('user-info');
+      if (userInfo) {
+        const parsedUserInfo = JSON.parse(userInfo);
+        if (parsedUserInfo) {
+          await postSaveCard({scores});
+        }
       }
 
       // 최소 로딩 시간이 LOADING_DURATION보다 짧으면 추가 대기
