@@ -40,6 +40,7 @@ export const GroupInvite: React.FC = () => {
 
   const handleSubmit = (data: FormSchema) => {
     if (emails.includes(data.email)) {
+      toast.error('이미 추가된 이메일입니다.');
       form.reset();
       return;
     }
@@ -50,6 +51,11 @@ export const GroupInvite: React.FC = () => {
 
   const handleComplete = () => {
     if (emails.length === 0 || !selectedGroup) {
+      if (!selectedGroup) {
+        toast.error('그룹을 선택해주세요.');
+      } else if (emails.length === 0) {
+        toast.error('초대할 이메일을 추가해주세요.');
+      }
       return;
     }
 

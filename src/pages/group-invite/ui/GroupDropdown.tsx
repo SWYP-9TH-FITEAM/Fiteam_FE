@@ -35,19 +35,25 @@ export const GroupDropdown: React.FC<GroupDropdownProps> = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="border-border w-[182px]">
-        {groups.map(group => (
-          <DropdownMenuItem
-            key={group.groupId}
-            onClick={() => onSelect(group)}
-            className={cn(
-              'text-base',
-              selected?.groupId === group.groupId &&
-                'bg-gray-100 font-semibold',
-            )}
-          >
-            {group.groupName}
+        {groups && groups.length > 0 ? (
+          groups.map(group => (
+            <DropdownMenuItem
+              key={group.groupId}
+              onClick={() => onSelect(group)}
+              className={cn(
+                'text-base',
+                selected?.groupId === group.groupId &&
+                  'bg-gray-100 font-semibold',
+              )}
+            >
+              {group.groupName}
+            </DropdownMenuItem>
+          ))
+        ) : (
+          <DropdownMenuItem disabled className="text-base text-gray-500">
+            그룹이 없습니다.
           </DropdownMenuItem>
-        ))}
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
