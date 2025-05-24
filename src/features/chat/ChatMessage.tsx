@@ -10,6 +10,8 @@ type ChatMessageProps = {
   showTime?: boolean;
   isNewSender?: boolean;
   hanleAcceptRequest?: () => void;
+  groupId?: number;
+  handleOpenInfoDialog?: () => void;
 };
 
 export const ChatMessage = ({
@@ -20,13 +22,16 @@ export const ChatMessage = ({
   showTime = false,
   isNewSender = false,
   hanleAcceptRequest,
+  groupId,
+  handleOpenInfoDialog,
 }: ChatMessageProps) => {
   const {messageType, content, sentAt} = message;
+
   const formattedTime = formatTimeString(sentAt);
 
-  const viewTeamInfo = () => {
-    alert('나의 팀 보기');
-    // TODO:
+  const viewTeamInfo = async () => {
+    if (!groupId) return;
+    handleOpenInfoDialog?.();
   };
 
   const typeMap = {

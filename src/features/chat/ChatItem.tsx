@@ -46,8 +46,8 @@ export const ChatItem = ({
         <p className="w-[203px] truncate">{lastMessageContent}</p>
       </div>
 
-      <div className="w-[56px] flex flex-col items-end gap-1">
-        <span className="text-[10px] text-[#A4A4A4] h-4">{formattedTime}</span>
+      <div className="flex w-[56px] flex-col items-end gap-1">
+        <span className="h-4 text-[10px] text-[#A4A4A4]">{formattedTime}</span>
         {unreadMessageCount > 0 && (
           <div className="flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E95D42] text-white">
             <span className="text-xs">
