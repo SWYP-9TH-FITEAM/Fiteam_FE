@@ -1,6 +1,7 @@
 import type {GetManagerGroupsAllResponseDto} from '@/entities/manager/api';
 
 import * as React from 'react';
+import {Checkbox} from '@heroui/react';
 import {useQuery} from '@tanstack/react-query';
 
 import {managerQueries} from '@/entities/manager/api';
@@ -14,6 +15,8 @@ import {Main} from '@/shared/ui/desktop/Main';
 
 export const TeamList: React.FC = () => {
   const {data: groups} = useQuery(managerQueries.groupsAll());
+
+  const [excludeClosed, setExcludeClosed] = React.useState(false);
 
   const [selectedGroup, setSelectedGroup] = React.useState<
     GetManagerGroupsAllResponseDto[number] | null
@@ -35,16 +38,32 @@ export const TeamList: React.FC = () => {
             <div className="text-left text-2xl font-semibold">
               전체 팀 구성 현황
             </div>
-            <GroupDropdown
-              groups={groups ?? []}
-              onSelect={setSelectedGroup}
-              selected={selectedGroup}
-            />
+            <div className="flex justify-between">
+              <GroupDropdown
+                groups={groups ?? []}
+                onSelect={setSelectedGroup}
+                selected={selectedGroup}
+              />
+
+              <Checkbox
+                checked={excludeClosed}
+                onValueChange={setExcludeClosed}
+              >
+                모집 완료 된 팀 제외하고 보기
+              </Checkbox>
+            </div>
+
             {selectedGroup && members && (
               <div className="flex flex-col gap-6">
                 <div className="grid min-h-12 grid-cols-3 rounded-xl bg-white p-4 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
-                  {members.map(
-                    ({teamId, teamStatus, members, masterUserId}) => (
+                  {members
+                    .filter(({teamStatus}) => {
+                      if (excludeClosed) {
+                        return teamStatus !== '모집 완료';
+                      }
+                      return true;
+                    })
+                    .map(({teamId, teamStatus, members, masterUserId}) => (
                       <div
                         key={teamId}
                         className={cn(
@@ -75,8 +94,7 @@ export const TeamList: React.FC = () => {
                           ))}
                         </div>
                       </div>
-                    ),
-                  )}
+                    ))}
                 </div>
               </div>
             )}
