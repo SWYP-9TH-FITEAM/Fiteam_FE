@@ -10,10 +10,15 @@ export const initialSetInfoSchema = z.object({
 
 export type InitialSetInfoSchema = z.infer<typeof initialSetInfoSchema>;
 
-export const setInfoSchema = initialSetInfoSchema.extend({
-  groupName: z.string().min(1),
-  groupDescription: z.string().min(1),
-});
+export const setInfoSchema = initialSetInfoSchema
+  .extend({
+    groupName: z.string().min(1),
+    groupDescription: z.string().min(1),
+  })
+  .refine(data => new Date(data.startDatetime) < new Date(data.endDatetime), {
+    message: '시작 시간은 종료 시간보다 이전이어야 합니다',
+    path: ['endDatetime'],
+  });
 
 export type SetInfoSchema = z.infer<typeof setInfoSchema>;
 
@@ -31,15 +36,29 @@ export type InitialSetConditionSchema = z.infer<
   typeof initialSetConditionSchema
 >;
 
-export const setConditionSchema = initialSetConditionSchema.extend({
-  maxUserCount: z.number().min(1),
-  minMembers: z.number().min(1),
-  maxMembers: z.number().min(1),
-  teamTypeDescription: z.string().min(1),
-  memberCountPerPosition: z
-    .array(z.object({position: z.string().min(1), count: z.number().min(0)}))
-    .nonempty(),
-});
+export const setConditionSchema = initialSetConditionSchema
+  .extend({
+    maxUserCount: z.number().min(1),
+    minMembers: z.number().min(1),
+    maxMembers: z.number().min(1),
+    teamTypeDescription: z.string().min(1),
+    memberCountPerPosition: z
+      .array(z.object({position: z.string().min(1), count: z.number().min(1)}))
+      .min(1)
+      .refine(
+        positions => {
+          const positionNames = positions.map(p => p.position);
+          return new Set(positionNames).size === positionNames.length;
+        },
+        {
+          message: '포지션 이름은 중복될 수 없습니다',
+        },
+      ),
+  })
+  .refine(data => data.minMembers <= data.maxMembers, {
+    message: '최소 인원은 최대 인원보다 작거나 같아야 합니다',
+    path: ['maxMembers'],
+  });
 
 export type SetConditionSchema = z.infer<typeof setConditionSchema>;
 

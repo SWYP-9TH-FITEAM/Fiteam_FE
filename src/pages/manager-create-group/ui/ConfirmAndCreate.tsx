@@ -35,7 +35,7 @@ export const ConfirmAndCreate: React.FC<ConfirmAndCreateProps> = ({
           contactPolicy: 'Auto',
           name: groupInfo.groupName,
           description: groupInfo.groupDescription,
-          maxUserCount: 99,
+          maxUserCount: 999,
         });
         await postGroupSetTeamtype({
           groupId,

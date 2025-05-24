@@ -52,7 +52,7 @@ export const SetCondition: React.FC<SetConditionProps> = ({
 
     if (minMembers < minMemberCountLimit) {
       form.setError('minMembers', {
-        message: '최소 인원수는 직군 수의 합보다 작을 수 없습니다.',
+        message: '최소 인원수는 설정된 직군 수보다 작을 수 없습니다.',
       });
       isError = true;
     }
