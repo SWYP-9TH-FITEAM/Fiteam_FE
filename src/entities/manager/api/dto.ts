@@ -46,17 +46,19 @@ export type PatchManagerNoticeResponseDto = z.infer<
   typeof patchManagerNoticeResponseDto
 >;
 
-export const getManagerGroupIdMembersResponseDto = z.object({
-  userId: z.number().int(),
-  memberId: z.number().int(),
-  userName: z.string(),
-  profileImageUrl: z.string().url().nullable(),
-  cardId1: z.number().int().nullable(),
-  position: z.string().nullable(),
-  teamStatus: z.string().nullable(),
-  teamId: z.number().int().nullable(),
-  likeId: z.number().int().nullable(),
-});
+export const getManagerGroupIdMembersResponseDto = z.array(
+  z.object({
+    userId: z.number().int(),
+    memberId: z.number().int(),
+    userName: z.string(),
+    profileImageUrl: z.string().url().nullable(),
+    cardId1: z.number().int().nullable(),
+    position: z.string().nullable(),
+    teamStatus: z.string().nullable(),
+    teamId: z.number().int().nullable(),
+    likeId: z.number().int().nullable(),
+  }),
+);
 
 export type GetManagerGroupIdMembersResponseDto = z.infer<
   typeof getManagerGroupIdMembersResponseDto
@@ -119,4 +121,17 @@ export const getManagerGroupsAllResponseDto = z.array(
 
 export type GetManagerGroupsAllResponseDto = z.infer<
   typeof getManagerGroupsAllResponseDto
+>;
+
+export const getManagerGroupNoticeResponseDto = z.array(
+  z.object({
+    id: z.number().int(),
+    groupId: z.number().int(),
+    title: z.string(),
+    createdAt: z.string().datetime(),
+  }),
+);
+
+export type GetManagerGroupNoticeResponseDto = z.infer<
+  typeof getManagerGroupNoticeResponseDto
 >;

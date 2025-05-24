@@ -2,6 +2,7 @@ import {apiWithAuth} from '@/shared/api/client';
 import {validateSchema} from '@/shared/api/validate';
 import {
   getManagerGroupIdMembersResponseDto,
+  getManagerGroupNoticeResponseDto,
   getManagerGroupProcessResponseDto,
   getManagerGroupsAllResponseDto,
   getManagerGroupsIdNameResponseDto,
@@ -64,6 +65,18 @@ export const getManagerGroupsAll = async () => {
   return validateSchema({
     dto: response,
     schema: getManagerGroupsAllResponseDto,
+    schemaName: ENDPOINT,
+  });
+};
+
+export const getManagerGroupNotice = async () => {
+  const ENDPOINT = `v1/manager/notices`;
+
+  const response = await apiWithAuth.get(ENDPOINT).json();
+
+  return validateSchema({
+    dto: response,
+    schema: getManagerGroupNoticeResponseDto,
     schemaName: ENDPOINT,
   });
 };

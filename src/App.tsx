@@ -14,6 +14,7 @@ import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {LoginPage} from './pages/auth/LoginPage';
 import {SignUpPage} from './pages/auth/SignUpPage';
 import ChatPage from './pages/ChatPage';
+import {GroupDetail} from './pages/group-detail/ui/GroupDetail';
 import {GroupInvite} from './pages/group-invite/ui/GroupInvite';
 import HomePage from './pages/HomePage';
 import MainPage from './pages/MainPage';
@@ -103,6 +104,10 @@ function AppRoutes() {
           />
           <Route path="/manager/chat" element={<ManagerChatPage />} />
           <Route path="/manager/mypage" element={<ManagerMyPage />} />
+          <Route
+            path="/manager/team-building/group/:groupId"
+            element={<GroupDetail />}
+          />
         </Routes>
       </div>
     </div>

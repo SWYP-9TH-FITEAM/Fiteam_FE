@@ -58,16 +58,16 @@ export const getGroupGroupIdDataResponseDto = z.object({
   description: z.string(),
   maxUserCount: z.number().int(),
   contactPolicy: z.string(),
-  createdAt: z.string().datetime(),
+  createdAt: z.string(),
   teamTypeId: z.number().int(),
   teamTypeName: z.string(),
   teamTypeDescription: z.string(),
-  startDatetime: z.string().datetime(),
-  endDatetime: z.string().datetime(),
+  startDatetime: z.string(),
+  endDatetime: z.string(),
   minMembers: z.number().int(),
   maxMembers: z.number().int(),
   positionBased: z.boolean(),
-  configJson: z.record(z.string(), z.string()),
+  configJson: z.string().nullable(),
 });
 
 export type GetGroupGroupIdDataResponseDto = z.infer<
