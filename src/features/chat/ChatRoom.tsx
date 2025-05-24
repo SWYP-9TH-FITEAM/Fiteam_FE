@@ -17,6 +17,7 @@ import {postTeamRequestAccept} from '@/entities/team/api/create-team';
 import {ChatInput} from '@/features/chat/ChatInput';
 import {ChatMessage} from '@/features/chat/ChatMessage';
 import {ChatRoomHeader} from '@/features/chat/ChatRoomHeader';
+import ChatTeamInfoDialog from './ChatTeamInfoDialog';
 import {useChatSocket} from './hooks/useChatSocket';
 
 type ChatRoomProps = {
@@ -30,6 +31,7 @@ const ChatRoom = ({onBack, chatRoomId}: ChatRoomProps) => {
     queryFn: () => getChatRoomData(chatRoomId),
   });
 
+  const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessageDto[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -84,6 +86,13 @@ const ChatRoom = ({onBack, chatRoomId}: ChatRoomProps) => {
     // createdAt,
   } = chatRoomData;
 
+  // 한국 시간을 ISO 형식으로 변환하는 함수
+  const getKoreanISOTime = () => {
+    const date = new Date();
+    const koreanTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+    return koreanTime.toISOString();
+  };
+
   const handleSendMessage = (content: string) => {
     const newMessage: ChatMessageDto = {
       id: Date.now(),
@@ -93,8 +102,9 @@ const ChatRoom = ({onBack, chatRoomId}: ChatRoomProps) => {
       messageType: 'TEXT',
       content,
       isRead: false,
-      sentAt: new Date().toISOString(),
+      sentAt: getKoreanISOTime(),
     };
+
     publishSendMessage(JSON.stringify(newMessage));
   };
 
@@ -120,6 +130,9 @@ const ChatRoom = ({onBack, chatRoomId}: ChatRoomProps) => {
 
   // 메시지 그룹화 함수 - 같은 발신자가 동일 분에 보낸 메시지는 프로필 한번만 표시하고, 시간은 그룹의 마지막 메시지에만 표시
   const getGroupedMessages = () => {
+    const handleOpenInfoDialog = () => {
+      setIsInfoDialogOpen(true);
+    };
     return messages?.map((message, index) => {
       // 이전 메시지 확인 (같은 사람이 연속으로 보냈는지)
       const prevMessage = index > 0 ? messages[index - 1] : null;
@@ -165,29 +178,39 @@ const ChatRoom = ({onBack, chatRoomId}: ChatRoomProps) => {
           showTime={showTime}
           isNewSender={isNewSender}
           hanleAcceptRequest={hanleAcceptRequest}
+          groupId={groupId}
+          handleOpenInfoDialog={handleOpenInfoDialog}
         />
       );
     });
   };
 
   return (
-    <div className="flex h-screen flex-col items-center bg-[#EEECFF]">
-      <div className="relative flex h-full w-full max-w-[500px] flex-col">
-        <ChatRoomHeader
-          chatRoomData={chatRoomData}
-          handleBack={onBack}
-          handleSendRequest={handleSendRequest}
-        />
+    <>
+      <div className="flex h-screen flex-col items-center bg-[#EEECFF]">
+        <div className="relative flex h-full w-full max-w-[500px] flex-col">
+          <ChatRoomHeader
+            chatRoomData={chatRoomData}
+            handleBack={onBack}
+            handleSendRequest={handleSendRequest}
+          />
 
-        {/* 스크롤 가능한 영역 */}
-        <div className="flex-1 overflow-y-auto" ref={chatContainerRef}>
-          <div className="mx-3 flex h-full flex-col">
-            <div className="flex-1 text-left">{getGroupedMessages()}</div>
+          {/* 스크롤 가능한 영역 */}
+          <div className="flex-1 overflow-y-auto" ref={chatContainerRef}>
+            <div className="mx-3 flex h-full flex-col">
+              <div className="flex-1 text-left">{getGroupedMessages()}</div>
+            </div>
           </div>
+          <ChatInput onSendMessage={handleSendMessage} />
         </div>
-        <ChatInput onSendMessage={handleSendMessage} />
       </div>
-    </div>
+      <ChatTeamInfoDialog
+        open={isInfoDialogOpen}
+        onOpenChange={setIsInfoDialogOpen}
+        chatRoomData={chatRoomData}
+        isMyTeam={true}
+      />
+    </>
   );
 };
 

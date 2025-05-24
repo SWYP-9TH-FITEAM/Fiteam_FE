@@ -53,7 +53,7 @@ export const ChatRoomHeader = ({
       <div className="flex gap-[5px] text-center">
         <img
           src={infoIcon}
-          alt="제안하기"
+          alt="팀 정보"
           onClick={handleInfoDialogOpen}
           className="cursor-pointer"
         />
@@ -69,7 +69,7 @@ export const ChatRoomHeader = ({
         open={isInfoDialogOpen}
         onOpenChange={setIsInfoDialogOpen}
         chatRoomData={chatRoomData}
-        onClick={handleSuggest}
+        onClickSuggest={handleSuggest}
       />
     </header>
   );
