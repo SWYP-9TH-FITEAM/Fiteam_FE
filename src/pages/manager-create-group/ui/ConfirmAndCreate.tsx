@@ -37,6 +37,60 @@ export const ConfirmAndCreate: React.FC<ConfirmAndCreateProps> = ({
           description: groupInfo.groupDescription,
           maxUserCount: 999,
         });
+
+        const startYear = groupInfo.startDatetime.getFullYear();
+        const startMonth = (groupInfo.startDatetime.getMonth() + 1)
+          .toString()
+          .padStart(2, '0');
+        const startDate = groupInfo.startDatetime
+          .getDate()
+          .toString()
+          .padStart(2, '0');
+        const startHour = groupInfo.startDatetime
+          .getHours()
+          .toString()
+          .padStart(2, '0');
+        const startMinute = groupInfo.startDatetime
+          .getMinutes()
+          .toString()
+          .padStart(2, '0');
+        const startSecond = groupInfo.startDatetime
+          .getSeconds()
+          .toString()
+          .padStart(2, '0');
+        const startMillisecond = groupInfo.startDatetime
+          .getMilliseconds()
+          .toString()
+          .padStart(3, '0');
+
+        const endYear = groupInfo.endDatetime.getFullYear();
+        const endMonth = (groupInfo.endDatetime.getMonth() + 1)
+          .toString()
+          .padStart(2, '0');
+        const endDate = groupInfo.endDatetime
+          .getDate()
+          .toString()
+          .padStart(2, '0');
+        const endHour = groupInfo.endDatetime
+          .getHours()
+          .toString()
+          .padStart(2, '0');
+        const endMinute = groupInfo.endDatetime
+          .getMinutes()
+          .toString()
+          .padStart(2, '0');
+        const endSecond = groupInfo.endDatetime
+          .getSeconds()
+          .toString()
+          .padStart(2, '0');
+        const endMillisecond = groupInfo.endDatetime
+          .getMilliseconds()
+          .toString()
+          .padStart(3, '0');
+
+        const startDatetime = `${startYear}-${startMonth}-${startDate}T${startHour}:${startMinute}:${startSecond}.${startMillisecond}Z`;
+        const endDatetime = `${endYear}-${endMonth}-${endDate}T${endHour}:${endMinute}:${endSecond}.${endMillisecond}Z`;
+
         await postGroupSetTeamtype({
           groupId,
           configJson: groupInfo.memberCountPerPosition.reduce(
@@ -46,8 +100,8 @@ export const ConfirmAndCreate: React.FC<ConfirmAndCreateProps> = ({
             },
             {} as Record<string, string>,
           ),
-          startDatetime: groupInfo.startDatetime,
-          endDatetime: groupInfo.endDatetime,
+          startDatetime,
+          endDatetime,
           positionBased: groupInfo.positionBased,
           minMembers: groupInfo.minMembers,
           maxMembers: groupInfo.maxMembers,

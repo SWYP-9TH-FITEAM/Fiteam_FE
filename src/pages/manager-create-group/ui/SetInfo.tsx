@@ -36,8 +36,8 @@ export const SetInfo: React.FC<SetInfoProps> = ({
   const endDatetime = form.watch('endDatetime');
   const setValue = form.setValue;
 
-  const start = parseAbsoluteToLocal(startDatetime);
-  const end = parseAbsoluteToLocal(endDatetime);
+  const start = parseAbsoluteToLocal(startDatetime.toISOString());
+  const end = parseAbsoluteToLocal(endDatetime.toISOString());
 
   const handleSubmit = (data: SetInfoSchema) => {
     onNext(data);
@@ -133,11 +133,8 @@ export const SetInfo: React.FC<SetInfoProps> = ({
                 if (!value) return;
                 const {start, end} = value;
 
-                const startDatetime = `${start.year}-${start.month.toString().padStart(2, '0')}-${start.day.toString().padStart(2, '0')}T${start.hour.toString().padStart(2, '0')}:${start.minute.toString().padStart(2, '0')}:${start.second.toString().padStart(2, '0')}`;
-                const endDatetime = `${end.year}-${end.month.toString().padStart(2, '0')}-${end.day.toString().padStart(2, '0')}T${end.hour.toString().padStart(2, '0')}:${end.minute.toString().padStart(2, '0')}:${end.second.toString().padStart(2, '0')}`;
-
-                setValue('startDatetime', startDatetime);
-                setValue('endDatetime', endDatetime);
+                setValue('startDatetime', start.toDate());
+                setValue('endDatetime', end.toDate());
               }}
             />
           </div>

@@ -17,10 +17,8 @@ import {StepBar} from './StepBar';
 export const CreateGroup: React.FC = () => {
   const [groupInfo, setGroupInfo] = React.useState<InitialGroupInfo>({
     memberCountPerPosition: [{position: '', count: 1}],
-    startDatetime: new Date().toISOString(),
-    endDatetime: new Date(
-      new Date().setDate(new Date().getDate() + 7),
-    ).toISOString(),
+    startDatetime: new Date(),
+    endDatetime: new Date(new Date().setDate(new Date().getDate() + 7)),
     groupDescription: '',
     groupName: '',
     maxMembers: 1,

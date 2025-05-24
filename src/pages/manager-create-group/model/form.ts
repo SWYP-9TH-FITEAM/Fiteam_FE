@@ -3,8 +3,8 @@ import {z} from 'zod';
 export const initialSetInfoSchema = z.object({
   groupName: z.string(),
   groupDescription: z.string(),
-  startDatetime: z.string().datetime(),
-  endDatetime: z.string().datetime(),
+  startDatetime: z.date(),
+  endDatetime: z.date(),
   positionBased: z.boolean(),
 });
 
@@ -15,7 +15,7 @@ export const setInfoSchema = initialSetInfoSchema
     groupName: z.string().min(1),
     groupDescription: z.string().min(1),
   })
-  .refine(data => new Date(data.startDatetime) < new Date(data.endDatetime), {
+  .refine(data => data.startDatetime < data.endDatetime, {
     message: '시작 시간은 종료 시간보다 이전이어야 합니다',
     path: ['endDatetime'],
   });
