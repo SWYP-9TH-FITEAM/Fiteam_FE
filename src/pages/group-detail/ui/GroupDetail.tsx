@@ -185,6 +185,11 @@ export const GroupDetail: React.FC = () => {
                     </div>
                     <div className="flex flex-col gap-4">
                       <CreateNotice groupId={groupIdNumber} />
+                      <Button variant="outline" className="w-[120px]">
+                        <Link to="/manager/team-building/teams">
+                          팀 구성 현황
+                        </Link>
+                      </Button>
                     </div>
                   </div>
                 </div>

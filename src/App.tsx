@@ -33,6 +33,7 @@ import ResultPage from './pages/ResultPage';
 import {MyTeam} from './pages/team-building/ui/MyTeam';
 import {OtherProfile} from './pages/team-building/ui/OtherProfile';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
+import {TeamList} from './pages/team-list/ui/TeamList';
 import TestPage from './pages/TestPage';
 import TestStartPage from './pages/TestStartPage';
 
@@ -108,6 +109,7 @@ function AppRoutes() {
             path="/manager/team-building/group/:groupId"
             element={<GroupDetail />}
           />
+          <Route path="/manager/team-building/teams" element={<TeamList />} />
         </Routes>
       </div>
     </div>
