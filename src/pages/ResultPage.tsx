@@ -189,9 +189,11 @@ const ResultPage = () => {
             }}
             onClick={handleSaveImage}
           />
-          <p className="text-gray-4 mt-[11px]" onClick={handleSaveImage}>
-            ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
-          </p>
+          {testResult && (
+            <p className="text-gray-4 mt-[11px]" onClick={handleSaveImage}>
+              ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
+            </p>
+          )}
 
           <div className="mt-3.5 h-[310px] w-full rounded-2xl bg-white px-4 py-[22px] text-left shadow-sm">
             <b className="mb-[14px] block text-xl leading-7 font-medium not-italic">
