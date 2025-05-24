@@ -97,13 +97,23 @@ export type GetManagerGroupsIdNameResponseDto = z.infer<
   typeof getManagerGroupsIdNameResponseDto
 >;
 
+export const GROUP_STATUS = Object.freeze({
+  ONGOING: 'ONGOING',
+  PENDING: 'PENDING',
+  ENDED: 'ENDED',
+} as const);
+
 export const getManagerGroupsAllResponseDto = z.array(
   z.object({
     groupId: z.number().int(),
     groupName: z.string(),
     memberCount: z.number().int(),
     positionBased: z.boolean(),
-    status: z.string(),
+    status: z.enum([
+      GROUP_STATUS.ENDED,
+      GROUP_STATUS.ONGOING,
+      GROUP_STATUS.PENDING,
+    ]),
   }),
 );
 

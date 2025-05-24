@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <>
     <QueryClientProvider client={queryClient}>
-      <HeroUIProvider>
+      <HeroUIProvider locale="ko-KR">
         <App />
       </HeroUIProvider>
       <ReactQueryDevtools initialIsOpen={false} />

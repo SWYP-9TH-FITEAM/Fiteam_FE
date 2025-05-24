@@ -37,7 +37,9 @@ export const postGroupCreate = async (payload: PostGroupCreateRequestDto) => {
 
   const json = postGroupCreateRequestDto.parse(payload);
 
-  const response = await apiWithAuth.post(ENDPOINT, {json}).text();
+  const response = await apiWithAuth
+    .post(ENDPOINT, {json, headers: {Accept: '*/*'}})
+    .text();
 
   return validateSchema({
     dto: parseInt(response),

@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 
 import alarmIcon from '@/assets/icons/alarm.svg';
 import {managerQueries} from '@/entities/manager/api';
@@ -12,6 +12,7 @@ interface ManagerHeaderProps {
 
 const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
   const userInfo = useUserInfo();
+  const location = useLocation();
 
   const status = isLoginPage
     ? 'LOGIN_PAGE'
@@ -29,8 +30,26 @@ const ManagerHeader = ({isLoginPage = false}: ManagerHeaderProps) => {
       {status === 'AFTER_LOGIN' && (
         <>
           <div className="ml-[76px] flex flex-1 items-center gap-12 text-xl font-medium">
-            <Link to="/manager/team-building">팀빌딩</Link>
-            <Link to="/manager/chat">1:1 채팅</Link>
+            <Link
+              to="/manager/team-building"
+              className={
+                location.pathname.startsWith('/manager/team-building')
+                  ? 'text-primary'
+                  : ''
+              }
+            >
+              팀빌딩
+            </Link>
+            <Link
+              to="/manager/chat"
+              className={
+                location.pathname.startsWith('/manager/chat')
+                  ? 'text-primary'
+                  : ''
+              }
+            >
+              1:1 채팅
+            </Link>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <Link
