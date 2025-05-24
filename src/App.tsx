@@ -9,15 +9,18 @@ import AuthTestGuard from './components/guards/AuthTestGuard';
 import PublicOnlyGuard from './components/guards/PublicOnlyGuard';
 import {UserOnlyGuard} from './components/guards/UserOnlyGuard';
 import {cn} from './lib/utils';
+import {AllProfiles} from './pages/all-profiles/ui/AllProfiles';
 import {DesktopLoginPage} from './pages/auth/DesktopLoginPage';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {LoginPage} from './pages/auth/LoginPage';
 import {SignUpPage} from './pages/auth/SignUpPage';
 import ChatPage from './pages/ChatPage';
+import {GroupDetail} from './pages/group-detail/ui/GroupDetail';
 import {GroupInvite} from './pages/group-invite/ui/GroupInvite';
 import HomePage from './pages/HomePage';
 import MainPage from './pages/MainPage';
 import {CreateGroup} from './pages/manager-create-group/ui/CreateGroup';
+import {Profile} from './pages/manager-profile/ui/Profile';
 import ManagerChatPage from './pages/manager/ManagerChatPage';
 import ManagerMyPage from './pages/manager/ManagerMypage';
 import ManagerPage from './pages/manager/ManagerPage';
@@ -32,6 +35,7 @@ import ResultPage from './pages/ResultPage';
 import {MyTeam} from './pages/team-building/ui/MyTeam';
 import {OtherProfile} from './pages/team-building/ui/OtherProfile';
 import {TeamBuildingPage} from './pages/team-building/ui/TeamBuildingPage';
+import {TeamList} from './pages/team-list/ui/TeamList';
 import TestPage from './pages/TestPage';
 import TestStartPage from './pages/TestStartPage';
 
@@ -103,6 +107,19 @@ function AppRoutes() {
           />
           <Route path="/manager/chat" element={<ManagerChatPage />} />
           <Route path="/manager/mypage" element={<ManagerMyPage />} />
+          <Route
+            path="/manager/team-building/group/:groupId"
+            element={<GroupDetail />}
+          />
+          <Route path="/manager/team-building/teams" element={<TeamList />} />
+          <Route
+            path="/manager/team-building/all-profiles"
+            element={<AllProfiles />}
+          />
+          <Route
+            path="/manager/team-building/profile/:groupId/:memberId"
+            element={<Profile />}
+          />
         </Routes>
       </div>
     </div>

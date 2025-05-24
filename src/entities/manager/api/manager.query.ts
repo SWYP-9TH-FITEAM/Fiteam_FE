@@ -2,6 +2,7 @@ import {queryOptions} from '@tanstack/react-query';
 
 import {
   getManagerGroupIdMembers,
+  getManagerGroupNotice,
   getManagerGroupProcess,
   getManagerGroupsAll,
   getManagerGroupsIdName,
@@ -44,5 +45,12 @@ export const managerQueries = {
     queryOptions({
       queryKey: [...managerQueries.groupsAllKey()],
       queryFn: () => getManagerGroupsAll(),
+    }),
+
+  noticesKey: () => [...managerQueries.all(), 'notices'],
+  notices: () =>
+    queryOptions({
+      queryKey: [...managerQueries.noticesKey()],
+      queryFn: () => getManagerGroupNotice(),
     }),
 };

@@ -1,11 +1,7 @@
 import type {PostManagerNewNoticeRequestDto} from './dto';
 
 import {apiWithAuth} from '@/shared/api/client';
-import {validateSchema} from '@/shared/api/validate';
-import {
-  postManagerNewNoticeRequestDto,
-  postManagerNewNoticeResponseDto,
-} from './dto';
+import {postManagerNewNoticeRequestDto} from './dto';
 
 export const postManagerNewNotice = async (
   payload: PostManagerNewNoticeRequestDto,
@@ -14,11 +10,5 @@ export const postManagerNewNotice = async (
 
   const json = postManagerNewNoticeRequestDto.parse(payload);
 
-  const response = await apiWithAuth.post(ENDPOINT, {json}).json();
-
-  return validateSchema({
-    dto: response,
-    schema: postManagerNewNoticeResponseDto,
-    schemaName: ENDPOINT,
-  });
+  return apiWithAuth.post(ENDPOINT, {json});
 };

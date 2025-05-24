@@ -4,7 +4,7 @@ interface ChartBarProps {
   rightLabel: string;
 }
 
-const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
+export const ChartBar = ({label, value, rightLabel}: ChartBarProps) => {
   const percentage = (value / 75) * 100;
   const isLessThanHalf = percentage <= 50;
   const activeStyle =

@@ -5,7 +5,7 @@ import {getGroupGroupIdDataResponseDto} from './dto';
 export const getGroupData = async (groupId: number) => {
   const ENDPOINT = `v1/group/${groupId}/data`;
 
-  const resposne = apiWithAuth.get(ENDPOINT).json();
+  const resposne = await apiWithAuth.get(ENDPOINT).json();
 
   return validateSchema({
     dto: resposne,
