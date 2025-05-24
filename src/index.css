@@ -21,13 +21,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.5512 0.253 279.3);
+
+  --primary: #5f4aff;
   --primary-foreground: oklch(0.985 0 0);
   --primary-light: #eeecff;
   --gray-dark: #111;

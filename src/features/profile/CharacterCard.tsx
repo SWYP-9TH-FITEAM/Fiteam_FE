@@ -1,3 +1,5 @@
+import {forwardRef} from 'react';
+
 interface ChartBarProps {
   label: string;
   value: number; // 0-10 사이 값
@@ -57,6 +59,7 @@ interface CharacterCardProps {
     topRight: string;
     bottomLeft: string;
   };
+  onClick?: () => void;
 }
 
 const PersonalityTag = ({
@@ -89,12 +92,16 @@ const PersonalityTag = ({
   );
 };
 
-export const CharacterCard = ({name, score, tags}: CharacterCardProps) => {
-  const {ei = 0, pd = 0, cl = 0, va = 0} = score ?? {};
+export const CharacterCard = forwardRef<HTMLDivElement, CharacterCardProps>(
+  ({name, score, tags, onClick}, ref) => {
+    const {ei = 0, pd = 0, cl = 0, va = 0} = score ?? {};
 
-  return (
-    <>
-      <div className="bg-primary-light w-full rounded-[20px] border-2 border-solid border-[#5F4AFF] bg-[linear-gradient(0deg,#F1F2FB_0%,#F1F2FB_100%),linear-gradient(187deg,#FFF_0.79%,rgba(255,255,255,0.00)_69.96%)] p-[13px]">
+    return (
+      <div
+        ref={ref}
+        onClick={onClick}
+        className="bg-primary-light w-full rounded-[20px] border-2 border-solid border-[#5F4AFF] bg-[linear-gradient(0deg,#F1F2FB_0%,#F1F2FB_100%),linear-gradient(187deg,#FFF_0.79%,rgba(255,255,255,0.00)_69.96%)] p-[13px]"
+      >
         <h3 className="text-left text-xl font-medium text-black">나의 성향</h3>
         <div className="mb-[11px] flex flex-col items-center justify-center">
           <div className="relative h-[200px] w-[120px]">
@@ -125,6 +132,6 @@ export const CharacterCard = ({name, score, tags}: CharacterCardProps) => {
         )}
         {/* </Section> */}
       </div>
-    </>
-  );
-};
+    );
+  },
+);
