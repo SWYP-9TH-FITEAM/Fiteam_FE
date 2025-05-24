@@ -128,7 +128,7 @@ export const getManagerGroupNoticeResponseDto = z.array(
     id: z.number().int(),
     groupId: z.number().int(),
     title: z.string(),
-    createdAt: z.string().datetime(),
+    createdAt: z.string(),
   }),
 );
 

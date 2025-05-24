@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {format} from 'date-fns';
 import {ChevronLeft} from 'lucide-react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import {Button} from '@/components/ui/button';
 import {Separator} from '@/components/ui/separator';
@@ -21,6 +21,9 @@ import ManagerHeader from '@/features/manager/layouts/ManagerHeader';
 import LeftMenu from '@/pages/manager-team-building/ui/LeftMenu';
 import {Footer} from '@/shared/ui/desktop/Footer';
 import {Main} from '@/shared/ui/desktop/Main';
+import {BanGroupMember} from './BanGroupMember';
+import {CreateNotice} from './CreateNotice';
+import {DeleteGroupButton} from './DeleteGroupButton';
 
 export const GroupDetail: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
@@ -98,9 +101,7 @@ export const GroupDetail: React.FC = () => {
                       {format(group.startDatetime, 'yyyy.MM.dd HH:mm')} ~{' '}
                       {format(group.endDatetime, 'yyyy.MM.dd HH:mm')}
                     </div>
-                    <Button variant="outline" className="w-[120px]">
-                      그룹 삭제
-                    </Button>
+                    <DeleteGroupButton groupId={groupIdNumber} />
                   </div>
 
                   <div className="flex items-center gap-8">
@@ -111,8 +112,10 @@ export const GroupDetail: React.FC = () => {
                       {group.positionBased ? '직접' : '랜덤'} |{' '}
                       {groupMembers.length}명
                     </div>
-                    <Button variant="outline" className="w-[120px]">
-                      전체 프로필
+                    <Button variant="outline" className="w-[120px]" asChild>
+                      <Link to="/manager/team-building/all-profiles">
+                        전체 프로필
+                      </Link>
                     </Button>
                   </div>
 
@@ -144,9 +147,7 @@ export const GroupDetail: React.FC = () => {
                         </TableBody>
                       </Table>
                     </div>
-                    <Button variant="outline" className="w-[120px]">
-                      그룹원 방출
-                    </Button>
+                    <BanGroupMember groupId={groupIdNumber} />
                   </div>
 
                   <div className="flex items-start gap-8">
@@ -175,7 +176,7 @@ export const GroupDetail: React.FC = () => {
                                   {title}
                                 </TableCell>
                                 <TableCell className="text-left">
-                                  {createdAt}
+                                  {format(createdAt, 'yyyy.MM.dd HH:mm')}
                                 </TableCell>
                               </TableRow>
                             ))}
@@ -183,12 +184,7 @@ export const GroupDetail: React.FC = () => {
                       </Table>
                     </div>
                     <div className="flex flex-col gap-4">
-                      <Button variant="outline" className="w-[120px]">
-                        공지 작성
-                      </Button>
-                      <Button variant="outline" className="w-[120px]">
-                        종료
-                      </Button>
+                      <CreateNotice groupId={groupIdNumber} />
                     </div>
                   </div>
                 </div>
