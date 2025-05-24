@@ -20,6 +20,7 @@ import {GroupInvite} from './pages/group-invite/ui/GroupInvite';
 import HomePage from './pages/HomePage';
 import MainPage from './pages/MainPage';
 import {CreateGroup} from './pages/manager-create-group/ui/CreateGroup';
+import {Profile} from './pages/manager-profile/ui/Profile';
 import ManagerChatPage from './pages/manager/ManagerChatPage';
 import ManagerMyPage from './pages/manager/ManagerMypage';
 import ManagerPage from './pages/manager/ManagerPage';
@@ -114,6 +115,10 @@ function AppRoutes() {
           <Route
             path="/manager/team-building/all-profiles"
             element={<AllProfiles />}
+          />
+          <Route
+            path="/manager/team-building/profile/:groupId/:memberId"
+            element={<Profile />}
           />
         </Routes>
       </div>

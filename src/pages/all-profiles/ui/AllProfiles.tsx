@@ -98,7 +98,7 @@ export const AllProfiles: React.FC = () => {
                   {cardData.state === 'hasData' &&
                     filteredMembers?.map(member => (
                       <Link
-                        to={`/manager/team-building/profile/${member.memberId}`}
+                        to={`/manager/team-building/profile/${selectedGroup.groupId}/${member.memberId}`}
                         key={member.userId}
                         className={cn(
                           'flex items-center justify-between rounded-xl border-b border-[#EEEEEE] bg-white p-4 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]',
