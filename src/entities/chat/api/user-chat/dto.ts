@@ -20,7 +20,7 @@ export const postCreateChatRoomResponseDto = z.object({
   user2Name: z.string().optional().nullable(),
   user2ProfileImgUrl: z.string().url().optional().nullable(),
   user2Job: z.string().optional().nullable(),
-  createdAt: z.string().datetime().optional().nullable(),
+  createdAt: z.string().optional().nullable(),
 });
 
 export type PostCreateChatRoomResponseDto = z.infer<
