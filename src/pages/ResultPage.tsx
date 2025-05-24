@@ -1,6 +1,7 @@
 import type {GetCardResponseDto} from '@/entities/card';
 
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import html2canvas from 'html2canvas-pro';
 import {useAtomValue} from 'jotai';
 import {useNavigate} from 'react-router-dom';
 
@@ -27,6 +28,7 @@ const ResultPage = () => {
   const [testSubPage, setTestSubPage] = useState<'ALL_TYPE' | 'HISTORY' | ''>(
     '',
   );
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
 
@@ -72,6 +74,37 @@ const ResultPage = () => {
       navigate('/profile');
     } else {
       setProfileDialogOpen(true);
+    }
+  };
+
+  const handleSaveImage = async () => {
+    if (!cardRef.current) return;
+    const canvas = await html2canvas(cardRef.current);
+    const dataUrl = canvas.toDataURL('image/png');
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // 임시 HTML 페이지 생성
+      const html = `
+        <html>
+          <head>
+            <meta charset="UTF-8" />
+          </head>
+          <body style="margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#fff;">
+            <img src="${dataUrl}" style="max-width:100vw;max-height:80vh;"/>
+            <p style="font-size:18px;color:#333;margin-top:16px;">이미지를 꾹 눌러 저장하세요!</p>
+          </body>
+        </html>
+      `;
+      const blob = new Blob([html], {type: 'text/html'});
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } else {
+      // PC에서는 자동 다운로드
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'character-card.png';
+      link.click();
     }
   };
 
@@ -137,6 +170,7 @@ const ResultPage = () => {
             </button>
           </div> */}
           <CharacterCard
+            ref={cardRef}
             name={cardData.name}
             score={
               testResult
@@ -153,12 +187,12 @@ const ResultPage = () => {
               topRight: '배려만땅',
               bottomLeft: '친절한',
             }}
+            onClick={handleSaveImage}
           />
-          {testResult && (
-            <p className="text-gray-4 mt-[11px]">
-              ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
-            </p>
-          )}
+          <p className="text-gray-4 mt-[11px]" onClick={handleSaveImage}>
+            ▲ 이미지를 꾹 누르면 저장이 돼요 ▲
+          </p>
+
           <div className="mt-3.5 h-[310px] w-full rounded-2xl bg-white px-4 py-[22px] text-left shadow-sm">
             <b className="mb-[14px] block text-xl leading-7 font-medium not-italic">
               당신은 이런 성향입니다
