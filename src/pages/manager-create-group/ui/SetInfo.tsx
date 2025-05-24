@@ -133,8 +133,11 @@ export const SetInfo: React.FC<SetInfoProps> = ({
                 if (!value) return;
                 const {start, end} = value;
 
-                setValue('startDatetime', start.toAbsoluteString());
-                setValue('endDatetime', end.toAbsoluteString());
+                const startDatetime = `${start.year}-${start.month.toString().padStart(2, '0')}-${start.day.toString().padStart(2, '0')}T${start.hour.toString().padStart(2, '0')}:${start.minute.toString().padStart(2, '0')}:${start.second.toString().padStart(2, '0')}`;
+                const endDatetime = `${end.year}-${end.month.toString().padStart(2, '0')}-${end.day.toString().padStart(2, '0')}T${end.hour.toString().padStart(2, '0')}:${end.minute.toString().padStart(2, '0')}:${end.second.toString().padStart(2, '0')}`;
+
+                setValue('startDatetime', startDatetime);
+                setValue('endDatetime', endDatetime);
               }}
             />
           </div>
