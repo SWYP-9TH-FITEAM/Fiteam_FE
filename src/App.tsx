@@ -9,6 +9,7 @@ import AuthTestGuard from './components/guards/AuthTestGuard';
 import PublicOnlyGuard from './components/guards/PublicOnlyGuard';
 import {UserOnlyGuard} from './components/guards/UserOnlyGuard';
 import {cn} from './lib/utils';
+import {AllProfiles} from './pages/all-profiles/ui/AllProfiles';
 import {DesktopLoginPage} from './pages/auth/DesktopLoginPage';
 import {FindPasswordPage} from './pages/auth/FindPasswordPage';
 import {LoginPage} from './pages/auth/LoginPage';
@@ -110,6 +111,10 @@ function AppRoutes() {
             element={<GroupDetail />}
           />
           <Route path="/manager/team-building/teams" element={<TeamList />} />
+          <Route
+            path="/manager/team-building/all-profiles"
+            element={<AllProfiles />}
+          />
         </Routes>
       </div>
     </div>
